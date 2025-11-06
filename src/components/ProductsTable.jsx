@@ -1,113 +1,82 @@
-import { Info } from 'lucide-react';
 import StatusPill from './StatusPill';
 
-const ProductsTable = ({ products = [], onPageChange, pagination }) => {
-  const formatCurrency = (amount) => {
-    return new Intl.NumberFormat('id-ID', {
-      style: 'currency',
-      currency: 'IDR',
-      minimumFractionDigits: 0,
-    }).format(amount);
-  };
+const ProductsTable = ({ products, loading, role, onEdit, onDelete }) => {
+  if (loading) {
+    return (
+      <div className="animate-pulse">
+        <div className="h-8 bg-gray-200 rounded w-full mb-4" />
+        <div className="h-4 bg-gray-200 rounded w-full" />
+      </div>
+    );
+  }
 
-  const getStatus = (product) => {
-    if (product.status) return product.status;
-    if (product.isActive === true) return 'Active';
-    if (product.isActive === false) return 'Expired';
-    return 'Active';
-  };
+  if (products.length === 0) {
+    return (
+      <div className="text-center py-8">
+        <p className="text-gray-500">No products found.</p>
+        {role === 'SALES' && (
+          <button className="bg-blue-500 text-white px-4 py-2 rounded-lg mt-4">
+            Create Product
+          </button>
+        )}
+      </div>
+    );
+  }
 
   return (
-    <div className="bg-white rounded-2xl overflow-hidden">
-      <div className="overflow-x-auto">
-        <table className="w-full">
-          <thead className="bg-gray-50 border-b border-gray-200">
-            <tr>
-              <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
-                Nama Produk
-              </th>
-              <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
-                Kode Produk
-              </th>
-              <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
-                Harga Produk
-              </th>
-              <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
-                Garansi (%)
-              </th>
-              <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
-                Status
-              </th>
-              <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
-                Action
-              </th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-200">
-            {products.length === 0 ? (
-              <tr>
-                <td colSpan="6" className="px-6 py-8 text-center text-gray-500">
-                  No products found
-                </td>
-              </tr>
-            ) : (
-              products.map((product, index) => (
-                <tr key={index} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 text-sm text-gray-900">
-                    {product.name || product.productName || '-'}
-                  </td>
-                  <td className="px-6 py-4 text-sm text-gray-600">
-                    {product.code || product.productCode || '-'}
-                  </td>
-                  <td className="px-6 py-4 text-sm text-gray-900">
-                    {product.price ? formatCurrency(product.price) : '-'}
-                  </td>
-                  <td className="px-6 py-4 text-sm text-gray-600">
-                    {product.warranty
-                      ? `${formatCurrency(product.warranty)} ( ${
-                          product.warrantyPercentage || 3
-                        } % )`
-                      : '-'}
-                  </td>
-                  <td className="px-6 py-4">
-                    <StatusPill status={getStatus(product)} />
-                  </td>
-                  <td className="px-6 py-4">
-                    <button className="text-gray-400 hover:text-gray-600">
-                      <Info className="w-5 h-5" />
-                    </button>
-                  </td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-      </div>
-
-      {pagination && pagination.totalPages > 1 && (
-        <div className="border-t border-gray-200 px-6 py-4 flex items-center justify-between">
-          <div className="text-sm text-gray-600">
-            Page {pagination.currentPage} of {pagination.totalPages}
-          </div>
-          <div className="flex gap-2">
-            <button
-              onClick={() => onPageChange(pagination.currentPage - 1)}
-              disabled={pagination.currentPage === 1}
-              className="px-4 py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              Previous
-            </button>
-            <button
-              onClick={() => onPageChange(pagination.currentPage + 1)}
-              disabled={pagination.currentPage === pagination.totalPages}
-              className="px-4 py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              Next
-            </button>
-          </div>
-        </div>
-      )}
-    </div>
+    <table className="min-w-full bg-white">
+      <thead>
+        <tr>
+          <th className="py-2 px-4 border-b">Name</th>
+          <th className="py-2 px-4 border-b">SKU</th>
+          <th className="py-2 px-4 border-b">Price</th>
+          <th className="py-2 px-4 border-b">Status</th>
+          <th className="py-2 px-4 border-b">Created At</th>
+          <th className="py-2 px-4 border-b">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {products.map((product) => (
+          <tr key={product.id}>
+            <td className="py-2 px-4 border-b">{product.name}</td>
+            <td className="py-2 px-4 border-b">{product.sku}</td>
+            <td className="py-2 px-4 border-b">{product.price}</td>
+            <td className="py-2 px-4 border-b">
+              <StatusPill status={product.status} />
+            </td>
+            <td className="py-2 px-4 border-b">
+              {new Date(product.created_at).toLocaleDateString()}
+            </td>
+            <td className="py-2 px-4 border-b">
+              {role === 'SUPERVISOR' && (
+                <button
+                  className="text-red-500"
+                  onClick={() => onDelete(product)}
+                >
+                  Delete
+                </button>
+              )}
+              {role === 'SALES' && (
+                <>
+                  <button
+                    className="text-blue-500 mr-2"
+                    onClick={() => onEdit(product)}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    className="text-red-500"
+                    onClick={() => onDelete(product)}
+                  >
+                    Delete
+                  </button>
+                </>
+              )}
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
   );
 };
 
