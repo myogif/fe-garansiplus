@@ -1,10 +1,17 @@
 import client from './client';
 
-export async function listRolePeople(role, { page = 1, limit = 10 } = {}) {
+export async function listRolePeople(role, { page = 1, limit = 10, search = '' } = {}) {
+  const searchParams = new URLSearchParams({
+    page,
+    limit,
+  });
+  if (search) {
+    searchParams.append('search', search);
+  }
+
   const url = role === 'MANAGER'
-    ? `/api/managers/supervisors?page=${page}&limit=${limit}`
-    // ? `/api/managers/supervisors?page=1&limit=10`
-    : `/api/supervisors/sales?page=${page}&limit=${limit}`;
+    ? `/api/managers/supervisors?${searchParams}`
+    : `/api/supervisors/sales?${searchParams}`;
 
   const res = await client.get(url);
   const data = res.data?.data || {};

@@ -93,7 +93,33 @@ const ProductsList = () => {
         )}
       </div>
 
-      {/* Toolbar */}
+      <div className="flex items-center justify-between mb-4">
+        <input
+          type="text"
+          placeholder="Search by name or SKU"
+          className="border rounded-lg px-4 py-2 w-1/3"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+        {role === 'SALES' && (
+          <div className="flex items-center">
+            <input
+              type="checkbox"
+              id="mine"
+              checked={mine}
+              onChange={() => setMine(!mine)}
+              className="mr-2"
+            />
+            <label htmlFor="mine">Show only my products</label>
+          </div>
+        )}
+        <button
+          className="border rounded-lg px-4 py-2"
+          onClick={loadProducts}
+        >
+          Refresh
+        </button>
+      </div>
 
       <ProductsTable
         products={products}
