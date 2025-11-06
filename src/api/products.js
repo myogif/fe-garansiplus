@@ -1,10 +1,18 @@
 import client from './client';
 
-export async function fetchProducts(role, { page = 1, limit = 10, mine = true } = {}) {
+export async function fetchProducts(role, { page = 1, limit = 10, mine = true, search = '' } = {}) {
+  const searchParams = new URLSearchParams({
+    page,
+    limit,
+  });
+  if (search) {
+    searchParams.append('search', search);
+  }
+
   const url =
-    role === 'MANAGER'    ? `/api/managers/products?page=${page}&limit=${limit}` :
-    role === 'SUPERVISOR' ? `/api/supervisors/products?page=${page}&limit=${limit}` :
-                            `/api/sales/products?page=${page}&limit=${limit}${mine ? '&mine=true' : ''}`;
+    role === 'MANAGER'    ? `/api/managers/products?${searchParams}` :
+    role === 'SUPERVISOR' ? `/api/supervisors/products?${searchParams}` :
+                            `/api/sales/products?${searchParams}${mine ? '&mine=true' : ''}`;
 
   const res = await client.get(url);
   const data = res.data?.data || {};

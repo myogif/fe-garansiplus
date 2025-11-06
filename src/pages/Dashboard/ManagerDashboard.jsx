@@ -21,8 +21,13 @@ const ManagerDashboard = () => {
           getDashboardSummary(),
           getMonthlySummary(),
         ]);
-        setStats(dashboardRes.data.data);
-        setMonthlySummary(monthlyRes.data.data.items);
+
+        const statsData = dashboardRes.data?.data || {};
+        setStats(statsData);
+
+        const monthlyData = monthlyRes.data?.data || {};
+        const summaryItems = monthlyData.items ?? monthlyRes.data?.items ?? [];
+        setMonthlySummary(summaryItems);
       } catch (error) {
         setMonthlySummary(DUMMY_MONTHLY_SUMMARY);
         console.error('Failed to fetch dashboard data:', error);
