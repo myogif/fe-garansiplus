@@ -1,20 +1,14 @@
 const StatusPill = ({ status }) => {
-  const getStatusStyles = () => {
-    switch (status) {
-      case 'Active':
-        return 'bg-green-100 text-green-700';
-      case 'Expired':
-        return 'bg-orange-100 text-orange-700';
-      case 'Used':
-        return 'bg-yellow-100 text-yellow-700';
-      default:
-        return 'bg-gray-100 text-gray-700';
-    }
+  const statusClasses = {
+    ACTIVE: 'bg-green-100 text-green-800',
+    INACTIVE: 'bg-red-100 text-red-800',
   };
+
+  const classes = statusClasses[status] || 'bg-gray-100 text-gray-800';
 
   return (
     <span
-      className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusStyles()}`}
+      className={`px-2 py-1 rounded-full text-xs font-semibold ${classes}`}
     >
       {status}
     </span>
