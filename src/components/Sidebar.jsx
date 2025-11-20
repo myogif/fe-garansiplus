@@ -2,10 +2,8 @@ import { NavLink } from 'react-router-dom';
 import {
   LayoutDashboard,
   Package,
-  Store,
   Users,
   UserCheck,
-  UserSquare2,
   Shield,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
@@ -21,7 +19,21 @@ const navItems = [
 
 const Sidebar = ({ isOpen, onClose }) => {
   const { role } = useAuth();
-  const links = navItems.filter((item) => item.roles.includes(role));
+
+  const navItems = {
+    MANAGER: [
+      { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+      { to: '/products', icon: Package, label: 'Produk' },
+      { to: '/supervisors', icon: Users, label: 'Supervisors' },
+    ],
+    SUPERVISOR: [
+      { to: '/products', icon: Package, label: 'Produk' },
+      { to: '/supervisors', icon: UserCheck, label: 'Sales' },
+    ],
+    SALES: [{ to: '/products', icon: Package, label: 'Produk' }],
+  };
+
+  const links = navItems[role] || [];
 
   return (
     <>

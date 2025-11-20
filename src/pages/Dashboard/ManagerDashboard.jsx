@@ -10,38 +10,9 @@ import {
 } from 'recharts';
 import { Crown, MapPin, RefreshCw } from 'lucide-react';
 import { getDashboardSummary, getMonthlySummary } from '../../api/managers';
+import StatCard from '../../components/StatCard';
+import { DUMMY_MONTHLY_SUMMARY } from '../../lib/constants';
 import MainLayout from '../../components/MainLayout';
-
-const pickNumber = (source, keys, fallback = 0) => {
-  for (const key of keys) {
-    const value = source?.[key];
-    if (typeof value === 'number') return value;
-    if (typeof value === 'string' && value.trim() !== '' && !Number.isNaN(Number(value))) {
-      return Number(value);
-    }
-  }
-  return fallback;
-};
-
-const normalizeMonthly = (items = []) =>
-  items
-    .map((item, idx) => {
-      const month =
-        item.month ||
-        item.name ||
-        item.label ||
-        item.monthName ||
-        `Bulan ${idx + 1}`;
-      const total = pickNumber(item, ['total', 'count', 'value', 'amount'], 0);
-      return { month, total };
-    })
-    .filter((item) => item);
-
-const fallbackMonthly = [
-  { month: 'Juli', total: 120 },
-  { month: 'Agustus', total: 180 },
-  { month: 'September', total: 240 },
-];
 
 const ManagerDashboard = () => {
   const [stats, setStats] = useState({
@@ -116,92 +87,22 @@ const ManagerDashboard = () => {
     fetchData();
   }, []);
 
-  const statCards = useMemo(
-    () => [
-      { label: 'Total Product', value: stats.totalProducts },
-      { label: 'Total Toko', value: stats.totalStores },
-      { label: 'Total Supervisor', value: stats.totalSupervisors },
-      { label: 'Total Sales', value: stats.totalSales },
-      { label: 'Total Customer', value: stats.totalCustomers },
-    ],
-    [stats]
-  );
-
-  const renderLoadingBars = Array.from({ length: 5 }).map((_, idx) => (
-    <div
-      key={`skeleton-${idx}`}
-      className="bg-[#0f172a] border border-white/5 rounded-2xl p-4 animate-pulse h-28"
-    >
-      <div className="w-24 h-4 bg-white/10 rounded" />
-      <div className="mt-4 w-16 h-7 bg-white/20 rounded" />
+  const content = loading ? (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {Array.from({ length: 4 }).map((_, index) => (
+        <div key={index} className="bg-white p-4 rounded-lg shadow animate-pulse">
+          <div className="h-8 bg-gray-200 rounded w-3/4" />
+          <div className="h-4 bg-gray-200 rounded w-1/2 mt-2" />
+        </div>
+      ))}
     </div>
-  ));
-
-  const renderStoreRow = (store, index) => {
-    const isTop = index === 0;
-    return (
-      <div
-        key={`${store.name}-${index}`}
-        className="flex items-start gap-3 py-3 border-b border-gray-100 last:border-b-0"
-      >
-        <div
-          className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold ${
-            isTop ? 'bg-[#fef3c7] text-[#b45309]' : 'bg-gray-100 text-gray-700'
-          }`}
-        >
-          {isTop ? <Crown className="w-5 h-5" /> : `#${store.rank || index + 1}`}
-        </div>
-        <div className="flex-1">
-          <div className="flex items-center gap-2">
-            <p className="font-semibold text-gray-900">{store.name}</p>
-            {typeof store.score === 'number' && (
-              <span className="text-xs bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-full">{store.score}</span>
-            )}
-          </div>
-          <p className="text-sm text-gray-500 flex items-center gap-1">
-            <MapPin className="w-4 h-4" />
-            {store.address}
-          </p>
-        </div>
+  ) : (
+    <>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        <StatCard title="Total Products" value={stats.totalProducts} />
+        <StatCard title="Total Supervisors" value={stats.totalSupervisors} />
+        <StatCard title="Total Sales" value={stats.totalSales} />
       </div>
-    );
-  };
-
-  return (
-    <MainLayout>
-      <div className="space-y-6">
-        <div className="flex flex-col gap-2">
-          <h1 className="text-2xl font-bold text-gray-900">Dashboard Manager</h1>
-          <p className="text-sm text-gray-600">Pantau performa produk, toko, dan tim Anda.</p>
-        </div>
-
-        {error && (
-          <div className="flex items-center justify-between gap-3 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-            <span>{error}</span>
-            <button
-              type="button"
-              onClick={fetchData}
-              className="inline-flex items-center gap-2 rounded-lg bg-red-600 px-3 py-1.5 text-white text-xs font-semibold shadow hover:bg-red-700"
-            >
-              <RefreshCw className="w-4 h-4" />
-              Muat ulang
-            </button>
-          </div>
-        )}
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
-          {loading
-            ? renderLoadingBars
-            : statCards.map((card) => (
-                <div
-                  key={card.label}
-                  className="bg-[#0f172a] border border-white/5 rounded-2xl p-5 shadow-[0_10px_30px_rgba(0,0,0,0.2)] flex flex-col gap-3"
-                >
-                  <p className="text-sm text-white/60">{card.label}</p>
-                  <p className="text-3xl font-semibold text-white">{card.value ?? 0}</p>
-                </div>
-              ))}
-        </div>
 
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
           <div className="xl:col-span-2 bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
@@ -258,6 +159,13 @@ const ManagerDashboard = () => {
           </div>
         </div>
       </div>
+    </>
+  );
+
+  return (
+    <MainLayout>
+      <h1 className="text-2xl font-bold mb-6">Manager Dashboard</h1>
+      {content}
     </MainLayout>
   );
 };
