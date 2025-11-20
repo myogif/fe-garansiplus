@@ -158,7 +158,6 @@ const ManagerDashboard = () => {
             )}
           </div>
         </div>
-      </div>
     </>
   );
 

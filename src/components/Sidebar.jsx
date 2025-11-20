@@ -11,8 +11,8 @@ import { useAuth } from '../context/AuthContext';
 const navItems = [
   { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard', roles: ['MANAGER'] },
   { to: '/products', icon: Package, label: 'Produk', roles: ['MANAGER', 'SUPERVISOR', 'SALES'] },
-  { to: '/stores', icon: Store, label: 'Toko', roles: ['MANAGER'] },
-  { to: '/supervisors', icon: UserSquare2, label: 'Supervisor', roles: ['MANAGER', 'SUPERVISOR'] },
+  // { to: '/stores', icon: Store, label: 'Toko', roles: ['MANAGER'] },
+  { to: '/supervisors', icon: Users, label: 'Supervisor', roles: ['MANAGER', 'SUPERVISOR'] },
   { to: '/sales', icon: UserCheck, label: 'Sales', roles: ['MANAGER', 'SUPERVISOR'] },
   { to: '/customers', icon: Users, label: 'Customer', roles: ['MANAGER'] },
 ];
