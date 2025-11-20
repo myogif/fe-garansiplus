@@ -3,6 +3,7 @@ import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { getDashboardSummary, getMonthlySummary } from '../../api/managers';
 import StatCard from '../../components/StatCard';
 import { DUMMY_MONTHLY_SUMMARY } from '../../lib/constants';
+import MainLayout from '../../components/MainLayout';
 
 const ManagerDashboard = () => {
   const [stats, setStats] = useState({
@@ -38,23 +39,17 @@ const ManagerDashboard = () => {
     fetchData();
   }, []);
 
-  if (loading) {
-    return (
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {Array.from({ length: 4 }).map((_, index) => (
-          <div key={index} className="bg-white p-4 rounded-lg shadow animate-pulse">
-            <div className="h-8 bg-gray-200 rounded w-3/4" />
-            <div className="h-4 bg-gray-200 rounded w-1/2 mt-2" />
-          </div>
-        ))}
-      </div>
-    );
-  }
-
-  return (
-    <div className="p-4 sm:p-6 lg:p-8">
-      <h1 className="text-2xl font-bold mb-6">Manager Dashboard</h1>
-
+  const content = loading ? (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {Array.from({ length: 4 }).map((_, index) => (
+        <div key={index} className="bg-white p-4 rounded-lg shadow animate-pulse">
+          <div className="h-8 bg-gray-200 rounded w-3/4" />
+          <div className="h-4 bg-gray-200 rounded w-1/2 mt-2" />
+        </div>
+      ))}
+    </div>
+  ) : (
+    <>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
         <StatCard title="Total Products" value={stats.totalProducts} />
         <StatCard title="Total Supervisors" value={stats.totalSupervisors} />
@@ -73,7 +68,14 @@ const ManagerDashboard = () => {
           </AreaChart>
         </ResponsiveContainer>
       </div>
-    </div>
+    </>
+  );
+
+  return (
+    <MainLayout>
+      <h1 className="text-2xl font-bold mb-6">Manager Dashboard</h1>
+      {content}
+    </MainLayout>
   );
 };
 

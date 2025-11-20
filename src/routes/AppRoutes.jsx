@@ -3,6 +3,9 @@ import ProtectedRoute from './ProtectedRoute';
 import ManagerDashboard from '../pages/Dashboard/ManagerDashboard';
 import ProductsList from '../pages/Products/ProductsList';
 import SupervisorsList from '../pages/Supervisors/SupervisorsList';
+import StoresList from '../pages/Stores/StoresList';
+import SalesList from '../pages/Sales/SalesList';
+import CustomersList from '../pages/Customers/CustomersList';
 import Login from '../pages/Login';
 import { useAuth } from '../context/AuthContext';
 
@@ -33,16 +36,40 @@ export default function AppRoutes() {
       <Route
         path="/products"
         element={
-          <ProtectedRoute allowedRoles={['MANAGER','SUPERVISOR','SALES']}>
+          <ProtectedRoute allowedRoles={['MANAGER', 'SUPERVISOR', 'SALES']}>
             <ProductsList />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/stores"
+        element={
+          <ProtectedRoute allowedRoles={['MANAGER']}>
+            <StoresList />
           </ProtectedRoute>
         }
       />
       <Route
         path="/supervisors"
         element={
-          <ProtectedRoute allowedRoles={['MANAGER','SUPERVISOR']}>
+          <ProtectedRoute allowedRoles={['MANAGER', 'SUPERVISOR']}>
             <SupervisorsList />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/sales"
+        element={
+          <ProtectedRoute allowedRoles={['MANAGER', 'SUPERVISOR']}>
+            <SalesList />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/customers"
+        element={
+          <ProtectedRoute allowedRoles={['MANAGER']}>
+            <CustomersList />
           </ProtectedRoute>
         }
       />
