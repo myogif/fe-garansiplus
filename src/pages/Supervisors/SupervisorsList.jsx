@@ -11,6 +11,7 @@ import SupervisorsTable from '../../components/SupervisorsTable';
 import SupervisorFormModal from '../../components/Modals/SupervisorFormModal';
 import ConfirmDelete from '../../components/Modals/ConfirmDelete';
 import useDebounce from '../../hooks/useDebounce';
+import MainLayout from '../../components/MainLayout';
 
 const SupervisorsList = () => {
   const { role, token } = useAuth();
@@ -82,7 +83,7 @@ const SupervisorsList = () => {
   };
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8">
+    <MainLayout>
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold">
           {role === 'MANAGER' ? 'Supervisors' : 'Sales Users'}
@@ -133,7 +134,7 @@ const SupervisorsList = () => {
           role === 'MANAGER' ? 'supervisor' : 'sales user'
         }?`}
       />
-    </div>
+    </MainLayout>
   );
 };
 

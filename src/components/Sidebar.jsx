@@ -2,10 +2,8 @@ import { NavLink } from 'react-router-dom';
 import {
   LayoutDashboard,
   Package,
-  Store,
   Users,
   UserCheck,
-  ShoppingBag,
   Shield,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
@@ -13,20 +11,20 @@ import { useAuth } from '../context/AuthContext';
 const Sidebar = ({ isOpen, onClose }) => {
   const { role } = useAuth();
 
-  const managerLinks = [
-    { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
-    { to: '/products', icon: Package, label: 'Produk' },
-    { to: '/toko', icon: Store, label: 'Toko' },
-    { to: '/supervisor', icon: Users, label: 'Supervisor' },
-    { to: '/sales', icon: UserCheck, label: 'Sales' },
-    { to: '/customer', icon: ShoppingBag, label: 'Customer' },
-  ];
+  const navItems = {
+    MANAGER: [
+      { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+      { to: '/products', icon: Package, label: 'Produk' },
+      { to: '/supervisors', icon: Users, label: 'Supervisors' },
+    ],
+    SUPERVISOR: [
+      { to: '/products', icon: Package, label: 'Produk' },
+      { to: '/supervisors', icon: UserCheck, label: 'Sales' },
+    ],
+    SALES: [{ to: '/products', icon: Package, label: 'Produk' }],
+  };
 
-  const supervisorLinks = [
-    { to: '/products', icon: Package, label: 'Produk' },
-  ];
-
-  const links = role === 'MANAGER' ? managerLinks : supervisorLinks;
+  const links = navItems[role] || [];
 
   return (
     <>
