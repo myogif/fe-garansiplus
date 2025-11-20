@@ -5,6 +5,7 @@ import ProductsTable from '../../components/ProductsTable';
 import ProductFormModal from '../../components/Modals/ProductFormModal';
 import ConfirmDelete from '../../components/Modals/ConfirmDelete';
 import useDebounce from '../../hooks/useDebounce';
+import MainLayout from '../../components/MainLayout';
 
 const ProductsList = () => {
   const { role, token } = useAuth();
@@ -80,7 +81,7 @@ const ProductsList = () => {
   };
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8">
+    <MainLayout>
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold">Products</h1>
         {role === 'SALES' && (
@@ -143,7 +144,7 @@ const ProductsList = () => {
         title="Delete Product"
         message="Are you sure you want to delete this product?"
       />
-    </div>
+    </MainLayout>
   );
 };
 
