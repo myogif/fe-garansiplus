@@ -136,7 +136,7 @@ const ManagerDashboard = () => {
                 <p className="text-sm text-gray-500">Data dari /managers/mountly-summary</p>
               </div>
               <div className="flex items-center gap-2 text-sm text-gray-600">
-                <span className="inline-block w-3 h-3 rounded-full bg-emerald-500" />
+                <span className="inline-block w-3 h-3 rounded-full bg-[#C7F064]" />
                 <span>Product</span>
               </div>
             </div>
@@ -151,7 +151,7 @@ const ManagerDashboard = () => {
                     <XAxis dataKey="month" tick={{ fill: '#6b7280', fontSize: 12 }} axisLine={false} tickLine={false} />
                     <YAxis tick={{ fill: '#6b7280', fontSize: 12 }} axisLine={false} tickLine={false} />
                     <Tooltip cursor={{ fill: 'rgba(0,0,0,0.03)' }} />
-                    <Bar dataKey="total" radius={[12, 12, 0, 0]} fill="#10b981" />
+                    <Bar dataKey="total" radius={[12, 12, 0, 0]} fill="#C7F064" />
                   </BarChart>
                 </ResponsiveContainer>
               )}
@@ -285,9 +285,9 @@ const renderStoreRow = (store, idx) => (
     key={`store-${store.name}-${idx}`}
     className="py-3 flex items-start gap-3 hover:bg-gray-50 rounded-xl px-2 transition-colors"
   >
-    <div className="w-10 h-10 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center shadow-inner">
+    {/* <div className="w-10 h-10 rounded-full bg-[#C7F064] text-[#577C00] flex items-center justify-center shadow-inner">
       <Crown size={18} />
-    </div>
+    </div> */}
 
     <div className="flex-1">
       <div className="flex items-start justify-between gap-2">
@@ -300,7 +300,7 @@ const renderStoreRow = (store, idx) => (
         </div>
 
         {store.score !== null && (
-          <span className="text-xs font-semibold bg-emerald-100 text-emerald-700 px-2 py-1 rounded-full whitespace-nowrap">
+          <span className="text-xs font-semibold bg-[#C7F064] text-[#577C00] px-2 py-1 rounded-full whitespace-nowrap">
             {store.score} produk
           </span>
         )}
