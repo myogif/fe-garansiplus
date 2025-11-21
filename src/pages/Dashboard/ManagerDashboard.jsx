@@ -27,6 +27,17 @@ const ManagerDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
+  const statCards = useMemo(
+    () => [
+      { title: 'Total Products', value: stats.totalProducts },
+      { title: 'Total Stores', value: stats.totalStores },
+      { title: 'Total Supervisors', value: stats.totalSupervisors },
+      { title: 'Total Sales', value: stats.totalSales },
+      { title: 'Total Customers', value: stats.totalCustomers },
+    ],
+    [stats]
+  );
+
   const fetchData = async () => {
     setLoading(true);
     setError('');
@@ -40,11 +51,23 @@ const ManagerDashboard = () => {
       const dashboardData = dashboardRes?.data?.data || dashboardRes?.data || {};
 
       setStats({
-        totalProducts: pickNumber(dashboardData, ['totalProducts', 'total_products', 'totalProduct']),
+        totalProducts: pickNumber(dashboardData, [
+          'totalProducts',
+          'total_products',
+          'totalProduct',
+        ]),
         totalStores: pickNumber(dashboardData, ['totalStores', 'total_stores', 'totalStore']),
-        totalSupervisors: pickNumber(dashboardData, ['totalSupervisors', 'total_supervisors', 'totalSupervisor']),
+        totalSupervisors: pickNumber(dashboardData, [
+          'totalSupervisors',
+          'total_supervisors',
+          'totalSupervisor',
+        ]),
         totalSales: pickNumber(dashboardData, ['totalSales', 'total_sales', 'totalSale']),
-        totalCustomers: pickNumber(dashboardData, ['totalCustomers', 'total_customers', 'totalCustomer']),
+        totalCustomers: pickNumber(dashboardData, [
+          'totalCustomers',
+          'total_customers',
+          'totalCustomer',
+        ]),
       });
 
       const storesRaw =
@@ -57,7 +80,7 @@ const ManagerDashboard = () => {
         ? storesRaw.map((store, index) => ({
             name: store.name || store.storeName || store.title || `Toko ${index + 1}`,
             address: store.address || store.storeAddress || store.location || 'Alamat tidak tersedia',
-            score: pickNumber(store, ['score', 'total', 'sales', 'value'], null),
+            score: pickNumber(store, ['score', 'total', 'sales', 'value', 'productCount'], null),
             rank: store.rank || index + 1,
           }))
         : [];
@@ -67,6 +90,7 @@ const ManagerDashboard = () => {
       const monthlyItems =
         monthlyData.items ||
         monthlyData.monthlySummary ||
+        monthlyData.monthlyProducts ||
         monthlyData.monthly ||
         monthlyData.data ||
         monthlyRes?.data?.items ||
@@ -98,10 +122,10 @@ const ManagerDashboard = () => {
     </div>
   ) : (
     <>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-        <StatCard title="Total Products" value={stats.totalProducts} />
-        <StatCard title="Total Supervisors" value={stats.totalSupervisors} />
-        <StatCard title="Total Sales" value={stats.totalSales} />
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 mb-8">
+        {statCards.map((item) => (
+          <StatCard key={item.title} title={item.title} value={item.value} />
+        ))}
       </div>
 
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
@@ -109,7 +133,7 @@ const ManagerDashboard = () => {
             <div className="flex items-start justify-between mb-4">
               <div>
                 <h3 className="text-lg font-semibold text-gray-900">Statistik Produk Bulanan</h3>
-                <p className="text-sm text-gray-500">Data dari /api/managers/products/monthly-summary</p>
+                <p className="text-sm text-gray-500">Data dari /managers/mountly-summary</p>
               </div>
               <div className="flex items-center gap-2 text-sm text-gray-600">
                 <span className="inline-block w-3 h-3 rounded-full bg-emerald-500" />
@@ -164,9 +188,123 @@ const ManagerDashboard = () => {
   return (
     <MainLayout>
       <h1 className="text-2xl font-bold mb-6">Manager Dashboard</h1>
+      {error && (
+        <div className="mb-4 flex items-start gap-3 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+          <div className="mt-0.5">⚠️</div>
+          <div className="flex-1">
+            <p className="font-semibold">{error}</p>
+            <p className="text-red-600 mt-1">Periksa koneksi Anda atau coba muat ulang data.</p>
+          </div>
+          <button
+            type="button"
+            onClick={fetchData}
+            className="inline-flex items-center gap-2 rounded-lg border border-red-200 bg-white px-3 py-2 text-xs font-semibold text-red-700 shadow-sm hover:bg-red-100"
+          >
+            <RefreshCw size={14} />
+            Muat ulang
+          </button>
+        </div>
+      )}
       {content}
     </MainLayout>
   );
 };
 
 export default ManagerDashboard;
+
+const monthNames = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+];
+
+const pickNumber = (source, keys, fallback = 0) => {
+  if (!source || typeof source !== 'object') return fallback;
+
+  for (const key of keys) {
+    const value = source[key];
+    const parsed = Number(value);
+
+    if (!Number.isNaN(parsed)) {
+      return parsed;
+    }
+  }
+
+  return fallback;
+};
+
+const getMonthLabel = (value, fallback) => {
+  if (typeof value === 'string') {
+    const index = monthNames.findIndex(
+      (name) => name.toLowerCase() === value.toLowerCase()
+    );
+
+    if (index >= 0) return monthNames[index].slice(0, 3);
+    return value.slice(0, 3);
+  }
+
+  if (typeof value === 'number') {
+    return monthNames[value - 1]?.slice(0, 3) || fallback;
+  }
+
+  return fallback;
+};
+
+const normalizeMonthly = (items) => {
+  if (!Array.isArray(items)) return [];
+
+  return items.map((item, index) => {
+    const monthValue =
+      item.month ??
+      item.month_name ??
+      item.monthName ??
+      item.name ??
+      item.monthNumber ??
+      index + 1;
+
+    return {
+      month: getMonthLabel(monthValue, `M${index + 1}`),
+      total: pickNumber(item, ['total', 'count', 'value', 'productCount', 'products'], 0),
+    };
+  });
+};
+
+const fallbackMonthly = normalizeMonthly(DUMMY_MONTHLY_SUMMARY);
+
+const renderStoreRow = (store, idx) => (
+  <div
+    key={`store-${store.name}-${idx}`}
+    className="py-3 flex items-start gap-3 hover:bg-gray-50 rounded-xl px-2 transition-colors"
+  >
+    <div className="w-10 h-10 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center shadow-inner">
+      <Crown size={18} />
+    </div>
+
+    <div className="flex-1">
+      <div className="flex items-start justify-between gap-2">
+        <div>
+          <p className="font-semibold text-gray-900 leading-tight">{store.name}</p>
+          <div className="flex items-center gap-1 text-xs text-gray-500 mt-1">
+            <MapPin size={14} />
+            <span className="line-clamp-2">{store.address}</span>
+          </div>
+        </div>
+
+        {store.score !== null && (
+          <span className="text-xs font-semibold bg-emerald-100 text-emerald-700 px-2 py-1 rounded-full whitespace-nowrap">
+            {store.score} produk
+          </span>
+        )}
+      </div>
+    </div>
+  </div>
+);
