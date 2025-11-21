@@ -69,7 +69,7 @@ const Login = () => {
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C9F35B] focus:border-transparent"
-                  placeholder="081108110811"
+                  placeholder="082xxxxxxx"
                   required
                 />
               </div>
