@@ -71,6 +71,8 @@ const SalesList = () => {
     }
   };
 
+  console.log('SalesList render - role:', role, 'people:', people, 'loading:', loading);
+
   return (
     <MainLayout>
       <div className="bg-white rounded-2xl shadow-sm p-6">
@@ -106,22 +108,26 @@ const SalesList = () => {
           onDelete={handleDelete}
         />
 
-        {pagination && <Pagination pagination={pagination} onPageChange={setPage} />}
+        {pagination && !loading && <Pagination pagination={pagination} onPageChange={setPage} />}
       </div>
 
-      <SalesFormModal
-        isOpen={isModalOpen}
-        closeModal={() => setIsModalOpen(false)}
-        onSave={handleSave}
-      />
+      {role === 'SUPERVISOR' && (
+        <>
+          <SalesFormModal
+            isOpen={isModalOpen}
+            closeModal={() => setIsModalOpen(false)}
+            onSave={handleSave}
+          />
 
-      <ConfirmDelete
-        isOpen={isConfirmOpen}
-        closeModal={() => setIsConfirmOpen(false)}
-        onConfirm={handleConfirmDelete}
-        title="Delete Sales User"
-        message="Are you sure you want to delete this sales user?"
-      />
+          <ConfirmDelete
+            isOpen={isConfirmOpen}
+            closeModal={() => setIsConfirmOpen(false)}
+            onConfirm={handleConfirmDelete}
+            title="Delete Sales User"
+            message="Are you sure you want to delete this sales user?"
+          />
+        </>
+      )}
     </MainLayout>
   );
 };
