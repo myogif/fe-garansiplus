@@ -34,7 +34,7 @@ const ProductsTable = ({ products, loading, role, onEdit, onDelete }) => {
   const getStatusBadge = (isActive) => {
     if (isActive) {
       return (
-        <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
+        <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-700">
           Aktif
         </span>
       );
