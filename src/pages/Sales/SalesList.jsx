@@ -29,6 +29,8 @@ const SalesList = () => {
         page,
         search: debouncedSearchTerm,
       });
+      console.log('Loaded Sales People:', items);
+      console.log('Pagination:', pg);
       setPeople(items);
       setPagination(pg);
     } catch (error) {
