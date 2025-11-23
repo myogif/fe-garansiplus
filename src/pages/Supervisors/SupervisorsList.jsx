@@ -92,19 +92,12 @@ const SupervisorsList = () => {
             <h1 className="text-2xl font-bold text-gray-900">
               {role === 'MANAGER' ? 'Daftar Supervisor' : 'Daftar Sales'}
             </h1>
-            <div className="flex items-center gap-4">
-              <img
-                src="/Rectangle 5.png"
-                alt="Garansi+"
-                className="h-10 w-auto object-contain"
-              />
-              <button
-                onClick={handleCreate}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-xl font-medium transition-colors shadow-sm hover:shadow-md"
-              >
-                {role === 'MANAGER' ? 'Add Supervisor' : 'Add Sales'}
-              </button>
-            </div>
+            <button
+              onClick={handleCreate}
+              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-xl font-medium transition-colors shadow-sm hover:shadow-md"
+            >
+              {role === 'MANAGER' ? 'Add Supervisor' : 'Add Sales'}
+            </button>
           </div>
 
           <div className="relative">

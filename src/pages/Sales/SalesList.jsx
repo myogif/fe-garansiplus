@@ -75,21 +75,14 @@ const SalesList = () => {
         <div className="mb-6">
           <div className="flex items-center justify-between mb-6">
             <h1 className="text-2xl font-bold text-gray-900">Daftar Sales</h1>
-            <div className="flex items-center gap-4">
-              <img
-                src="/Rectangle 5.png"
-                alt="Garansi+"
-                className="h-10 w-auto object-contain"
-              />
-              {role === 'SUPERVISOR' && (
-                <button
-                  onClick={handleCreate}
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-xl font-medium transition-colors shadow-sm hover:shadow-md"
-                >
-                  Add Sales
-                </button>
-              )}
-            </div>
+            {role === 'SUPERVISOR' && (
+              <button
+                onClick={handleCreate}
+                className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-xl font-medium transition-colors shadow-sm hover:shadow-md"
+              >
+                Add Sales
+              </button>
+            )}
           </div>
 
           <div className="relative">
