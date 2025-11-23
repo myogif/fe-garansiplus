@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Search, Download } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { fetchProducts, createProduct, updateProduct, deleteProduct, fetchProductByCode, exportManagerProductsToExcel } from '../../api/products';
-import { updateSalesProduct, deleteSalesProduct, exportSalesProductsToExcel, fetchSalesProductDetail } from '../../api/sales';
+import { updateSalesProduct, deleteSalesProduct, exportSalesProductsToExcel, fetchSalesProductDetail, useProduct } from '../../api/sales';
 import ProductsTable from '../../components/ProductsTable';
 import ProductFormModal from '../../components/Modals/ProductFormModal';
 import ConfirmDelete from '../../components/Modals/ConfirmDelete';
@@ -143,6 +143,19 @@ const ProductsList = () => {
     }
   };
 
+  const handleGunakan = async (product) => {
+    if (window.confirm('Are you sure you want to use this product? This will mark it as used.')) {
+      try {
+        await useProduct(product.id);
+        loadProducts();
+        alert('Product has been marked as used successfully');
+      } catch (error) {
+        console.error('Failed to use product:', error);
+        alert('Failed to use product. Please try again.');
+      }
+    }
+  };
+
   return (
     <MainLayout>
       <div className="bg-white rounded-2xl shadow-sm p-6">
@@ -188,6 +201,7 @@ const ProductsList = () => {
           role={role}
           onEdit={handleEdit}
           onDelete={handleDelete}
+          onGunakan={handleGunakan}
         />
 
         {pagination && <Pagination pagination={pagination} onPageChange={handlePageChange} />}

@@ -1,7 +1,7 @@
 import { Info, Edit2, Trash2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
-const ProductsTable = ({ products, loading, role, onEdit, onDelete }) => {
+const ProductsTable = ({ products, loading, role, onEdit, onDelete, onGunakan }) => {
   const navigate = useNavigate();
   if (loading) {
     return (
@@ -106,23 +106,40 @@ const ProductsTable = ({ products, loading, role, onEdit, onDelete }) => {
                   >
                     <Info className="w-4 h-4" />
                   </button>
-                  {(role === 'SALES' || role === 'SUPERVISOR' || role === 'MANAGER') && (
+                  {role === 'SALES' ? (
                     <button
-                      onClick={() => onEdit && onEdit(product)}
-                      className="p-2 text-gray-600 hover:bg-gray-50 rounded-lg transition-colors"
-                      title="Update"
+                      onClick={() => onGunakan && onGunakan(product)}
+                      disabled={product.status === 'Used' || product.status === 'USED' || !product.isActive}
+                      className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                        product.status === 'Used' || product.status === 'USED' || !product.isActive
+                          ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                          : 'bg-blue-600 hover:bg-blue-700 text-white'
+                      }`}
+                      title={product.status === 'Used' || !product.isActive ? 'Product already used' : 'Use product'}
                     >
-                      <Edit2 className="w-4 h-4" />
+                      Gunakan
                     </button>
-                  )}
-                  {(role === 'SALES' || role === 'SUPERVISOR') && (
-                    <button
-                      onClick={() => onDelete && onDelete(product)}
-                      className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                      title="Delete"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
+                  ) : (
+                    <>
+                      {(role === 'SUPERVISOR' || role === 'MANAGER') && (
+                        <button
+                          onClick={() => onEdit && onEdit(product)}
+                          className="p-2 text-gray-600 hover:bg-gray-50 rounded-lg transition-colors"
+                          title="Update"
+                        >
+                          <Edit2 className="w-4 h-4" />
+                        </button>
+                      )}
+                      {role === 'SUPERVISOR' && (
+                        <button
+                          onClick={() => onDelete && onDelete(product)}
+                          className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                          title="Delete"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      )}
+                    </>
                   )}
                 </div>
               </td>
