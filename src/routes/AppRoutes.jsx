@@ -2,11 +2,13 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import ProtectedRoute from './ProtectedRoute';
 import ManagerDashboard from '../pages/Dashboard/ManagerDashboard';
 import ProductsList from '../pages/Products/ProductsList';
+import ProductDetail from '../pages/Products/ProductDetail';
 import SupervisorsList from '../pages/Supervisors/SupervisorsList';
 import StoresList from '../pages/Stores/StoresList';
 import SalesList from '../pages/Sales/SalesList';
 import CustomersList from '../pages/Customers/CustomersList';
 import Login from '../pages/Login';
+import UpdatePassword from '../pages/UpdatePassword';
 import { useAuth } from '../context/AuthContext';
 
 export default function AppRoutes() {
@@ -42,6 +44,14 @@ export default function AppRoutes() {
         }
       />
       <Route
+        path="/products/:id"
+        element={
+          <ProtectedRoute allowedRoles={['MANAGER', 'SUPERVISOR', 'SALES']}>
+            <ProductDetail />
+          </ProtectedRoute>
+        }
+      />
+      <Route
         path="/stores"
         element={
           <ProtectedRoute allowedRoles={['MANAGER']}>
@@ -70,6 +80,14 @@ export default function AppRoutes() {
         element={
           <ProtectedRoute allowedRoles={['MANAGER']}>
             <CustomersList />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/update-password"
+        element={
+          <ProtectedRoute allowedRoles={['MANAGER', 'SUPERVISOR', 'SALES']}>
+            <UpdatePassword />
           </ProtectedRoute>
         }
       />

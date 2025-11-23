@@ -90,7 +90,9 @@ const ProductsList = () => {
     <MainLayout>
       <div className="bg-white rounded-2xl shadow-sm p-6">
         <div className="mb-6">
-          <h1 className="text-2xl font-bold text-gray-900 mb-6">Daftar Produk</h1>
+          <div className="mb-6">
+            <h1 className="text-2xl font-bold text-gray-900">Daftar Produk</h1>
+          </div>
 
           <div className="relative">
             <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
