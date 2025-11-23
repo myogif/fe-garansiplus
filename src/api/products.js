@@ -21,12 +21,17 @@ export async function fetchProducts(role, { page = 1, limit = 10, mine = true, s
     name: p.name,
     sku: p.code,
     price: p.price,
-    status: typeof p.status === 'boolean' ? (p.status ? 'ACTIVE' : 'INACTIVE') : p.status,
+    priceWarranty: p.priceWarranty,
+    persen: p.persen,
+    isActive: p.isActive,
+    status: typeof p.isActive === 'boolean' ? (p.isActive ? 'ACTIVE' : 'INACTIVE') : p.status,
     type: p.tipe,
-    membership_number: p.nomor_kepesertaan,
-    description: p.description,
-    store_id: p.store_id,
-    created_at: p.created_at,
+    membership_number: p.nomorKepesertaan,
+    description: p.notes,
+    store_id: p.storeId,
+    store: p.store,
+    creator: p.creator,
+    created_at: p.createdAt,
   }));
 
   const pg = data.pagination ?? {
