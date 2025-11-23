@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Search } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
-import { listRolePeople, createSalesUser, deleteSalesUser } from '../../api/supervisors';
+import { listSalesUsers, createSalesUser, deleteSalesUser } from '../../api/supervisors';
 import SalesTable from '../../components/SalesTable';
 import SalesFormModal from '../../components/Modals/SalesFormModal';
 import ConfirmDelete from '../../components/Modals/ConfirmDelete';
@@ -25,7 +25,7 @@ const SalesList = () => {
   const loadPeople = async () => {
     try {
       setLoading(true);
-      const { items, pagination: pg } = await listRolePeople('SUPERVISOR', {
+      const { items, pagination: pg } = await listSalesUsers(role, {
         page,
         search: debouncedSearchTerm,
       });
@@ -40,7 +40,7 @@ const SalesList = () => {
 
   useEffect(() => {
     loadPeople();
-  }, [page, debouncedSearchTerm]);
+  }, [role, page, debouncedSearchTerm]);
 
   const handleCreate = () => {
     setIsModalOpen(true);
@@ -107,6 +107,7 @@ const SalesList = () => {
         <SalesTable
           people={people}
           loading={loading}
+          role={role}
           onDelete={handleDelete}
         />
 
