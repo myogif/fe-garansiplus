@@ -100,7 +100,7 @@ const ProductsTable = ({ products, loading, role, onEdit, onDelete }) => {
                       <Menu.Item>
                         {({ active }) => (
                           <button
-                            onClick={() => navigate(`/products/${product.code}`)}
+                            onClick={() => navigate(`/products/${product.sku}`)}
                             className={`${
                               active ? 'bg-gray-50' : ''
                             } group flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-sm text-gray-700 transition-colors`}
