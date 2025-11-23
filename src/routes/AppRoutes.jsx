@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import ProtectedRoute from './ProtectedRoute';
 import ManagerDashboard from '../pages/Dashboard/ManagerDashboard';
 import ProductsList from '../pages/Products/ProductsList';
+import ProductDetail from '../pages/Products/ProductDetail';
 import SupervisorsList from '../pages/Supervisors/SupervisorsList';
 import StoresList from '../pages/Stores/StoresList';
 import SalesList from '../pages/Sales/SalesList';
@@ -39,6 +40,14 @@ export default function AppRoutes() {
         element={
           <ProtectedRoute allowedRoles={['MANAGER', 'SUPERVISOR', 'SALES']}>
             <ProductsList />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/products/:id"
+        element={
+          <ProtectedRoute allowedRoles={['MANAGER', 'SUPERVISOR', 'SALES']}>
+            <ProductDetail />
           </ProtectedRoute>
         }
       />
