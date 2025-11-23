@@ -58,7 +58,7 @@ const ExportExcelModal = ({ isOpen, closeModal, onExport }) => {
                 name="start_date"
                 value={formData.start_date}
                 onChange={handleChange}
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C9F35B] focus:border-transparent"
                 required
               />
             </div>
@@ -72,7 +72,7 @@ const ExportExcelModal = ({ isOpen, closeModal, onExport }) => {
                 name="end_date"
                 value={formData.end_date}
                 onChange={handleChange}
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C9F35B] focus:border-transparent"
                 required
               />
             </div>
@@ -89,7 +89,7 @@ const ExportExcelModal = ({ isOpen, closeModal, onExport }) => {
               <button
                 type="submit"
                 disabled={loading}
-                className="flex-1 px-4 py-2.5 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 px-4 py-2.5 bg-[#C9F35B] text-gray-900 rounded-lg hover:bg-[#B8E047] transition-colors font-medium flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <Download size={18} />
                 {loading ? 'Exporting...' : 'Export'}

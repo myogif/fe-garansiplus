@@ -122,7 +122,7 @@ const SupervisorFormModal = ({ isOpen, closeModal, onSave }) => {
                         required
                         value={formData.name}
                         onChange={handleChange}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#C9F35B] focus:border-transparent transition-all"
                         placeholder="Enter supervisor name"
                       />
                     </div>
@@ -138,7 +138,7 @@ const SupervisorFormModal = ({ isOpen, closeModal, onSave }) => {
                         required
                         value={formData.phone}
                         onChange={handleChange}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#C9F35B] focus:border-transparent transition-all"
                         placeholder="Enter phone number"
                       />
                     </div>
@@ -154,7 +154,7 @@ const SupervisorFormModal = ({ isOpen, closeModal, onSave }) => {
                         required
                         value={formData.password}
                         onChange={handleChange}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#C9F35B] focus:border-transparent transition-all"
                         placeholder="Enter password"
                       />
                     </div>
@@ -195,7 +195,7 @@ const SupervisorFormModal = ({ isOpen, closeModal, onSave }) => {
                                     key={store.id}
                                     className={({ active }) =>
                                       `relative cursor-pointer select-none py-3 pl-10 pr-4 ${
-                                        active ? 'bg-blue-50 text-blue-900' : 'text-gray-900'
+                                        active ? 'bg-[#C9F35B]/10 text-gray-900' : 'text-gray-900'
                                       }`
                                     }
                                     value={store}
@@ -211,7 +211,7 @@ const SupervisorFormModal = ({ isOpen, closeModal, onSave }) => {
                                         {selected ? (
                                           <span
                                             className={`absolute inset-y-0 left-0 flex items-center pl-3 ${
-                                              active ? 'text-blue-600' : 'text-blue-600'
+                                              active ? 'text-[#C9F35B]' : 'text-[#C9F35B]'
                                             }`}
                                           >
                                             <Check className="h-5 w-5" aria-hidden="true" />
@@ -239,7 +239,7 @@ const SupervisorFormModal = ({ isOpen, closeModal, onSave }) => {
                     </button>
                     <button
                       type="submit"
-                      className="px-6 py-3 text-sm font-medium text-white bg-blue-600 rounded-xl hover:bg-blue-700 transition-colors shadow-sm hover:shadow-md"
+                      className="px-6 py-3 text-sm font-medium text-gray-900 bg-[#C9F35B] rounded-xl hover:bg-[#B8E047] transition-colors shadow-sm hover:shadow-md"
                     >
                       Save Supervisor
                     </button>

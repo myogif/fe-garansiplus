@@ -101,7 +101,7 @@ const ProductsTable = ({ products, loading, role, onEdit, onDelete, onGunakan })
                         : `/products/${product.sku}`;
                       navigate(path);
                     }}
-                    className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                    className="p-2 text-[#C9F35B] hover:bg-[#C9F35B]/10 rounded-lg transition-colors"
                     title="Detail"
                   >
                     <Info className="w-4 h-4" />
@@ -113,7 +113,7 @@ const ProductsTable = ({ products, loading, role, onEdit, onDelete, onGunakan })
                       className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                         product.status === 'Used' || product.status === 'USED' || !product.isActive
                           ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                          : 'bg-blue-600 hover:bg-blue-700 text-white'
+                          : 'bg-[#C9F35B] hover:bg-[#B8E047] text-gray-900'
                       }`}
                       title={product.status === 'Used' || !product.isActive ? 'Product already used' : 'Use product'}
                     >

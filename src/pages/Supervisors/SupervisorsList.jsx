@@ -95,7 +95,7 @@ const SupervisorsList = () => {
             {role !== 'SERVICE_CENTER' && (
               <button
                 onClick={handleCreate}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-xl font-medium transition-colors shadow-sm hover:shadow-md"
+                className="bg-[#C9F35B] hover:bg-[#B8E047] text-gray-900 px-6 py-2.5 rounded-xl font-medium transition-colors shadow-sm hover:shadow-md"
               >
                 {role === 'MANAGER' ? 'Add Supervisor' : 'Add Sales'}
               </button>
