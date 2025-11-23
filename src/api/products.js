@@ -12,7 +12,7 @@ export async function fetchProducts(role, { page = 1, limit = 10, mine = true, s
   const url =
     role === 'MANAGER'    ? `/api/managers/products?${searchParams}` :
     role === 'SUPERVISOR' ? `/api/supervisors/products?${searchParams}` :
-                            `/api/sales/products?${searchParams}${mine ? '&mine=true' : ''}`;
+                            `/api/sales/products?${searchParams}`;
 
   const res = await client.get(url);
   const data = res.data?.data || {};
