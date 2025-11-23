@@ -20,7 +20,7 @@ const Navbar = ({ onMenuClick }) => {
 
           <div className="flex items-center gap-2">
             <img
-              src="/image.png"
+              src="/Rectangle 5.png"
               alt="Garansi+"
               className="h-8 w-auto object-contain"
             />
