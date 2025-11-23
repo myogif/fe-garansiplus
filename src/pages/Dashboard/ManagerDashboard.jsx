@@ -86,22 +86,23 @@ const ManagerDashboard = () => {
         : [];
       setBestStores(normalizedStores);
 
-      const monthlyData = monthlyRes?.data?.data || monthlyRes?.data || {};
+      const monthlyDataRaw = monthlyRes?.data?.data || monthlyRes?.data || {};
       const monthlyItems =
-        monthlyData.items ||
-        monthlyData.monthlySummary ||
-        monthlyData.monthlyProducts ||
-        monthlyData.monthly ||
-        monthlyData.data ||
+        monthlyDataRaw.items ||
+        monthlyDataRaw.monthlySummary ||
+        monthlyDataRaw.monthlyProducts ||
+        monthlyDataRaw.monthly ||
+        monthlyDataRaw.data ||
         monthlyRes?.data?.items ||
         [];
 
       const normalizedMonthly = normalizeMonthly(monthlyItems);
-      setMonthlySummary(normalizedMonthly.length ? normalizedMonthly : fallbackMonthly);
+      const finalMonthlyData = normalizedMonthly.length ? normalizedMonthly : fallbackMonthly;
+      setMonthlySummary(finalMonthlyData.slice(-6));
     } catch (err) {
       console.error('Failed to fetch dashboard data:', err);
       setError('Gagal memuat dashboard. Silakan coba lagi.');
-      setMonthlySummary(fallbackMonthly);
+      setMonthlySummary(fallbackMonthly.slice(-6));
     } finally {
       setLoading(false);
     }
