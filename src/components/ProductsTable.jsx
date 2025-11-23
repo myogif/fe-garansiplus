@@ -104,7 +104,12 @@ const ProductsTable = ({ products, loading, role, onEdit, onDelete }) => {
                       <Menu.Item>
                         {({ active }) => (
                           <button
-                            onClick={() => navigate(`/products/${product.sku}`)}
+                            onClick={() => {
+                              const path = role === 'SALES'
+                                ? `/products/sales/${product.sku}`
+                                : `/products/${product.sku}`;
+                              navigate(path);
+                            }}
                             className={`${
                               active ? 'bg-gray-50' : ''
                             } group flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-sm text-gray-700 transition-colors`}
@@ -114,20 +119,22 @@ const ProductsTable = ({ products, loading, role, onEdit, onDelete }) => {
                           </button>
                         )}
                       </Menu.Item>
-                      <Menu.Item>
-                        {({ active }) => (
-                          <button
-                            onClick={() => onEdit && onEdit(product)}
-                            className={`${
-                              active ? 'bg-gray-50' : ''
-                            } group flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-sm text-gray-700 transition-colors`}
-                          >
-                            <Edit2 className="w-4 h-4 text-gray-500" />
-                            Edit
-                          </button>
-                        )}
-                      </Menu.Item>
-                      {role !== 'MANAGER' && (
+                      {role !== 'SALES' && (
+                        <Menu.Item>
+                          {({ active }) => (
+                            <button
+                              onClick={() => onEdit && onEdit(product)}
+                              className={`${
+                                active ? 'bg-gray-50' : ''
+                              } group flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-sm text-gray-700 transition-colors`}
+                            >
+                              <Edit2 className="w-4 h-4 text-gray-500" />
+                              Edit
+                            </button>
+                          )}
+                        </Menu.Item>
+                      )}
+                      {role === 'SUPERVISOR' && (
                         <Menu.Item>
                           {({ active }) => (
                             <button

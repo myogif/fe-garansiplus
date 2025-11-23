@@ -3,6 +3,7 @@ import ProtectedRoute from './ProtectedRoute';
 import ManagerDashboard from '../pages/Dashboard/ManagerDashboard';
 import ProductsList from '../pages/Products/ProductsList';
 import ProductDetail from '../pages/Products/ProductDetail';
+import SalesProductDetail from '../pages/Products/SalesProductDetail';
 import SupervisorsList from '../pages/Supervisors/SupervisorsList';
 import StoresList from '../pages/Stores/StoresList';
 import SalesList from '../pages/Sales/SalesList';
@@ -46,8 +47,16 @@ export default function AppRoutes() {
       <Route
         path="/products/:id"
         element={
-          <ProtectedRoute allowedRoles={['MANAGER', 'SUPERVISOR', 'SALES']}>
+          <ProtectedRoute allowedRoles={['MANAGER', 'SUPERVISOR']}>
             <ProductDetail />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/products/sales/:code"
+        element={
+          <ProtectedRoute allowedRoles={['SALES']}>
+            <SalesProductDetail />
           </ProtectedRoute>
         }
       />

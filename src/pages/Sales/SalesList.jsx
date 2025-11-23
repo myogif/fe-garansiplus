@@ -31,8 +31,6 @@ const SalesList = () => {
         page,
         search: debouncedSearchTerm,
       });
-      console.log('Loaded Sales People:', items);
-      console.log('Pagination:', pg);
       setPeople(items || []);
       setPagination(pg);
     } catch (error) {
@@ -76,8 +74,6 @@ const SalesList = () => {
       console.error('Failed to delete sales user:', error);
     }
   };
-
-  console.log('SalesList render - role:', role, 'people:', people, 'loading:', loading);
 
   if (!role) {
     return (
