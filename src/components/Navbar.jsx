@@ -26,6 +26,14 @@ const Navbar = ({ onMenuClick }) => {
             <Menu className="w-6 h-6" />
           </button>
 
+          <div className="flex items-center gap-2">
+            <img
+              src="/Rectangle 5.png"
+              alt="Garansi+"
+              className="h-8 w-auto object-contain"
+            />
+          </div>
+
           <div className="flex-1 flex justify-center">
             <div className="relative w-full max-w-2xl">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-white/50 w-5 h-5" />
