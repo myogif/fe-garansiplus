@@ -84,11 +84,24 @@ const ProductsList = () => {
           await updateProduct(selectedProduct.id, formData);
         }
       } else {
-        await createProduct(formData);
+        const payload = {
+          name: formData.name,
+          tipe: formData.tipe,
+          code: formData.code,
+          price: Number(formData.price),
+          persen: Number(formData.persen),
+          notes: formData.notes,
+          customer_name: formData.customer_name,
+          customer_phone: formData.customer_phone,
+          customer_email: formData.customer_email,
+        };
+        await createProduct(payload);
       }
+      setIsModalOpen(false);
       loadProducts();
     } catch (error) {
       console.error('Failed to save product:', error);
+      alert('Failed to save product. Please try again.');
     }
   };
 
@@ -136,15 +149,25 @@ const ProductsList = () => {
         <div className="mb-6">
           <div className="flex items-center justify-between mb-6">
             <h1 className="text-2xl font-bold text-gray-900">Daftar Produk</h1>
-            {(role === 'SALES' || role === 'MANAGER') && (
-              <button
-                onClick={() => setIsExportModalOpen(true)}
-                className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2.5 rounded-xl transition-colors font-medium"
-              >
-                <Download size={18} />
-                Export Excel
-              </button>
-            )}
+            <div className="flex items-center gap-3">
+              {role === 'SALES' && (
+                <button
+                  onClick={handleCreate}
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-xl font-medium transition-colors shadow-sm hover:shadow-md"
+                >
+                  Add Product
+                </button>
+              )}
+              {(role === 'SALES' || role === 'MANAGER') && (
+                <button
+                  onClick={() => setIsExportModalOpen(true)}
+                  className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2.5 rounded-xl transition-colors font-medium"
+                >
+                  <Download size={18} />
+                  Export Excel
+                </button>
+              )}
+            </div>
           </div>
 
           <div className="relative">

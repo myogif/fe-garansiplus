@@ -1,5 +1,6 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { Fragment, useState, useEffect } from 'react';
+import { X } from 'lucide-react';
 
 const ProductFormModal = ({ isOpen, closeModal, product, onSave }) => {
   const [formData, setFormData] = useState({
@@ -82,162 +83,189 @@ const ProductFormModal = ({ isOpen, closeModal, product, onSave }) => {
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                <Dialog.Title
-                  as="h3"
-                  className="text-lg font-medium leading-6 text-gray-900"
-                >
-                  {product ? 'Edit Product' : 'Create Product'}
-                </Dialog.Title>
-                <form onSubmit={handleSubmit} className="mt-4">
-                  <div className="grid grid-cols-1 gap-4 max-h-[60vh] overflow-y-auto pr-2">
-                    <div>
-                      <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-                        Name
-                      </label>
-                      <input
-                        type="text"
-                        name="name"
-                        id="name"
-                        value={formData.name}
-                        onChange={handleChange}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm px-3 py-2 border"
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="code" className="block text-sm font-medium text-gray-700">
-                        Code
-                      </label>
-                      <input
-                        type="text"
-                        name="code"
-                        id="code"
-                        value={formData.code}
-                        onChange={handleChange}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm px-3 py-2 border"
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="tipe" className="block text-sm font-medium text-gray-700">
-                        Type
-                      </label>
-                      <input
-                        type="text"
-                        name="tipe"
-                        id="tipe"
-                        value={formData.tipe}
-                        onChange={handleChange}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm px-3 py-2 border"
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="price" className="block text-sm font-medium text-gray-700">
-                        Price
-                      </label>
-                      <input
-                        type="number"
-                        name="price"
-                        id="price"
-                        value={formData.price}
-                        onChange={handleChange}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm px-3 py-2 border"
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="persen" className="block text-sm font-medium text-gray-700">
-                        Percentage
-                      </label>
-                      <input
-                        type="number"
-                        name="persen"
-                        id="persen"
-                        value={formData.persen}
-                        onChange={handleChange}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm px-3 py-2 border"
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="isActive" className="block text-sm font-medium text-gray-700">
-                        Status
-                      </label>
-                      <select
-                        id="isActive"
-                        name="isActive"
-                        value={formData.isActive}
-                        onChange={(e) => setFormData(prev => ({ ...prev, isActive: e.target.value === 'true' }))}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm px-3 py-2 border"
-                      >
-                        <option value="true">Active</option>
-                        <option value="false">Inactive</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label htmlFor="customer_name" className="block text-sm font-medium text-gray-700">
-                        Customer Name
-                      </label>
-                      <input
-                        type="text"
-                        name="customer_name"
-                        id="customer_name"
-                        value={formData.customer_name}
-                        onChange={handleChange}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm px-3 py-2 border"
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="customer_phone" className="block text-sm font-medium text-gray-700">
-                        Customer Phone
-                      </label>
-                      <input
-                        type="text"
-                        name="customer_phone"
-                        id="customer_phone"
-                        value={formData.customer_phone}
-                        onChange={handleChange}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm px-3 py-2 border"
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="customer_email" className="block text-sm font-medium text-gray-700">
-                        Customer Email
-                      </label>
-                      <input
-                        type="email"
-                        name="customer_email"
-                        id="customer_email"
-                        value={formData.customer_email}
-                        onChange={handleChange}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm px-3 py-2 border"
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="notes" className="block text-sm font-medium text-gray-700">
-                        Notes
-                      </label>
-                      <textarea
-                        name="notes"
-                        id="notes"
-                        rows="3"
-                        value={formData.notes}
-                        onChange={handleChange}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm px-3 py-2 border"
-                      ></textarea>
+              <Dialog.Panel className="w-full max-w-4xl transform overflow-hidden rounded-2xl bg-white text-left align-middle shadow-xl transition-all">
+                <div className="flex items-center justify-between p-6 border-b border-gray-200">
+                  <Dialog.Title
+                    as="h3"
+                    className="text-xl font-semibold text-gray-900"
+                  >
+                    {product ? 'Edit Product' : 'Add Product'}
+                  </Dialog.Title>
+                  <button
+                    onClick={closeModal}
+                    className="text-gray-400 hover:text-gray-600 transition-colors"
+                  >
+                    <X size={24} />
+                  </button>
+                </div>
+
+                <form onSubmit={handleSubmit}>
+                  <div className="p-6 max-h-[70vh] overflow-y-auto">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div>
+                        <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+                          Product Name <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                          type="text"
+                          name="name"
+                          id="name"
+                          required
+                          value={formData.name}
+                          onChange={handleChange}
+                          className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          placeholder="Enter product name"
+                        />
+                      </div>
+
+                      <div>
+                        <label htmlFor="code" className="block text-sm font-medium text-gray-700 mb-2">
+                          Product Code <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                          type="text"
+                          name="code"
+                          id="code"
+                          required
+                          value={formData.code}
+                          onChange={handleChange}
+                          className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          placeholder="e.g., APPLE-I123PM-001"
+                        />
+                      </div>
+
+                      <div>
+                        <label htmlFor="tipe" className="block text-sm font-medium text-gray-700 mb-2">
+                          Type <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                          type="text"
+                          name="tipe"
+                          id="tipe"
+                          required
+                          value={formData.tipe}
+                          onChange={handleChange}
+                          className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          placeholder="e.g., SMARTPHONE"
+                        />
+                      </div>
+
+                      <div>
+                        <label htmlFor="price" className="block text-sm font-medium text-gray-700 mb-2">
+                          Price <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                          type="number"
+                          name="price"
+                          id="price"
+                          required
+                          value={formData.price}
+                          onChange={handleChange}
+                          className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          placeholder="Enter price"
+                        />
+                      </div>
+
+                      <div>
+                        <label htmlFor="persen" className="block text-sm font-medium text-gray-700 mb-2">
+                          Percentage <span className="text-red-500">*</span>
+                        </label>
+                        <select
+                          id="persen"
+                          name="persen"
+                          required
+                          value={formData.persen === 3 ? '3' : formData.persen === 6 ? '5' : ''}
+                          onChange={(e) => {
+                            const selectedLabel = e.target.value;
+                            const persenValue = selectedLabel === '3' ? 3 : 6;
+                            setFormData(prev => ({ ...prev, persen: persenValue }));
+                          }}
+                          className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        >
+                          <option value="">Select percentage</option>
+                          <option value="3">3</option>
+                          <option value="5">5</option>
+                        </select>
+                      </div>
+
+                      <div>
+                        <label htmlFor="customer_name" className="block text-sm font-medium text-gray-700 mb-2">
+                          Customer Name <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                          type="text"
+                          name="customer_name"
+                          id="customer_name"
+                          required
+                          value={formData.customer_name}
+                          onChange={handleChange}
+                          className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          placeholder="Enter customer name"
+                        />
+                      </div>
+
+                      <div>
+                        <label htmlFor="customer_phone" className="block text-sm font-medium text-gray-700 mb-2">
+                          Customer Phone <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                          type="text"
+                          name="customer_phone"
+                          id="customer_phone"
+                          required
+                          value={formData.customer_phone}
+                          onChange={handleChange}
+                          className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          placeholder="e.g., 081233344455"
+                        />
+                      </div>
+
+                      <div>
+                        <label htmlFor="customer_email" className="block text-sm font-medium text-gray-700 mb-2">
+                          Customer Email <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                          type="email"
+                          name="customer_email"
+                          id="customer_email"
+                          required
+                          value={formData.customer_email}
+                          onChange={handleChange}
+                          className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          placeholder="customer@example.com"
+                        />
+                      </div>
+
+                      <div className="md:col-span-2">
+                        <label htmlFor="notes" className="block text-sm font-medium text-gray-700 mb-2">
+                          Notes
+                        </label>
+                        <textarea
+                          name="notes"
+                          id="notes"
+                          rows="3"
+                          value={formData.notes}
+                          onChange={handleChange}
+                          className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                          placeholder="Additional notes about the product"
+                        ></textarea>
+                      </div>
                     </div>
                   </div>
 
-                  <div className="mt-4">
-                    <button
-                      type="submit"
-                      className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                    >
-                      Save
-                    </button>
+                  <div className="flex items-center justify-end gap-3 px-6 py-4 bg-gray-50 border-t border-gray-200">
                     <button
                       type="button"
-                      className="ml-2 inline-flex justify-center rounded-md border border-transparent bg-gray-100 px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-500 focus-visible:ring-offset-2"
                       onClick={closeModal}
+                      className="px-6 py-2.5 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-100 transition-colors"
                     >
                       Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors shadow-sm hover:shadow-md"
+                    >
+                      {product ? 'Update' : 'Create'}
                     </button>
                   </div>
                 </form>
