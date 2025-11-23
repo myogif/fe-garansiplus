@@ -1,7 +1,9 @@
 const StatusPill = ({ status }) => {
   const statusClasses = {
-    ACTIVE: 'bg-yellow-100 text-yellow-800',
-    Aktif: 'bg-yellow-100 text-yellow-800',
+    ACTIVE: 'bg-green-100 text-green-800',
+    Aktif: 'bg-green-100 text-green-800',
+    USED: 'bg-yellow-100 text-yellow-800',
+    Used: 'bg-yellow-100 text-yellow-800',
     INACTIVE: 'bg-red-100 text-red-800',
     Expired: 'bg-red-100 text-red-800',
   };
