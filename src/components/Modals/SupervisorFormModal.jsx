@@ -185,7 +185,7 @@ const SupervisorFormModal = ({ isOpen, closeModal, onSave }) => {
                             leaveTo="opacity-0"
                             afterLeave={() => setQuery('')}
                           >
-                            <Combobox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-xl bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                            <Combobox.Options className="absolute z-10 mt-1 max-h-[280px] w-full overflow-auto rounded-xl bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                               {loading ? (
                                 <div className="px-4 py-2 text-sm text-gray-500">Loading stores...</div>
                               ) : filteredStores.length === 0 && query !== '' ? (
