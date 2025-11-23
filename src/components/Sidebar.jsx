@@ -4,18 +4,9 @@ import {
   Package,
   Users,
   UserCheck,
-  Shield,
+  Store,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
-
-const navItems = [
-  { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard', roles: ['MANAGER'] },
-  { to: '/products', icon: Package, label: 'Produk', roles: ['MANAGER', 'SUPERVISOR', 'SALES'] },
-  // { to: '/stores', icon: Store, label: 'Toko', roles: ['MANAGER'] },
-  { to: '/supervisors', icon: Users, label: 'Supervisor', roles: ['MANAGER', 'SUPERVISOR'] },
-  { to: '/sales', icon: UserCheck, label: 'Sales', roles: ['MANAGER', 'SUPERVISOR'] },
-  { to: '/customers', icon: Users, label: 'Customer', roles: ['MANAGER'] },
-];
 
 const Sidebar = ({ isOpen, onClose }) => {
   const { role } = useAuth();
@@ -24,11 +15,13 @@ const Sidebar = ({ isOpen, onClose }) => {
     MANAGER: [
       { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
       { to: '/products', icon: Package, label: 'Produk' },
-      { to: '/supervisors', icon: Users, label: 'Supervisors' },
+      { to: '/stores', icon: Store, label: 'Toko' },
+      { to: '/supervisors', icon: Users, label: 'Supervisor' },
+      { to: '/customers', icon: Users, label: 'Customer' },
     ],
     SUPERVISOR: [
       { to: '/products', icon: Package, label: 'Produk' },
-      { to: '/supervisors', icon: UserCheck, label: 'Sales' },
+      { to: '/sales', icon: UserCheck, label: 'Sales' },
     ],
     SALES: [{ to: '/products', icon: Package, label: 'Produk' }],
   };
@@ -50,12 +43,12 @@ const Sidebar = ({ isOpen, onClose }) => {
         } lg:translate-x-0`}
       >
         <div className="h-full flex flex-col p-6 gap-8">
-          <div className="flex items-center gap-2">
-            <Shield className="w-8 h-8 text-[#C9F35B]" strokeWidth={1.5} />
-            <div className="flex items-center text-lg font-extrabold tracking-tight">
-              <span>Garansi</span>
-              <span className="text-[#C9F35B]">+</span>
-            </div>
+          <div className="flex items-center justify-center py-2">
+            <img
+              src="/Rectangle 5.png"
+              alt="Garansi+"
+              className="h-12 w-auto object-contain"
+            />
           </div>
 
           <nav className="space-y-2">
