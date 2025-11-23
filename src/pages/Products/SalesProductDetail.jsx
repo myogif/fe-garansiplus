@@ -89,7 +89,7 @@ const SalesProductDetail = () => {
             <p className="text-red-600 mb-4">{error}</p>
             <button
               onClick={() => navigate('/products')}
-              className="text-blue-600 hover:text-blue-700 font-medium"
+              className="text-[#C9F35B] hover:text-[#B8E047] font-medium"
             >
               Back to Products
             </button>
@@ -143,7 +143,7 @@ const SalesProductDetail = () => {
               >
                 {product.status}
               </span>
-              <span className="px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-700">
+              <span className="px-3 py-1 rounded-full text-sm font-medium bg-[#C9F35B]/20 text-gray-900">
                 {product.type}
               </span>
             </div>

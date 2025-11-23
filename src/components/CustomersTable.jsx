@@ -60,7 +60,7 @@ const CustomersTable = ({ customers, loading, onDownloadCertificate }) => {
               <td className="py-4 px-4 text-center">
                 <button
                   onClick={() => onDownloadCertificate(customer.id)}
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium transition-colors"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#C9F35B] hover:bg-[#B8E047] text-gray-900 text-sm font-medium transition-colors"
                   title="Download Certificate"
                 >
                   <Download size={16} />

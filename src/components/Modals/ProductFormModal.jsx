@@ -113,7 +113,7 @@ const ProductFormModal = ({ isOpen, closeModal, product, onSave }) => {
                           required
                           value={formData.name}
                           onChange={handleChange}
-                          className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C9F35B] focus:border-transparent"
                           placeholder="Enter product name"
                         />
                       </div>
@@ -129,7 +129,7 @@ const ProductFormModal = ({ isOpen, closeModal, product, onSave }) => {
                           required
                           value={formData.code}
                           onChange={handleChange}
-                          className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C9F35B] focus:border-transparent"
                           placeholder="e.g., APPLE-I123PM-001"
                         />
                       </div>
@@ -145,7 +145,7 @@ const ProductFormModal = ({ isOpen, closeModal, product, onSave }) => {
                           required
                           value={formData.tipe}
                           onChange={handleChange}
-                          className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C9F35B] focus:border-transparent"
                           placeholder="e.g., SMARTPHONE"
                         />
                       </div>
@@ -161,7 +161,7 @@ const ProductFormModal = ({ isOpen, closeModal, product, onSave }) => {
                           required
                           value={formData.price}
                           onChange={handleChange}
-                          className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C9F35B] focus:border-transparent"
                           placeholder="Enter price"
                         />
                       </div>
@@ -180,7 +180,7 @@ const ProductFormModal = ({ isOpen, closeModal, product, onSave }) => {
                             const persenValue = selectedLabel === '3' ? 3 : 6;
                             setFormData(prev => ({ ...prev, persen: persenValue }));
                           }}
-                          className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C9F35B] focus:border-transparent"
                         >
                           <option value="">Select percentage</option>
                           <option value="3">3</option>
@@ -199,7 +199,7 @@ const ProductFormModal = ({ isOpen, closeModal, product, onSave }) => {
                           required
                           value={formData.customer_name}
                           onChange={handleChange}
-                          className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C9F35B] focus:border-transparent"
                           placeholder="Enter customer name"
                         />
                       </div>
@@ -215,7 +215,7 @@ const ProductFormModal = ({ isOpen, closeModal, product, onSave }) => {
                           required
                           value={formData.customer_phone}
                           onChange={handleChange}
-                          className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C9F35B] focus:border-transparent"
                           placeholder="e.g., 081233344455"
                         />
                       </div>
@@ -231,7 +231,7 @@ const ProductFormModal = ({ isOpen, closeModal, product, onSave }) => {
                           required
                           value={formData.customer_email}
                           onChange={handleChange}
-                          className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C9F35B] focus:border-transparent"
                           placeholder="customer@example.com"
                         />
                       </div>
@@ -263,7 +263,7 @@ const ProductFormModal = ({ isOpen, closeModal, product, onSave }) => {
                     </button>
                     <button
                       type="submit"
-                      className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors shadow-sm hover:shadow-md"
+                      className="px-6 py-2.5 bg-[#C9F35B] hover:bg-[#B8E047] text-gray-900 rounded-lg font-medium transition-colors shadow-sm hover:shadow-md"
                     >
                       {product ? 'Update' : 'Create'}
                     </button>
