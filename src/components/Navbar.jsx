@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Menu, Search, Shield, User } from 'lucide-react';
+import { Menu, Search, User } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 const Navbar = ({ onMenuClick }) => {
@@ -19,8 +19,11 @@ const Navbar = ({ onMenuClick }) => {
           </button>
 
           <div className="flex items-center gap-2">
-            <Shield className="w-7 h-7 text-[#C9F35B]" strokeWidth={1.5} />
-            <div className="font-extrabold tracking-tight text-lg">Garansi+</div>
+            <img
+              src="/image.png"
+              alt="Garansi+"
+              className="h-8 w-auto object-contain"
+            />
           </div>
 
           <div className="flex-1 flex justify-center">
