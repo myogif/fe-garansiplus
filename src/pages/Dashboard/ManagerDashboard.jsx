@@ -29,11 +29,11 @@ const ManagerDashboard = () => {
 
   const statCards = useMemo(
     () => [
-      { title: 'Total Products', value: stats.totalProducts },
-      { title: 'Total Stores', value: stats.totalStores },
-      { title: 'Total Supervisors', value: stats.totalSupervisors },
+      { title: 'Total Produk', value: stats.totalProducts },
+      { title: 'Total Toko', value: stats.totalStores },
+      { title: 'Total Supervisor', value: stats.totalSupervisors },
       { title: 'Total Sales', value: stats.totalSales },
-      { title: 'Total Customers', value: stats.totalCustomers },
+      { title: 'Total Customer', value: stats.totalCustomers },
     ],
     [stats]
   );
@@ -112,68 +112,83 @@ const ManagerDashboard = () => {
   }, []);
 
   const content = loading ? (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      {Array.from({ length: 4 }).map((_, index) => (
-        <div key={index} className="bg-white p-4 rounded-lg shadow animate-pulse">
-          <div className="h-8 bg-gray-200 rounded w-3/4" />
-          <div className="h-4 bg-gray-200 rounded w-1/2 mt-2" />
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+      {Array.from({ length: 5 }).map((_, index) => (
+        <div key={index} className="bg-gradient-to-br from-gray-800 to-gray-900 p-5 rounded-2xl shadow-lg animate-pulse">
+          <div className="h-4 bg-gray-700 rounded w-3/4 mb-2" />
+          <div className="h-8 bg-gray-700 rounded w-1/2" />
         </div>
       ))}
     </div>
   ) : (
     <>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 mb-6">
         {statCards.map((item) => (
           <StatCard key={item.title} title={item.title} value={item.value} />
         ))}
       </div>
 
-        <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
-          <div className="xl:col-span-2 bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-            <div className="flex items-start justify-between mb-4">
-              <div>
-                <h3 className="text-lg font-semibold text-gray-900">Statistik Produk Bulanan</h3>
-                <p className="text-sm text-gray-500">Data dari /managers/mountly-summary</p>
-              </div>
-              <div className="flex items-center gap-2 text-sm text-gray-600">
-                <span className="inline-block w-3 h-3 rounded-full bg-[#C7F064]" />
-                <span>Product</span>
-              </div>
+      <div className="bg-gray-100 rounded-3xl p-6">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+          <div className="lg:col-span-3 bg-white rounded-3xl p-8 shadow-md">
+            <div className="mb-6">
+              <p className="text-xs text-gray-500 mb-1">Statistik</p>
+              <h3 className="text-2xl font-bold text-gray-900">Produk Bulanan</h3>
             </div>
 
-            <div className="h-[320px]">
-              {loading ? (
-                <div className="h-full w-full bg-gray-100 animate-pulse rounded-xl" />
-              ) : (
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={monthlySummary} barSize={38}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#f0f1f5" />
-                    <XAxis dataKey="month" tick={{ fill: '#6b7280', fontSize: 12 }} axisLine={false} tickLine={false} />
-                    <YAxis tick={{ fill: '#6b7280', fontSize: 12 }} axisLine={false} tickLine={false} />
-                    <Tooltip cursor={{ fill: 'rgba(0,0,0,0.03)' }} />
-                    <Bar dataKey="total" radius={[12, 12, 0, 0]} fill="#C7F064" />
-                  </BarChart>
-                </ResponsiveContainer>
-              )}
+            <div className="h-[340px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={monthlySummary} barSize={40}>
+                  <CartesianGrid strokeDasharray="0" stroke="#f3f4f6" vertical={false} />
+                  <XAxis
+                    dataKey="month"
+                    tick={{ fill: '#9ca3af', fontSize: 13 }}
+                    axisLine={false}
+                    tickLine={false}
+                    dy={10}
+                  />
+                  <YAxis
+                    tick={{ fill: '#9ca3af', fontSize: 13 }}
+                    axisLine={false}
+                    tickLine={false}
+                    dx={-10}
+                  />
+                  <Tooltip
+                    cursor={{ fill: 'rgba(199, 240, 100, 0.1)' }}
+                    contentStyle={{
+                      backgroundColor: 'white',
+                      border: 'none',
+                      borderRadius: '12px',
+                      boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
+                    }}
+                  />
+                  <Bar
+                    dataKey="total"
+                    radius={[8, 8, 0, 0]}
+                    fill="#C7F064"
+                  />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+
+            <div className="flex items-center justify-end gap-2 mt-4">
+              <span className="inline-block w-3 h-3 rounded-full bg-[#C7F064]" />
+              <span className="text-sm text-gray-600">Product</span>
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-            <div className="flex items-center justify-between mb-3">
-              <h3 className="text-lg font-semibold text-gray-900">Toko Terbaik!</h3>
-              <span className="text-xs font-semibold bg-[#0f172a] text-white px-3 py-1 rounded-full">Top List</span>
-            </div>
-            <p className="text-sm text-gray-500 mb-4">Peringkat toko performa terbaik bulan ini.</p>
+          <div className="lg:col-span-2 bg-white rounded-3xl p-8 shadow-md">
+            <h3 className="text-2xl font-bold text-gray-900 mb-6">Toko Terbaik!</h3>
 
             {loading ? (
-              <div className="space-y-3">
-                {Array.from({ length: 3 }).map((_, idx) => (
-                  <div key={`store-skeleton-${idx}`} className="h-14 bg-gray-100 rounded-xl animate-pulse" />
+              <div className="space-y-4">
+                {Array.from({ length: 4 }).map((_, idx) => (
+                  <div key={`store-skeleton-${idx}`} className="h-16 bg-gray-100 rounded-xl animate-pulse" />
                 ))}
               </div>
             ) : bestStores.length ? (
-              <div className="divide-y divide-gray-100">
-                {bestStores.map((store, idx) => renderStoreRow(store, idx))}
+              <div className="space-y-1">
+                {bestStores.slice(0, 4).map((store, idx) => renderStoreRow(store, idx))}
               </div>
             ) : (
               <div className="text-sm text-gray-500 bg-gray-50 border border-dashed border-gray-200 rounded-xl p-4 text-center">
@@ -182,12 +197,12 @@ const ManagerDashboard = () => {
             )}
           </div>
         </div>
+      </div>
     </>
   );
 
   return (
     <MainLayout>
-      <h1 className="text-2xl font-bold mb-6">Manager Dashboard</h1>
       {error && (
         <div className="mb-4 flex items-start gap-3 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
           <div className="mt-0.5">⚠️</div>
@@ -283,27 +298,20 @@ const fallbackMonthly = normalizeMonthly(DUMMY_MONTHLY_SUMMARY);
 const renderStoreRow = (store, idx) => (
   <div
     key={`store-${store.name}-${idx}`}
-    className="py-3 flex items-start gap-3 hover:bg-gray-50 rounded-xl px-2 transition-colors"
+    className="py-4 flex items-start gap-3 border-b border-gray-100 last:border-0"
   >
-    {/* <div className="w-10 h-10 rounded-full bg-[#C7F064] text-[#577C00] flex items-center justify-center shadow-inner">
-      <Crown size={18} />
-    </div> */}
-
     <div className="flex-1">
-      <div className="flex items-start justify-between gap-2">
-        <div>
-          <p className="font-semibold text-gray-900 leading-tight">{store.name}</p>
-          <div className="flex items-center gap-1 text-xs text-gray-500 mt-1">
-            <MapPin size={14} />
-            <span className="line-clamp-2">{store.address}</span>
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex-1">
+          <div className="flex items-center gap-2 mb-1">
+            <span className="font-bold text-gray-900 text-sm">#{idx + 1}</span>
+            <span className="font-semibold text-gray-900">{store.name}</span>
+            {idx === 0 && (
+              <Crown size={16} className="text-[#C7F064] fill-[#C7F064]" />
+            )}
           </div>
+          <p className="text-xs text-gray-500 leading-relaxed">{store.address}</p>
         </div>
-
-        {store.score !== null && (
-          <span className="text-xs font-semibold bg-[#C7F064] text-[#577C00] px-2 py-1 rounded-full whitespace-nowrap">
-            {store.score} produk
-          </span>
-        )}
       </div>
     </div>
   </div>
