@@ -7,6 +7,7 @@ import StoresList from '../pages/Stores/StoresList';
 import SalesList from '../pages/Sales/SalesList';
 import CustomersList from '../pages/Customers/CustomersList';
 import Login from '../pages/Login';
+import UpdatePassword from '../pages/UpdatePassword';
 import { useAuth } from '../context/AuthContext';
 
 export default function AppRoutes() {
@@ -70,6 +71,14 @@ export default function AppRoutes() {
         element={
           <ProtectedRoute allowedRoles={['MANAGER']}>
             <CustomersList />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/update-password"
+        element={
+          <ProtectedRoute allowedRoles={['MANAGER', 'SUPERVISOR', 'SALES']}>
+            <UpdatePassword />
           </ProtectedRoute>
         }
       />

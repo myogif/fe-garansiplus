@@ -45,3 +45,11 @@ export const getRole = () => {
   const user = getStoredUser();
   return user?.role || null;
 };
+
+export const updatePassword = async (currentPassword, newPassword) => {
+  const response = await api.put('/auth/password', {
+    currentPassword,
+    newPassword,
+  });
+  return response.data;
+};
