@@ -106,7 +106,7 @@ const ProductsTable = ({ products, loading, role, onEdit, onDelete, onGunakan })
                   >
                     <Info className="w-4 h-4" />
                   </button>
-                  {role === 'SALES' ? (
+                  {role === 'SALES' && (
                     <button
                       onClick={() => onGunakan && onGunakan(product)}
                       disabled={product.status === 'Used' || product.status === 'USED' || !product.isActive}
@@ -119,27 +119,6 @@ const ProductsTable = ({ products, loading, role, onEdit, onDelete, onGunakan })
                     >
                       Gunakan
                     </button>
-                  ) : (
-                    <>
-                      {(role === 'SUPERVISOR' || role === 'MANAGER') && (
-                        <button
-                          onClick={() => onEdit && onEdit(product)}
-                          className="p-2 text-gray-600 hover:bg-gray-50 rounded-lg transition-colors"
-                          title="Update"
-                        >
-                          <Edit2 className="w-4 h-4" />
-                        </button>
-                      )}
-                      {role === 'SUPERVISOR' && (
-                        <button
-                          onClick={() => onDelete && onDelete(product)}
-                          className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                          title="Delete"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      )}
-                    </>
                   )}
                 </div>
               </td>
