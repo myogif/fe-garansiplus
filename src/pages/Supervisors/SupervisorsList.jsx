@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Search } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import {
   listRolePeople,
@@ -10,6 +11,7 @@ import {
 import SupervisorsTable from '../../components/SupervisorsTable';
 import SupervisorFormModal from '../../components/Modals/SupervisorFormModal';
 import ConfirmDelete from '../../components/Modals/ConfirmDelete';
+import Pagination from '../../components/Pagination';
 import useDebounce from '../../hooks/useDebounce';
 import MainLayout from '../../components/MainLayout';
 
@@ -84,40 +86,48 @@ const SupervisorsList = () => {
 
   return (
     <MainLayout>
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold">
-          {role === 'MANAGER' ? 'Supervisors' : 'Sales Users'}
-        </h1>
-        <button
-          className="bg-blue-500 text-white px-4 py-2 rounded-lg"
-          onClick={handleCreate}
-        >
-          {role === 'MANAGER' ? 'Add Supervisor' : 'Create Sales User'}
-        </button>
-      </div>
+      <div className="bg-white rounded-2xl shadow-sm p-6">
+        <div className="mb-6">
+          <div className="flex items-center justify-between mb-6">
+            <h1 className="text-2xl font-bold text-gray-900">
+              {role === 'MANAGER' ? 'Daftar Supervisor' : 'Daftar Sales'}
+            </h1>
+            <div className="flex items-center gap-4">
+              <img
+                src="/Rectangle 5.png"
+                alt="Garansi+"
+                className="h-10 w-auto object-contain"
+              />
+              <button
+                onClick={handleCreate}
+                className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-xl font-medium transition-colors shadow-sm hover:shadow-md"
+              >
+                {role === 'MANAGER' ? 'Add Supervisor' : 'Add Sales'}
+              </button>
+            </div>
+          </div>
 
-      <div className="flex items-center justify-between mb-4">
-        <input
-          type="text"
-          placeholder="Search by name or email/phone"
-          className="border rounded-lg px-4 py-2 w-1/3"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          <div className="relative">
+            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+            <input
+              type="text"
+              placeholder="Cari..."
+              className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-transparent"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+        </div>
+
+        <SupervisorsTable
+          people={people}
+          loading={loading}
+          role={role}
+          onDelete={handleDelete}
         />
-        <button
-          className="border rounded-lg px-4 py-2"
-          onClick={loadPeople}
-        >
-          Refresh
-        </button>
-      </div>
 
-      <SupervisorsTable
-        people={people}
-        loading={loading}
-        role={role}
-        onDelete={handleDelete}
-      />
+        {pagination && <Pagination pagination={pagination} onPageChange={setPage} />}
+      </div>
 
       <SupervisorFormModal
         isOpen={isModalOpen}
