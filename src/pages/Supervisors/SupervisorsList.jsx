@@ -90,14 +90,16 @@ const SupervisorsList = () => {
         <div className="mb-6">
           <div className="flex items-center justify-between mb-6">
             <h1 className="text-2xl font-bold text-gray-900">
-              {role === 'MANAGER' ? 'Daftar Supervisor' : 'Daftar Sales'}
+              {role === 'MANAGER' || role === 'SERVICE_CENTER' ? 'Daftar Supervisor' : 'Daftar Sales'}
             </h1>
-            <button
-              onClick={handleCreate}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-xl font-medium transition-colors shadow-sm hover:shadow-md"
-            >
-              {role === 'MANAGER' ? 'Add Supervisor' : 'Add Sales'}
-            </button>
+            {role !== 'SERVICE_CENTER' && (
+              <button
+                onClick={handleCreate}
+                className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-xl font-medium transition-colors shadow-sm hover:shadow-md"
+              >
+                {role === 'MANAGER' ? 'Add Supervisor' : 'Add Sales'}
+              </button>
+            )}
           </div>
 
           <div className="relative">

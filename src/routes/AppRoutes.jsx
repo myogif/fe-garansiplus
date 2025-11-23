@@ -19,7 +19,7 @@ export default function AppRoutes() {
     if (!isAuthed) {
       return '/login';
     }
-    return role === 'MANAGER' ? '/dashboard' : '/products';
+    return (role === 'MANAGER' || role === 'SERVICE_CENTER') ? '/dashboard' : '/products';
   };
 
   return (
@@ -31,7 +31,7 @@ export default function AppRoutes() {
       <Route
         path="/dashboard"
         element={
-          <ProtectedRoute allowedRoles={['MANAGER']}>
+          <ProtectedRoute allowedRoles={['MANAGER', 'SERVICE_CENTER']}>
             <ManagerDashboard />
           </ProtectedRoute>
         }
@@ -39,7 +39,7 @@ export default function AppRoutes() {
       <Route
         path="/products"
         element={
-          <ProtectedRoute allowedRoles={['MANAGER', 'SUPERVISOR', 'SALES']}>
+          <ProtectedRoute allowedRoles={['MANAGER', 'SUPERVISOR', 'SALES', 'SERVICE_CENTER']}>
             <ProductsList />
           </ProtectedRoute>
         }
@@ -47,7 +47,7 @@ export default function AppRoutes() {
       <Route
         path="/products/:id"
         element={
-          <ProtectedRoute allowedRoles={['MANAGER', 'SUPERVISOR']}>
+          <ProtectedRoute allowedRoles={['MANAGER', 'SUPERVISOR', 'SERVICE_CENTER']}>
             <ProductDetail />
           </ProtectedRoute>
         }
@@ -63,7 +63,7 @@ export default function AppRoutes() {
       <Route
         path="/stores"
         element={
-          <ProtectedRoute allowedRoles={['MANAGER']}>
+          <ProtectedRoute allowedRoles={['MANAGER', 'SERVICE_CENTER']}>
             <StoresList />
           </ProtectedRoute>
         }
@@ -71,7 +71,7 @@ export default function AppRoutes() {
       <Route
         path="/supervisors"
         element={
-          <ProtectedRoute allowedRoles={['MANAGER', 'SUPERVISOR']}>
+          <ProtectedRoute allowedRoles={['MANAGER', 'SUPERVISOR', 'SERVICE_CENTER']}>
             <SupervisorsList />
           </ProtectedRoute>
         }
@@ -79,7 +79,7 @@ export default function AppRoutes() {
       <Route
         path="/sales"
         element={
-          <ProtectedRoute allowedRoles={['MANAGER', 'SUPERVISOR']}>
+          <ProtectedRoute allowedRoles={['MANAGER', 'SUPERVISOR', 'SERVICE_CENTER']}>
             <SalesList />
           </ProtectedRoute>
         }
@@ -87,7 +87,7 @@ export default function AppRoutes() {
       <Route
         path="/customers"
         element={
-          <ProtectedRoute allowedRoles={['MANAGER']}>
+          <ProtectedRoute allowedRoles={['MANAGER', 'SERVICE_CENTER']}>
             <CustomersList />
           </ProtectedRoute>
         }
@@ -95,7 +95,7 @@ export default function AppRoutes() {
       <Route
         path="/update-password"
         element={
-          <ProtectedRoute allowedRoles={['MANAGER', 'SUPERVISOR', 'SALES']}>
+          <ProtectedRoute allowedRoles={['MANAGER', 'SUPERVISOR', 'SALES', 'SERVICE_CENTER']}>
             <UpdatePassword />
           </ProtectedRoute>
         }

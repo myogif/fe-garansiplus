@@ -1,3 +1,10 @@
+export const ROLES = {
+  MANAGER: 'MANAGER',
+  SUPERVISOR: 'SUPERVISOR',
+  SALES: 'SALES',
+  SERVICE_CENTER: 'SERVICE_CENTER',
+};
+
 export const DUMMY_MONTHLY_SUMMARY = [
   { month: 'Jan', total: 120 },
   { month: 'Feb', total: 210 },

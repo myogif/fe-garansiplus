@@ -10,9 +10,10 @@ export async function fetchProducts(role, { page = 1, limit = 10, mine = true, s
   }
 
   const url =
-    role === 'MANAGER'    ? `/api/managers/products?${searchParams}` :
-    role === 'SUPERVISOR' ? `/api/supervisors/products?${searchParams}` :
-                            `/api/sales/products?${searchParams}${mine ? '&mine=true' : ''}`;
+    role === 'MANAGER'        ? `/api/managers/products?${searchParams}` :
+    role === 'SERVICE_CENTER' ? `/api/managers/products?${searchParams}` :
+    role === 'SUPERVISOR'     ? `/api/supervisors/products?${searchParams}` :
+                                `/api/sales/products?${searchParams}${mine ? '&mine=true' : ''}`;
 
   const res = await client.get(url);
   const data = res.data?.data || {};
@@ -55,9 +56,10 @@ export function deleteProduct(id, role) {
 
 export async function fetchProductByCode(role, code) {
   const url =
-    role === 'MANAGER'    ? `/api/managers/products?code=${code}` :
-    role === 'SUPERVISOR' ? `/api/supervisors/products?code=${code}` :
-                            `/api/sales/products?code=${code}`;
+    role === 'MANAGER'        ? `/api/managers/products?code=${code}` :
+    role === 'SERVICE_CENTER' ? `/api/managers/products?code=${code}` :
+    role === 'SUPERVISOR'     ? `/api/supervisors/products?code=${code}` :
+                                `/api/sales/products?code=${code}`;
 
   const res = await client.get(url);
   const data = res.data?.data || {};
