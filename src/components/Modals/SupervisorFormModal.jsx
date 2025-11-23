@@ -1,5 +1,7 @@
-import { Dialog, Transition } from '@headlessui/react';
-import { Fragment, useState } from 'react';
+import { Dialog, Transition, Combobox } from '@headlessui/react';
+import { Fragment, useState, useEffect } from 'react';
+import { Check, ChevronDown } from 'lucide-react';
+import { fetchStores } from '../../api/managers';
 
 const SupervisorFormModal = ({ isOpen, closeModal, onSave }) => {
   const [formData, setFormData] = useState({
@@ -8,21 +10,76 @@ const SupervisorFormModal = ({ isOpen, closeModal, onSave }) => {
     password: '',
     store_id: '',
   });
+  const [stores, setStores] = useState([]);
+  const [selectedStore, setSelectedStore] = useState(null);
+  const [query, setQuery] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (isOpen) {
+      loadStores();
+    }
+  }, [isOpen]);
+
+  const loadStores = async () => {
+    try {
+      setLoading(true);
+      const data = await fetchStores();
+      setStores(data);
+    } catch (error) {
+      console.error('Failed to fetch stores:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const filteredStores =
+    query === ''
+      ? stores
+      : stores.filter((store) =>
+          store.name.toLowerCase().includes(query.toLowerCase()) ||
+          store.kode_toko.toLowerCase().includes(query.toLowerCase())
+        );
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleStoreSelect = (store) => {
+    setSelectedStore(store);
+    setFormData((prev) => ({ ...prev, store_id: store?.id || '' }));
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     onSave(formData);
+    setFormData({
+      name: '',
+      phone: '',
+      password: '',
+      store_id: '',
+    });
+    setSelectedStore(null);
+    setQuery('');
+    closeModal();
+  };
+
+  const handleClose = () => {
+    setFormData({
+      name: '',
+      phone: '',
+      password: '',
+      store_id: '',
+    });
+    setSelectedStore(null);
+    setQuery('');
     closeModal();
   };
 
   return (
     <Transition appear show={isOpen} as={Fragment}>
-      <Dialog as="div" className="relative z-10" onClose={closeModal}>
+      <Dialog as="div" className="relative z-50" onClose={handleClose}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -32,11 +89,11 @@ const SupervisorFormModal = ({ isOpen, closeModal, onSave }) => {
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-black bg-opacity-25" />
+          <div className="fixed inset-0 bg-black/60" />
         </Transition.Child>
 
         <div className="fixed inset-0 overflow-y-auto">
-          <div className="flex min-h-full items-center justify-center p-4 text-center">
+          <div className="flex min-h-full items-center justify-center p-4">
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
@@ -46,88 +103,146 @@ const SupervisorFormModal = ({ isOpen, closeModal, onSave }) => {
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                <Dialog.Title
-                  as="h3"
-                  className="text-lg font-medium leading-6 text-gray-900"
-                >
-                  Add Supervisor
-                </Dialog.Title>
-                <form onSubmit={handleSubmit} className="mt-4">
-                  <div className="grid grid-cols-1 gap-4">
-                    <div>
-                      <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-                        Name
+              <Dialog.Panel className="w-full max-w-2xl transform overflow-hidden rounded-2xl bg-white shadow-xl transition-all">
+                <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4">
+                  <Dialog.Title className="text-xl font-semibold text-white">
+                    Add Supervisor
+                  </Dialog.Title>
+                </div>
+
+                <form onSubmit={handleSubmit} className="p-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="col-span-1 md:col-span-2">
+                      <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+                        Name <span className="text-red-500">*</span>
                       </label>
                       <input
                         type="text"
                         name="name"
                         id="name"
+                        required
                         value={formData.name}
                         onChange={handleChange}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                        placeholder="Enter supervisor name"
                       />
                     </div>
+
                     <div>
-                      <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
-                        Phone
+                      <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
+                        Phone <span className="text-red-500">*</span>
                       </label>
                       <input
                         type="text"
                         name="phone"
                         id="phone"
+                        required
                         value={formData.phone}
                         onChange={handleChange}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                        placeholder="Enter phone number"
                       />
                     </div>
+
                     <div>
-                      <label
-                        htmlFor="password"
-                        className="block text-sm font-medium text-gray-700"
-                      >
-                        Password
+                      <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+                        Password <span className="text-red-500">*</span>
                       </label>
                       <input
                         type="password"
                         name="password"
                         id="password"
+                        required
                         value={formData.password}
                         onChange={handleChange}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                        placeholder="Enter password"
                       />
                     </div>
-                    <div>
-                      <label
-                        htmlFor="store_id"
-                        className="block text-sm font-medium text-gray-700"
-                      >
-                        Store ID
+
+                    <div className="col-span-1 md:col-span-2">
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Store <span className="text-red-500">*</span>
                       </label>
-                      <input
-                        type="text"
-                        name="store_id"
-                        id="store_id"
-                        value={formData.store_id}
-                        onChange={handleChange}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                      />
+                      <Combobox value={selectedStore} onChange={handleStoreSelect}>
+                        <div className="relative">
+                          <div className="relative">
+                            <Combobox.Input
+                              className="w-full px-4 py-3 pr-10 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                              displayValue={(store) => store ? `${store.kode_toko} - ${store.name}` : ''}
+                              onChange={(event) => setQuery(event.target.value)}
+                              placeholder="Search store by code or name"
+                              required
+                            />
+                            <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-3">
+                              <ChevronDown className="h-5 w-5 text-gray-400" aria-hidden="true" />
+                            </Combobox.Button>
+                          </div>
+                          <Transition
+                            as={Fragment}
+                            leave="transition ease-in duration-100"
+                            leaveFrom="opacity-100"
+                            leaveTo="opacity-0"
+                            afterLeave={() => setQuery('')}
+                          >
+                            <Combobox.Options className="absolute z-10 mt-1 max-h-[280px] w-full overflow-auto rounded-xl bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                              {loading ? (
+                                <div className="px-4 py-2 text-sm text-gray-500">Loading stores...</div>
+                              ) : filteredStores.length === 0 && query !== '' ? (
+                                <div className="px-4 py-2 text-sm text-gray-500">No stores found.</div>
+                              ) : (
+                                filteredStores.map((store) => (
+                                  <Combobox.Option
+                                    key={store.id}
+                                    className={({ active }) =>
+                                      `relative cursor-pointer select-none py-3 pl-10 pr-4 ${
+                                        active ? 'bg-blue-50 text-blue-900' : 'text-gray-900'
+                                      }`
+                                    }
+                                    value={store}
+                                  >
+                                    {({ selected, active }) => (
+                                      <>
+                                        <div className="flex flex-col">
+                                          <span className={`block truncate ${selected ? 'font-semibold' : 'font-normal'}`}>
+                                            {store.kode_toko} - {store.name}
+                                          </span>
+                                          <span className="text-xs text-gray-500">{store.address}</span>
+                                        </div>
+                                        {selected ? (
+                                          <span
+                                            className={`absolute inset-y-0 left-0 flex items-center pl-3 ${
+                                              active ? 'text-blue-600' : 'text-blue-600'
+                                            }`}
+                                          >
+                                            <Check className="h-5 w-5" aria-hidden="true" />
+                                          </span>
+                                        ) : null}
+                                      </>
+                                    )}
+                                  </Combobox.Option>
+                                ))
+                              )}
+                            </Combobox.Options>
+                          </Transition>
+                        </div>
+                      </Combobox>
                     </div>
                   </div>
 
-                  <div className="mt-4">
-                    <button
-                      type="submit"
-                      className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                    >
-                      Save
-                    </button>
+                  <div className="mt-8 flex flex-col-reverse sm:flex-row gap-3 sm:justify-end">
                     <button
                       type="button"
-                      className="ml-2 inline-flex justify-center rounded-md border border-transparent bg-gray-100 px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-500 focus-visible:ring-offset-2"
-                      onClick={closeModal}
+                      onClick={handleClose}
+                      className="px-6 py-3 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors"
                     >
                       Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      className="px-6 py-3 text-sm font-medium text-white bg-blue-600 rounded-xl hover:bg-blue-700 transition-colors shadow-sm hover:shadow-md"
+                    >
+                      Save Supervisor
                     </button>
                   </div>
                 </form>

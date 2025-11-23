@@ -9,7 +9,7 @@ export async function listRolePeople(role, { page = 1, limit = 10, search = '' }
     searchParams.append('search', search);
   }
 
-  const url = role === 'MANAGER'
+  const url = (role === 'MANAGER' || role === 'SERVICE_CENTER')
     ? `/api/managers/supervisors?${searchParams}`
     : `/api/supervisors/sales?${searchParams}`;
 
@@ -44,7 +44,7 @@ export async function listSalesUsers(role, { page = 1, limit = 10, search = '' }
     searchParams.append('search', search);
   }
 
-  const url = role === 'MANAGER'
+  const url = (role === 'MANAGER' || role === 'SERVICE_CENTER')
     ? `/api/managers/sales?${searchParams}`
     : `/api/supervisors/sales?${searchParams}`;
 

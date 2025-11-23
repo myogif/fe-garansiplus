@@ -20,6 +20,14 @@ const Sidebar = ({ isOpen, onClose }) => {
       { to: '/sales', icon: UserCheck, label: 'Sales' },
       { to: '/customers', icon: Users, label: 'Customer' },
     ],
+    SERVICE_CENTER: [
+      { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+      { to: '/products', icon: Package, label: 'Produk' },
+      { to: '/stores', icon: Store, label: 'Toko' },
+      { to: '/supervisors', icon: Users, label: 'Supervisor' },
+      { to: '/sales', icon: UserCheck, label: 'Sales' },
+      { to: '/customers', icon: Users, label: 'Customer' },
+    ],
     SUPERVISOR: [
       { to: '/products', icon: Package, label: 'Produk' },
       { to: '/sales', icon: UserCheck, label: 'Sales' },
