@@ -31,17 +31,21 @@ const ProductsTable = ({ products, loading, role, onEdit, onDelete }) => {
     }).format(price);
   };
 
-  const getStatusBadge = (isActive) => {
-    if (isActive) {
-      return (
-        <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
-          Aktif
-        </span>
-      );
-    }
+  const getStatusBadge = (status) => {
+    const statusConfig = {
+      'ACTIVE': { bg: 'bg-green-100', text: 'text-green-700', label: 'Aktif' },
+      'Aktif': { bg: 'bg-green-100', text: 'text-green-700', label: 'Aktif' },
+      'USED': { bg: 'bg-yellow-100', text: 'text-yellow-700', label: 'Used' },
+      'Used': { bg: 'bg-yellow-100', text: 'text-yellow-700', label: 'Used' },
+      'INACTIVE': { bg: 'bg-red-100', text: 'text-red-700', label: 'Expired' },
+      'Expired': { bg: 'bg-red-100', text: 'text-red-700', label: 'Expired' },
+    };
+
+    const config = statusConfig[status] || { bg: 'bg-gray-100', text: 'text-gray-700', label: status || 'Unknown' };
+
     return (
-      <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-red-100 text-red-700">
-        Expired
+      <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${config.bg} ${config.text}`}>
+        {config.label}
       </span>
     );
   };
@@ -87,7 +91,7 @@ const ProductsTable = ({ products, loading, role, onEdit, onDelete }) => {
                 {formatPrice(product.priceWarranty)} ( {product.persen} % )
               </td>
               <td className="py-4 px-4">
-                {getStatusBadge(product.isActive)}
+                {getStatusBadge(product.status)}
               </td>
               <td className="py-4 px-4 text-center">
                 <Menu as="div" className="relative inline-block text-left">

@@ -24,7 +24,7 @@ export async function fetchProducts(role, { page = 1, limit = 10, mine = true, s
     priceWarranty: p.priceWarranty,
     persen: p.persen,
     isActive: p.isActive,
-    status: typeof p.isActive === 'boolean' ? (p.isActive ? 'ACTIVE' : 'INACTIVE') : p.status,
+    status: p.status || (typeof p.isActive === 'boolean' ? (p.isActive ? 'ACTIVE' : 'INACTIVE') : 'Unknown'),
     type: p.tipe,
     membership_number: p.nomorKepesertaan,
     description: p.notes,
