@@ -2,13 +2,13 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
-import api from '../../services/api';
+import { fetchProductByCode } from '../../api/products';
 import MainLayout from '../../components/MainLayout';
 import StatusPill from '../../components/StatusPill';
 
 const ProductDetail = () => {
   const { id } = useParams();
-  const { token } = useAuth();
+  const { role } = useAuth();
   const navigate = useNavigate();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -17,20 +17,8 @@ const ProductDetail = () => {
     const fetchProductDetail = async () => {
       try {
         setLoading(true);
-        const response = await api.get(`/managers/products`, {
-          headers: { Authorization: `Bearer ${token}` },
-          params: {
-            page: 1,
-            limit: 10,
-            sortBy: 'createdAt',
-            sortOrder: 'desc',
-            code: id,
-          },
-        });
-
-        if (response.data.success && response.data.data.items.length > 0) {
-          setProduct(response.data.data.items[0]);
-        }
+        const data = await fetchProductByCode(role, id);
+        setProduct(data);
       } catch (error) {
         console.error('Failed to fetch product detail:', error);
       } finally {
@@ -38,10 +26,10 @@ const ProductDetail = () => {
       }
     };
 
-    if (id && token) {
+    if (id && role) {
       fetchProductDetail();
     }
-  }, [id, token]);
+  }, [id, role]);
 
   const formatPrice = (price) => {
     return new Intl.NumberFormat('id-ID', {
@@ -117,7 +105,7 @@ const ProductDetail = () => {
           <div className="flex items-center gap-3 mb-6">
             <span className="text-gray-600">Nomor Kepesertaan</span>
             <span className="font-semibold text-gray-900">
-              {product.nomorKepesertaan || '-'}
+              {product.code || '-'}
             </span>
             <StatusPill status={product.status || (product.isActive ? 'Aktif' : 'Expired')} />
           </div>
@@ -127,7 +115,7 @@ const ProductDetail = () => {
           <div>
             <label className="block text-sm text-gray-500 mb-2">Nama</label>
             <p className="text-gray-900 font-medium">
-              {product.customerName || '-'}
+              {product.customer_name || '-'}
             </p>
           </div>
 
@@ -136,14 +124,14 @@ const ProductDetail = () => {
               Nomor Telepon
             </label>
             <p className="text-gray-900 font-medium">
-              {product.customerPhone || '-'}
+              {product.customer_phone || '-'}
             </p>
           </div>
 
           <div>
             <label className="block text-sm text-gray-500 mb-2">Email</label>
             <p className="text-gray-900 font-medium">
-              {product.customerEmail || '-'}
+              {product.customer_email || '-'}
             </p>
           </div>
 
