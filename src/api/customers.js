@@ -9,19 +9,19 @@ export async function fetchCustomers({ page = 1, limit = 10, search = '' } = {})
     searchParams.append('search', search);
   }
 
-  const url = `/api/managers/warranties?${searchParams}`;
+  const url = `/api/managers/products?${searchParams}`;
   const res = await client.get(url);
   const data = res.data?.data || {};
 
-  const items = (data.items ?? res.data ?? []).map((w) => ({
-    id: w.id,
-    name: w.customerName,
-    phone: w.customerPhone,
-    email: w.customerEmail,
-    membershipNumber: w.nomorKepesertaan,
-    productName: w.product?.name,
-    productCode: w.product?.code,
-    createdAt: w.createdAt,
+  const items = (data.items ?? res.data ?? []).map((p) => ({
+    id: p.id,
+    name: p.customerName,
+    phone: p.customerPhone,
+    email: p.customerEmail,
+    membershipNumber: p.nomorKepesertaan,
+    productName: p.name,
+    productCode: p.code,
+    createdAt: p.createdAt,
   }));
 
   const pg = data.pagination ?? {
