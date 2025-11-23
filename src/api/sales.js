@@ -120,3 +120,24 @@ export async function exportSalesProductsToExcel({ code = '', created_at_from = 
   document.body.removeChild(link);
   window.URL.revokeObjectURL(url);
 }
+
+export async function updateSalesProduct(id, payload) {
+  const res = await client.put(`/api/sales/products/${id}`, {
+    name: payload.name,
+    tipe: payload.type || payload.tipe,
+    code: payload.code,
+    price: payload.price,
+    notes: payload.notes,
+    persen: payload.persen,
+    isActive: payload.isActive,
+    customer_name: payload.customer_name,
+    customer_phone: payload.customer_phone,
+    customer_email: payload.customer_email,
+  });
+  return res.data;
+}
+
+export async function deleteSalesProduct(id) {
+  const res = await client.delete(`/api/sales/products/${id}`);
+  return res.data;
+}

@@ -106,7 +106,7 @@ const ProductsTable = ({ products, loading, role, onEdit, onDelete }) => {
                   >
                     <Info className="w-4 h-4" />
                   </button>
-                  {role !== 'SALES' && (
+                  {(role === 'SALES' || role === 'SUPERVISOR' || role === 'MANAGER') && (
                     <button
                       onClick={() => onEdit && onEdit(product)}
                       className="p-2 text-gray-600 hover:bg-gray-50 rounded-lg transition-colors"
@@ -115,7 +115,7 @@ const ProductsTable = ({ products, loading, role, onEdit, onDelete }) => {
                       <Edit2 className="w-4 h-4" />
                     </button>
                   )}
-                  {role === 'SUPERVISOR' && (
+                  {(role === 'SALES' || role === 'SUPERVISOR') && (
                     <button
                       onClick={() => onDelete && onDelete(product)}
                       className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Search, Download } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { fetchProducts, createProduct, updateProduct, deleteProduct } from '../../api/products';
+import { updateSalesProduct, deleteSalesProduct, exportSalesProductsToExcel } from '../../api/sales';
 import ProductsTable from '../../components/ProductsTable';
 import ProductFormModal from '../../components/Modals/ProductFormModal';
 import ConfirmDelete from '../../components/Modals/ConfirmDelete';
@@ -9,7 +10,6 @@ import ExportExcelModal from '../../components/Modals/ExportExcelModal';
 import Pagination from '../../components/Pagination';
 import useDebounce from '../../hooks/useDebounce';
 import MainLayout from '../../components/MainLayout';
-import { exportSalesProductsToExcel } from '../../api/sales';
 
 const ProductsList = () => {
   const { role, token } = useAuth();
@@ -66,7 +66,11 @@ const ProductsList = () => {
   const handleSave = async (formData) => {
     try {
       if (selectedProduct) {
-        await updateProduct(selectedProduct.id, formData);
+        if (role === 'SALES') {
+          await updateSalesProduct(selectedProduct.id, formData);
+        } else {
+          await updateProduct(selectedProduct.id, formData);
+        }
       } else {
         await createProduct(formData);
       }
@@ -78,7 +82,11 @@ const ProductsList = () => {
 
   const handleConfirmDelete = async () => {
     try {
-      await deleteProduct(selectedProduct.id, role);
+      if (role === 'SALES') {
+        await deleteSalesProduct(selectedProduct.id);
+      } else {
+        await deleteProduct(selectedProduct.id, role);
+      }
       loadProducts();
     } catch (error) {
       console.error('Failed to delete product:', error);
