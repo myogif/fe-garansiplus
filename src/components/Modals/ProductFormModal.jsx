@@ -1,16 +1,43 @@
 import { Dialog, Transition } from '@headlessui/react';
-import { Fragment, useState } from 'react';
+import { Fragment, useState, useEffect } from 'react';
 
 const ProductFormModal = ({ isOpen, closeModal, product, onSave }) => {
-  const [formData, setFormData] = useState(
-    product || {
-      name: '',
-      sku: '',
-      price: '',
-      status: 'ACTIVE',
-      description: '',
+  const [formData, setFormData] = useState({
+    name: '',
+    sku: '',
+    price: '',
+    status: 'ACTIVE',
+    description: '',
+  });
+
+  useEffect(() => {
+    if (product) {
+      setFormData({
+        name: product.name || '',
+        sku: product.sku || product.code || '',
+        price: product.price || '',
+        status: product.status || 'ACTIVE',
+        description: product.description || product.notes || '',
+        type: product.type || product.tipe || '',
+        code: product.code || product.sku || '',
+        persen: product.persen || '',
+        priceWarranty: product.priceWarranty || '',
+        customer_name: product.customer_name || '',
+        customer_phone: product.customer_phone || '',
+        customer_email: product.customer_email || '',
+        isActive: product.isActive ?? true,
+        notes: product.notes || product.description || '',
+      });
+    } else {
+      setFormData({
+        name: '',
+        sku: '',
+        price: '',
+        status: 'ACTIVE',
+        description: '',
+      });
     }
-  );
+  }, [product, isOpen]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

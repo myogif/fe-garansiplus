@@ -50,5 +50,45 @@ export const createProduct = (payload) => client.post('/api/sales/products', pay
 export const updateProduct = (id, payload) => client.put(`/api/sales/products/${id}`, payload);
 export function deleteProduct(id, role) {
   if (role === 'SUPERVISOR') return client.delete(`/api/supervisors/products/${id}`);
-  return client.delete(`/api/sales/products/${id}`); // SALES
+  return client.delete(`/api/sales/products/${id}`);
+}
+
+export async function fetchProductByCode(role, code) {
+  const url =
+    role === 'MANAGER'    ? `/api/managers/products?code=${code}` :
+    role === 'SUPERVISOR' ? `/api/supervisors/products?code=${code}` :
+                            `/api/sales/products?code=${code}`;
+
+  const res = await client.get(url);
+  const data = res.data?.data || {};
+  const items = data.items || [];
+
+  if (items.length === 0) {
+    throw new Error('Product not found');
+  }
+
+  const p = items[0];
+  return {
+    id: p.id,
+    name: p.name,
+    sku: p.code,
+    code: p.code,
+    type: p.tipe,
+    price: p.price,
+    priceWarranty: p.priceWarranty,
+    status: p.status,
+    persen: p.persen,
+    notes: p.notes,
+    description: p.notes,
+    customer_name: p.customer_name,
+    customer_phone: p.customer_phone,
+    customer_email: p.customer_email,
+    isActive: p.isActive,
+    store_id: p.storeId,
+    creator_id: p.creatorId,
+    created_at: p.createdAt,
+    updated_at: p.updatedAt,
+    store: p.store,
+    creator: p.creator,
+  };
 }
