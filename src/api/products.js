@@ -92,3 +92,40 @@ export async function fetchProductByCode(role, code) {
     creator: p.creator,
   };
 }
+
+export async function exportManagerProductsToExcel({ code = '', created_at_from = '', created_at_to = '' } = {}) {
+  const searchParams = new URLSearchParams({
+    page: 1,
+    limit: 10,
+    sortBy: 'createdAt',
+    sortOrder: 'desc',
+    export: 'excel',
+  });
+
+  if (code) {
+    searchParams.append('code', code);
+  }
+  if (created_at_from) {
+    searchParams.append('created_at_from', created_at_from);
+  }
+  if (created_at_to) {
+    searchParams.append('created_at_to', created_at_to);
+  }
+
+  const res = await client.get(`/api/managers/products?${searchParams}`, {
+    responseType: 'blob',
+  });
+
+  const blob = new Blob([res.data], {
+    type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  });
+
+  const url = window.URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = `products_manager_${new Date().toISOString().split('T')[0]}.xlsx`;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  window.URL.revokeObjectURL(url);
+}
