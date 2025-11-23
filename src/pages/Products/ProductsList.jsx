@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Search, Download } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
-import { fetchProducts, createProduct, updateProduct, deleteProduct } from '../../api/products';
-import { updateSalesProduct, deleteSalesProduct, exportSalesProductsToExcel, fetchSalesProductById } from '../../api/sales';
+import { fetchProducts, createProduct, updateProduct, deleteProduct, fetchProductByCode } from '../../api/products';
+import { updateSalesProduct, deleteSalesProduct, exportSalesProductsToExcel, fetchSalesProductDetail } from '../../api/sales';
 import ProductsTable from '../../components/ProductsTable';
 import ProductFormModal from '../../components/Modals/ProductFormModal';
 import ConfirmDelete from '../../components/Modals/ConfirmDelete';
@@ -10,7 +10,6 @@ import ExportExcelModal from '../../components/Modals/ExportExcelModal';
 import Pagination from '../../components/Pagination';
 import useDebounce from '../../hooks/useDebounce';
 import MainLayout from '../../components/MainLayout';
-import client from '../../api/client';
 
 const ProductsList = () => {
   const { role, token } = useAuth();
@@ -57,31 +56,9 @@ const ProductsList = () => {
   const handleEdit = async (product) => {
     try {
       setLoading(true);
-      let productDetails;
-
-      if (role === 'SALES') {
-        productDetails = await fetchSalesProductById(product.id);
-      } else {
-        const res = await client.get(`/api/${role.toLowerCase()}/products/${product.id}`);
-        const data = res.data?.data || {};
-        productDetails = {
-          id: data.id,
-          name: data.name,
-          sku: data.code,
-          code: data.code,
-          type: data.tipe,
-          price: data.price,
-          priceWarranty: data.priceWarranty,
-          persen: data.persen,
-          status: data.status,
-          description: data.notes,
-          notes: data.notes,
-          customer_name: data.customer_name,
-          customer_phone: data.customer_phone,
-          customer_email: data.customer_email,
-          isActive: data.isActive,
-        };
-      }
+      const productDetails = role === 'SALES'
+        ? await fetchSalesProductDetail(product.sku)
+        : await fetchProductByCode(role, product.sku);
 
       setSelectedProduct(productDetails);
       setIsModalOpen(true);
