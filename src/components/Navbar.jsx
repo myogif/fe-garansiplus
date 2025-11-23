@@ -20,19 +20,11 @@ const Navbar = ({ onMenuClick }) => {
         <div className="flex items-center gap-4 h-16">
           <button
             onClick={onMenuClick}
-            className="lg:hidden text-white/70 hover:text-white"
+            className="text-white/70 hover:text-white transition-colors"
             aria-label="Toggle menu"
           >
             <Menu className="w-6 h-6" />
           </button>
-
-          <div className="flex items-center gap-2">
-            <img
-              src="/Rectangle 5.png"
-              alt="Garansi+"
-              className="h-8 w-auto object-contain"
-            />
-          </div>
 
           <div className="flex-1 flex justify-center">
             <div className="relative w-full max-w-2xl">
