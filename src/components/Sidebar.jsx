@@ -44,7 +44,15 @@ const Sidebar = ({ isOpen, onClose }) => {
         }`}
       >
         <div className="h-full flex flex-col p-6 gap-8">
-          <nav className="space-y-2 pt-4">
+          <div className="flex items-center justify-center py-2">
+            <img
+              src="/Rectangle 5.png"
+              alt="Garansi+"
+              className="h-12 w-auto object-contain"
+            />
+          </div>
+
+          <nav className="space-y-2">
             {links.map((link) => (
               <NavLink
                 key={link.to}
