@@ -84,6 +84,37 @@ export async function fetchSalesProductDetail(code) {
   };
 }
 
+export async function fetchSalesProductById(id) {
+  const res = await client.get(`/api/sales/products/${id}`);
+  const data = res.data?.data || {};
+
+  return {
+    id: data.id,
+    name: data.name,
+    type: data.tipe,
+    code: data.code,
+    sku: data.code,
+    membership_number: data.nomor_kepesertaan,
+    price: data.price,
+    priceWarranty: data.priceWarranty,
+    status: data.status,
+    persen: data.persen,
+    notes: data.notes,
+    description: data.notes,
+    customer_name: data.customer_name,
+    customer_phone: data.customer_phone,
+    customer_email: data.customer_email,
+    store_id: data.storeId,
+    creator_id: data.creatorId,
+    is_active: data.isActive,
+    isActive: data.isActive,
+    created_at: data.createdAt,
+    updated_at: data.updatedAt,
+    store: data.store,
+    creator: data.creator,
+  };
+}
+
 export async function exportSalesProductsToExcel({ code = '', created_at_from = '', created_at_to = '' } = {}) {
   const searchParams = new URLSearchParams({
     page: 1,

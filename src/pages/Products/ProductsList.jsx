@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Search, Download } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { fetchProducts, createProduct, updateProduct, deleteProduct } from '../../api/products';
-import { updateSalesProduct, deleteSalesProduct, exportSalesProductsToExcel } from '../../api/sales';
+import { updateSalesProduct, deleteSalesProduct, exportSalesProductsToExcel, fetchSalesProductById } from '../../api/sales';
 import ProductsTable from '../../components/ProductsTable';
 import ProductFormModal from '../../components/Modals/ProductFormModal';
 import ConfirmDelete from '../../components/Modals/ConfirmDelete';
@@ -10,6 +10,7 @@ import ExportExcelModal from '../../components/Modals/ExportExcelModal';
 import Pagination from '../../components/Pagination';
 import useDebounce from '../../hooks/useDebounce';
 import MainLayout from '../../components/MainLayout';
+import client from '../../api/client';
 
 const ProductsList = () => {
   const { role, token } = useAuth();
@@ -53,9 +54,43 @@ const ProductsList = () => {
     setIsModalOpen(true);
   };
 
-  const handleEdit = (product) => {
-    setSelectedProduct(product);
-    setIsModalOpen(true);
+  const handleEdit = async (product) => {
+    try {
+      setLoading(true);
+      let productDetails;
+
+      if (role === 'SALES') {
+        productDetails = await fetchSalesProductById(product.id);
+      } else {
+        const res = await client.get(`/api/${role.toLowerCase()}/products/${product.id}`);
+        const data = res.data?.data || {};
+        productDetails = {
+          id: data.id,
+          name: data.name,
+          sku: data.code,
+          code: data.code,
+          type: data.tipe,
+          price: data.price,
+          priceWarranty: data.priceWarranty,
+          persen: data.persen,
+          status: data.status,
+          description: data.notes,
+          notes: data.notes,
+          customer_name: data.customer_name,
+          customer_phone: data.customer_phone,
+          customer_email: data.customer_email,
+          isActive: data.isActive,
+        };
+      }
+
+      setSelectedProduct(productDetails);
+      setIsModalOpen(true);
+    } catch (error) {
+      console.error('Failed to fetch product details:', error);
+      alert('Failed to load product details');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleDelete = (product) => {
