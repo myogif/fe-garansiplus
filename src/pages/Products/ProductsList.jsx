@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Search, Download } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
-import { fetchProducts, createProduct, updateProduct, deleteProduct, fetchProductByCode } from '../../api/products';
-import { updateSalesProduct, deleteSalesProduct, exportSalesProductsToExcel, fetchSalesProductDetail } from '../../api/sales';
+import { fetchProducts, createProduct, updateProduct, deleteProduct, fetchProductByCode, exportManagerProductsToExcel } from '../../api/products';
+import { updateSalesProduct, deleteSalesProduct, exportSalesProductsToExcel, fetchSalesProductDetail, useProduct } from '../../api/sales';
 import ProductsTable from '../../components/ProductsTable';
 import ProductFormModal from '../../components/Modals/ProductFormModal';
 import ConfirmDelete from '../../components/Modals/ConfirmDelete';
@@ -84,11 +84,24 @@ const ProductsList = () => {
           await updateProduct(selectedProduct.id, formData);
         }
       } else {
-        await createProduct(formData);
+        const payload = {
+          name: formData.name,
+          tipe: formData.tipe,
+          code: formData.code,
+          price: Number(formData.price),
+          persen: Number(formData.persen),
+          notes: formData.notes,
+          customer_name: formData.customer_name,
+          customer_phone: formData.customer_phone,
+          customer_email: formData.customer_email,
+        };
+        await createProduct(payload);
       }
+      setIsModalOpen(false);
       loadProducts();
     } catch (error) {
       console.error('Failed to save product:', error);
+      alert('Failed to save product. Please try again.');
     }
   };
 
@@ -111,14 +124,35 @@ const ProductsList = () => {
 
   const handleExport = async (dateFilter) => {
     try {
-      await exportSalesProductsToExcel({
-        code: '',
-        created_at_from: dateFilter.start_date,
-        created_at_to: dateFilter.end_date,
-      });
+      if (role === 'MANAGER') {
+        await exportManagerProductsToExcel({
+          code: '',
+          created_at_from: dateFilter.start_date,
+          created_at_to: dateFilter.end_date,
+        });
+      } else {
+        await exportSalesProductsToExcel({
+          code: '',
+          created_at_from: dateFilter.start_date,
+          created_at_to: dateFilter.end_date,
+        });
+      }
     } catch (error) {
       console.error('Export failed:', error);
       alert('Failed to export data');
+    }
+  };
+
+  const handleGunakan = async (product) => {
+    if (window.confirm('Are you sure you want to use this product? This will mark it as used.')) {
+      try {
+        await useProduct(product.id);
+        loadProducts();
+        alert('Product has been marked as used successfully');
+      } catch (error) {
+        console.error('Failed to use product:', error);
+        alert('Failed to use product. Please try again.');
+      }
     }
   };
 
@@ -128,15 +162,25 @@ const ProductsList = () => {
         <div className="mb-6">
           <div className="flex items-center justify-between mb-6">
             <h1 className="text-2xl font-bold text-gray-900">Daftar Produk</h1>
-            {role === 'SALES' && (
-              <button
-                onClick={() => setIsExportModalOpen(true)}
-                className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2.5 rounded-xl transition-colors font-medium"
-              >
-                <Download size={18} />
-                Export Excel
-              </button>
-            )}
+            <div className="flex items-center gap-3">
+              {role === 'SALES' && (
+                <button
+                  onClick={handleCreate}
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-xl font-medium transition-colors shadow-sm hover:shadow-md"
+                >
+                  Add Product
+                </button>
+              )}
+              {(role === 'SALES' || role === 'MANAGER') && (
+                <button
+                  onClick={() => setIsExportModalOpen(true)}
+                  className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2.5 rounded-xl transition-colors font-medium"
+                >
+                  <Download size={18} />
+                  Export Excel
+                </button>
+              )}
+            </div>
           </div>
 
           <div className="relative">
@@ -157,6 +201,7 @@ const ProductsList = () => {
           role={role}
           onEdit={handleEdit}
           onDelete={handleDelete}
+          onGunakan={handleGunakan}
         />
 
         {pagination && <Pagination pagination={pagination} onPageChange={handlePageChange} />}

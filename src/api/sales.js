@@ -172,3 +172,10 @@ export async function deleteSalesProduct(id) {
   const res = await client.delete(`/api/sales/products/${id}`);
   return res.data;
 }
+
+export async function useProduct(id) {
+  const res = await client.put(`/api/sales/products/${id}`, {
+    isActive: false,
+  });
+  return res.data;
+}
