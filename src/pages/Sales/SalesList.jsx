@@ -19,29 +19,33 @@ const SalesList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [selectedPerson, setSelectedPerson] = useState(null);
+  const [error, setError] = useState(null);
 
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
   const loadPeople = async () => {
     try {
       setLoading(true);
+      setError(null);
       const { items, pagination: pg } = await listSalesUsers(role, {
         page,
         search: debouncedSearchTerm,
       });
-      console.log('Loaded Sales People:', items);
-      console.log('Pagination:', pg);
-      setPeople(items);
+      setPeople(items || []);
       setPagination(pg);
     } catch (error) {
       console.error('Failed to fetch sales users:', error);
+      setError(error.message || 'Failed to load sales users');
+      setPeople([]);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    loadPeople();
+    if (role) {
+      loadPeople();
+    }
   }, [role, page, debouncedSearchTerm]);
 
   const handleCreate = () => {
@@ -71,6 +75,16 @@ const SalesList = () => {
     }
   };
 
+  if (!role) {
+    return (
+      <MainLayout>
+        <div className="bg-white rounded-2xl shadow-sm p-6">
+          <p>Loading role...</p>
+        </div>
+      </MainLayout>
+    );
+  }
+
   return (
     <MainLayout>
       <div className="bg-white rounded-2xl shadow-sm p-6">
@@ -99,6 +113,12 @@ const SalesList = () => {
           </div>
         </div>
 
+        {error && (
+          <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700">
+            {error}
+          </div>
+        )}
+
         <SalesTable
           people={people}
           loading={loading}
@@ -106,22 +126,26 @@ const SalesList = () => {
           onDelete={handleDelete}
         />
 
-        {pagination && <Pagination pagination={pagination} onPageChange={setPage} />}
+        {pagination && !loading && <Pagination pagination={pagination} onPageChange={setPage} />}
       </div>
 
-      <SalesFormModal
-        isOpen={isModalOpen}
-        closeModal={() => setIsModalOpen(false)}
-        onSave={handleSave}
-      />
+      {role === 'SUPERVISOR' && (
+        <>
+          <SalesFormModal
+            isOpen={isModalOpen}
+            closeModal={() => setIsModalOpen(false)}
+            onSave={handleSave}
+          />
 
-      <ConfirmDelete
-        isOpen={isConfirmOpen}
-        closeModal={() => setIsConfirmOpen(false)}
-        onConfirm={handleConfirmDelete}
-        title="Delete Sales User"
-        message="Are you sure you want to delete this sales user?"
-      />
+          <ConfirmDelete
+            isOpen={isConfirmOpen}
+            closeModal={() => setIsConfirmOpen(false)}
+            onConfirm={handleConfirmDelete}
+            title="Delete Sales User"
+            message="Are you sure you want to delete this sales user?"
+          />
+        </>
+      )}
     </MainLayout>
   );
 };

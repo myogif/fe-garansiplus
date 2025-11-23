@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react';
-import { Search } from 'lucide-react';
+import { Search, Download } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { fetchProducts, createProduct, updateProduct, deleteProduct } from '../../api/products';
 import ProductsTable from '../../components/ProductsTable';
 import ProductFormModal from '../../components/Modals/ProductFormModal';
 import ConfirmDelete from '../../components/Modals/ConfirmDelete';
+import ExportExcelModal from '../../components/Modals/ExportExcelModal';
 import Pagination from '../../components/Pagination';
 import useDebounce from '../../hooks/useDebounce';
 import MainLayout from '../../components/MainLayout';
+import { exportSalesProductsToExcel } from '../../api/sales';
 
 const ProductsList = () => {
   const { role, token } = useAuth();
@@ -19,6 +21,7 @@ const ProductsList = () => {
   const [pagination, setPagination] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [isExportModalOpen, setIsExportModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
 
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
@@ -86,12 +89,34 @@ const ProductsList = () => {
     setPage(newPage);
   };
 
+  const handleExport = async (dateFilter) => {
+    try {
+      await exportSalesProductsToExcel({
+        code: '',
+        created_at_from: dateFilter.start_date,
+        created_at_to: dateFilter.end_date,
+      });
+    } catch (error) {
+      console.error('Export failed:', error);
+      alert('Failed to export data');
+    }
+  };
+
   return (
     <MainLayout>
       <div className="bg-white rounded-2xl shadow-sm p-6">
         <div className="mb-6">
-          <div className="mb-6">
+          <div className="flex items-center justify-between mb-6">
             <h1 className="text-2xl font-bold text-gray-900">Daftar Produk</h1>
+            {role === 'SALES' && (
+              <button
+                onClick={() => setIsExportModalOpen(true)}
+                className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2.5 rounded-xl transition-colors font-medium"
+              >
+                <Download size={18} />
+                Export Excel
+              </button>
+            )}
           </div>
 
           <div className="relative">
@@ -130,6 +155,12 @@ const ProductsList = () => {
         onConfirm={handleConfirmDelete}
         title="Delete Product"
         message="Are you sure you want to delete this product?"
+      />
+
+      <ExportExcelModal
+        isOpen={isExportModalOpen}
+        closeModal={() => setIsExportModalOpen(false)}
+        onExport={handleExport}
       />
     </MainLayout>
   );

@@ -1,6 +1,5 @@
-import { Info, Edit2, Trash2, MoreVertical } from 'lucide-react';
+import { Info, Edit2, Trash2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { Menu } from '@headlessui/react';
 
 const ProductsTable = ({ products, loading, role, onEdit, onDelete }) => {
   const navigate = useNavigate();
@@ -93,58 +92,39 @@ const ProductsTable = ({ products, loading, role, onEdit, onDelete }) => {
               <td className="py-4 px-4">
                 {getStatusBadge(product.status)}
               </td>
-              <td className="py-4 px-4 text-center">
-                <Menu as="div" className="relative inline-block text-left">
-                  <Menu.Button className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors">
-                    <MoreVertical size={16} className="text-gray-600" />
-                  </Menu.Button>
-
-                  <Menu.Items className="absolute right-0 mt-2 w-48 origin-top-right rounded-lg bg-white border border-gray-200 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-10">
-                    <div className="p-1">
-                      <Menu.Item>
-                        {({ active }) => (
-                          <button
-                            onClick={() => navigate(`/products/${product.sku}`)}
-                            className={`${
-                              active ? 'bg-gray-50' : ''
-                            } group flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-sm text-gray-700 transition-colors`}
-                          >
-                            <Info className="w-4 h-4 text-gray-500" />
-                            Detail
-                          </button>
-                        )}
-                      </Menu.Item>
-                      <Menu.Item>
-                        {({ active }) => (
-                          <button
-                            onClick={() => onEdit && onEdit(product)}
-                            className={`${
-                              active ? 'bg-gray-50' : ''
-                            } group flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-sm text-gray-700 transition-colors`}
-                          >
-                            <Edit2 className="w-4 h-4 text-gray-500" />
-                            Edit
-                          </button>
-                        )}
-                      </Menu.Item>
-                      {role !== 'MANAGER' && (
-                        <Menu.Item>
-                          {({ active }) => (
-                            <button
-                              onClick={() => onDelete && onDelete(product)}
-                              className={`${
-                                active ? 'bg-red-50' : ''
-                              } group flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-sm text-red-600 transition-colors`}
-                            >
-                              <Trash2 className="w-4 h-4 text-red-500" />
-                              Delete
-                            </button>
-                          )}
-                        </Menu.Item>
-                      )}
-                    </div>
-                  </Menu.Items>
-                </Menu>
+              <td className="py-4 px-4">
+                <div className="flex items-center justify-center gap-2">
+                  <button
+                    onClick={() => {
+                      const path = role === 'SALES'
+                        ? `/products/sales/${product.sku}`
+                        : `/products/${product.sku}`;
+                      navigate(path);
+                    }}
+                    className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                    title="Detail"
+                  >
+                    <Info className="w-4 h-4" />
+                  </button>
+                  {role !== 'SALES' && (
+                    <button
+                      onClick={() => onEdit && onEdit(product)}
+                      className="p-2 text-gray-600 hover:bg-gray-50 rounded-lg transition-colors"
+                      title="Update"
+                    >
+                      <Edit2 className="w-4 h-4" />
+                    </button>
+                  )}
+                  {role === 'SUPERVISOR' && (
+                    <button
+                      onClick={() => onDelete && onDelete(product)}
+                      className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                      title="Delete"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  )}
+                </div>
               </td>
             </tr>
           ))}
