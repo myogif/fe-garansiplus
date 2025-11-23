@@ -127,19 +127,21 @@ const ProductsTable = ({ products, loading, role, onEdit, onDelete }) => {
                           </button>
                         )}
                       </Menu.Item>
-                      <Menu.Item>
-                        {({ active }) => (
-                          <button
-                            onClick={() => onDelete && onDelete(product)}
-                            className={`${
-                              active ? 'bg-red-50' : ''
-                            } group flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-sm text-red-600 transition-colors`}
-                          >
-                            <Trash2 className="w-4 h-4 text-red-500" />
-                            Delete
-                          </button>
-                        )}
-                      </Menu.Item>
+                      {role !== 'MANAGER' && (
+                        <Menu.Item>
+                          {({ active }) => (
+                            <button
+                              onClick={() => onDelete && onDelete(product)}
+                              className={`${
+                                active ? 'bg-red-50' : ''
+                              } group flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-sm text-red-600 transition-colors`}
+                            >
+                              <Trash2 className="w-4 h-4 text-red-500" />
+                              Delete
+                            </button>
+                          )}
+                        </Menu.Item>
+                      )}
                     </div>
                   </Menu.Items>
                 </Menu>
