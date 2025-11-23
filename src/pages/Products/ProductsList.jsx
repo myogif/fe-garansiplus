@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
+import { Search } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { fetchProducts, createProduct, updateProduct, deleteProduct } from '../../api/products';
 import ProductsTable from '../../components/ProductsTable';
 import ProductFormModal from '../../components/Modals/ProductFormModal';
 import ConfirmDelete from '../../components/Modals/ConfirmDelete';
+import Pagination from '../../components/Pagination';
 import useDebounce from '../../hooks/useDebounce';
 import MainLayout from '../../components/MainLayout';
 
@@ -80,55 +82,38 @@ const ProductsList = () => {
     }
   };
 
+  const handlePageChange = (newPage) => {
+    setPage(newPage);
+  };
+
   return (
     <MainLayout>
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold">Products</h1>
-        {role === 'SALES' && (
-          <button
-            className="bg-blue-500 text-white px-4 py-2 rounded-lg"
-            onClick={handleCreate}
-          >
-            Create Product
-          </button>
-        )}
-      </div>
+      <div className="bg-white rounded-2xl shadow-sm p-6">
+        <div className="mb-6">
+          <h1 className="text-2xl font-bold text-gray-900 mb-6">Daftar Produk</h1>
 
-      <div className="flex items-center justify-between mb-4">
-        <input
-          type="text"
-          placeholder="Search by name or SKU"
-          className="border rounded-lg px-4 py-2 w-1/3"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-        {role === 'SALES' && (
-          <div className="flex items-center">
+          <div className="relative">
+            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
             <input
-              type="checkbox"
-              id="mine"
-              checked={mine}
-              onChange={() => setMine(!mine)}
-              className="mr-2"
+              type="text"
+              placeholder="Cari..."
+              className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-transparent"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
-            <label htmlFor="mine">Show only my products</label>
           </div>
-        )}
-        <button
-          className="border rounded-lg px-4 py-2"
-          onClick={loadProducts}
-        >
-          Refresh
-        </button>
-      </div>
+        </div>
 
-      <ProductsTable
-        products={products}
-        loading={loading}
-        role={role}
-        onEdit={handleEdit}
-        onDelete={handleDelete}
-      />
+        <ProductsTable
+          products={products}
+          loading={loading}
+          role={role}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+        />
+
+        {pagination && <Pagination pagination={pagination} onPageChange={handlePageChange} />}
+      </div>
 
       <ProductFormModal
         isOpen={isModalOpen}
