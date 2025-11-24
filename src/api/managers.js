@@ -20,4 +20,4 @@ export async function createStore(storeData) {
   return res.data?.data;
 }
 
-export const deleteStore = (id) => client.delete(`/api/managers/stores/${id}`);
+export const deleteStore = (id) => client.delete(`/api/toko/${id}`);

@@ -74,12 +74,14 @@ const StoresList = () => {
 
   const handleConfirmDelete = async () => {
     try {
-      await deleteStore(selectedStore.id);
+      const response = await deleteStore(selectedStore.id);
+      const message = response?.data?.message || 'Store deleted successfully';
       loadStores();
-      showToast('Store deleted successfully');
+      showToast(message);
     } catch (error) {
       console.error('Failed to delete store:', error);
-      showToast('Failed to delete store', 'error');
+      const message = error?.response?.data?.message || 'Failed to delete store';
+      showToast(message, 'error');
     } finally {
       setSelectedStore(null);
     }
