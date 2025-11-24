@@ -1,7 +1,7 @@
-import { Info, Edit2, Trash2 } from 'lucide-react';
+import { Info, Edit2, Trash2, FileText } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
-const ProductsTable = ({ products, loading, role, onEdit, onDelete, onGunakan }) => {
+const ProductsTable = ({ products, loading, role, onEdit, onDelete, onGunakan, onCetak }) => {
   const navigate = useNavigate();
   if (loading) {
     return (
@@ -107,18 +107,45 @@ const ProductsTable = ({ products, loading, role, onEdit, onDelete, onGunakan })
                     <Info className="w-4 h-4" />
                   </button>
                   {role === 'SALES' && (
-                    <button
-                      onClick={() => onGunakan && onGunakan(product)}
-                      disabled={product.status === 'Used' || product.status === 'USED' || !product.isActive}
-                      className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                        product.status === 'Used' || product.status === 'USED' || !product.isActive
-                          ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                          : 'bg-[#C9F35B] hover:bg-[#B8E047] text-gray-900'
-                      }`}
-                      title={product.status === 'Used' || !product.isActive ? 'Product already used' : 'Use product'}
-                    >
-                      Gunakan
-                    </button>
+                    <>
+                      <button
+                        onClick={() => onGunakan && onGunakan(product)}
+                        disabled={
+                          product.status === 'Used' ||
+                          product.status === 'USED' ||
+                          product.status === 'EXPIRED' ||
+                          product.status === 'Expired' ||
+                          product.status === 'INACTIVE' ||
+                          !product.isActive
+                        }
+                        className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                          product.status === 'Used' ||
+                          product.status === 'USED' ||
+                          product.status === 'EXPIRED' ||
+                          product.status === 'Expired' ||
+                          product.status === 'INACTIVE' ||
+                          !product.isActive
+                            ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                            : 'bg-[#C9F35B] hover:bg-[#B8E047] text-gray-900'
+                        }`}
+                        title={
+                          product.status === 'Used' || product.status === 'USED'
+                            ? 'Product already used'
+                            : (product.status === 'EXPIRED' || product.status === 'Expired' || product.status === 'INACTIVE' || !product.isActive)
+                            ? 'Product expired or inactive'
+                            : 'Use product'
+                        }
+                      >
+                        Gunakan
+                      </button>
+                      <button
+                        onClick={() => onCetak && onCetak(product)}
+                        className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                        title="Cetak Sertifikat"
+                      >
+                        <FileText className="w-4 h-4" />
+                      </button>
+                    </>
                   )}
                 </div>
               </td>

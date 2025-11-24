@@ -2,11 +2,14 @@ import { useEffect, useState } from 'react';
 import { Search, Download } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { fetchProducts, createProduct, updateProduct, deleteProduct, fetchProductByCode, exportManagerProductsToExcel } from '../../api/products';
-import { updateSalesProduct, deleteSalesProduct, exportSalesProductsToExcel, fetchSalesProductDetail, useProduct } from '../../api/sales';
+import { updateSalesProduct, deleteSalesProduct, exportSalesProductsToExcel, fetchSalesProductDetail, useProduct, downloadProductCertificate } from '../../api/sales';
+import { exportSupervisorProductsToExcel } from '../../api/supervisors';
 import ProductsTable from '../../components/ProductsTable';
 import ProductFormModal from '../../components/Modals/ProductFormModal';
 import ConfirmDelete from '../../components/Modals/ConfirmDelete';
 import ExportExcelModal from '../../components/Modals/ExportExcelModal';
+import ConfirmUseProduct from '../../components/Modals/ConfirmUseProduct';
+import Toast from '../../components/Toast';
 import Pagination from '../../components/Pagination';
 import useDebounce from '../../hooks/useDebounce';
 import MainLayout from '../../components/MainLayout';
@@ -22,7 +25,9 @@ const ProductsList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [isExportModalOpen, setIsExportModalOpen] = useState(false);
+  const [isConfirmUseOpen, setIsConfirmUseOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [toast, setToast] = useState({ show: false, message: '', type: 'success' });
 
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
@@ -64,7 +69,7 @@ const ProductsList = () => {
       setIsModalOpen(true);
     } catch (error) {
       console.error('Failed to fetch product details:', error);
-      alert('Failed to load product details');
+      showToast('Failed to load product details', 'error');
     } finally {
       setLoading(false);
     }
@@ -99,9 +104,10 @@ const ProductsList = () => {
       }
       setIsModalOpen(false);
       loadProducts();
+      showToast('Product saved successfully');
     } catch (error) {
       console.error('Failed to save product:', error);
-      alert('Failed to save product. Please try again.');
+      showToast('Failed to save product. Please try again.', 'error');
     }
   };
 
@@ -130,6 +136,12 @@ const ProductsList = () => {
           created_at_from: dateFilter.start_date,
           created_at_to: dateFilter.end_date,
         });
+      } else if (role === 'SUPERVISOR') {
+        await exportSupervisorProductsToExcel({
+          code: '',
+          created_at_from: dateFilter.start_date,
+          created_at_to: dateFilter.end_date,
+        });
       } else {
         await exportSalesProductsToExcel({
           code: '',
@@ -139,20 +151,38 @@ const ProductsList = () => {
       }
     } catch (error) {
       console.error('Export failed:', error);
-      alert('Failed to export data');
+      showToast('Failed to export data', 'error');
     }
   };
 
-  const handleGunakan = async (product) => {
-    if (window.confirm('Are you sure you want to use this product? This will mark it as used.')) {
-      try {
-        await useProduct(product.id);
-        loadProducts();
-        alert('Product has been marked as used successfully');
-      } catch (error) {
-        console.error('Failed to use product:', error);
-        alert('Failed to use product. Please try again.');
-      }
+  const showToast = (message, type = 'success') => {
+    setToast({ show: true, message, type });
+    setTimeout(() => setToast({ show: false, message: '', type: 'success' }), 3000);
+  };
+
+  const handleGunakan = (product) => {
+    setSelectedProduct(product);
+    setIsConfirmUseOpen(true);
+  };
+
+  const handleConfirmUse = async () => {
+    try {
+      await useProduct(selectedProduct.id);
+      loadProducts();
+      showToast('Product has been marked as used successfully');
+    } catch (error) {
+      console.error('Failed to use product:', error);
+      showToast('Failed to use product. Please try again.', 'error');
+    }
+  };
+
+  const handleCetak = async (product) => {
+    try {
+      await downloadProductCertificate(product.id);
+      showToast('Sertifikat berhasil diunduh');
+    } catch (error) {
+      console.error('Failed to download certificate:', error);
+      showToast('Gagal mengunduh sertifikat', 'error');
     }
   };
 
@@ -171,7 +201,7 @@ const ProductsList = () => {
                   Add Product
                 </button>
               )}
-              {(role === 'SALES' || role === 'MANAGER') && role !== 'SERVICE_CENTER' && (
+              {(role === 'SALES' || role === 'MANAGER' || role === 'SUPERVISOR') && role !== 'SERVICE_CENTER' && (
                 <button
                   onClick={() => setIsExportModalOpen(true)}
                   className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2.5 rounded-xl transition-colors font-medium"
@@ -202,6 +232,7 @@ const ProductsList = () => {
           onEdit={handleEdit}
           onDelete={handleDelete}
           onGunakan={handleGunakan}
+          onCetak={handleCetak}
         />
 
         {pagination && <Pagination pagination={pagination} onPageChange={handlePageChange} />}
@@ -227,6 +258,15 @@ const ProductsList = () => {
         closeModal={() => setIsExportModalOpen(false)}
         onExport={handleExport}
       />
+
+      <ConfirmUseProduct
+        isOpen={isConfirmUseOpen}
+        closeModal={() => setIsConfirmUseOpen(false)}
+        onConfirm={handleConfirmUse}
+        product={selectedProduct}
+      />
+
+      {toast.show && <Toast message={toast.message} type={toast.type} />}
     </MainLayout>
   );
 };
