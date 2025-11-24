@@ -56,6 +56,11 @@ const StoresList = () => {
     setIsConfirmOpen(true);
   };
 
+  const handleCloseConfirm = () => {
+    setIsConfirmOpen(false);
+    setSelectedStore(null);
+  };
+
   const handleSave = async (formData) => {
     try {
       await createStore(formData);
@@ -121,10 +126,10 @@ const StoresList = () => {
 
       <ConfirmDelete
         isOpen={isConfirmOpen}
-        closeModal={() => setIsConfirmOpen(false)}
+        closeModal={handleCloseConfirm}
         onConfirm={handleConfirmDelete}
         title="Delete Store"
-        message="Are you sure you want to delete this store?"
+        message={`Are you sure you want to delete ${selectedStore?.name || 'this store'}?`}
       />
 
       {toast.show && <Toast message={toast.message} type={toast.type} />}
