@@ -5,8 +5,10 @@ import {
   Users,
   UserCheck,
   Store,
+  X,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { useEffect } from 'react';
 
 const Sidebar = ({ isOpen, onClose }) => {
   const { role } = useAuth();
@@ -36,8 +38,21 @@ const Sidebar = ({ isOpen, onClose }) => {
 
   const links = navItems[role] || [];
 
+  // Menutup sidebar saat tekan tombol ESC
+  useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === 'Escape' && isOpen) {
+        onClose();
+      }
+    };
+
+    document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
+  }, [isOpen, onClose]);
+
   return (
     <>
+      {/* Backdrop - klik di luar sidebar untuk menutup */}
       {isOpen && (
         <div
           className="fixed inset-0 bg-black/60 z-40 lg:hidden"
@@ -51,12 +66,20 @@ const Sidebar = ({ isOpen, onClose }) => {
         }`}
       >
         <div className="h-full flex flex-col p-6 gap-8">
-          <div className="flex items-center justify-center py-2">
+          <div className="flex items-center justify-between py-2">
             <img
               src="/Rectangle 5.png"
               alt="Garansi+"
               className="h-12 w-auto object-contain"
             />
+            {/* Tombol Close (X) - hanya muncul di mobile */}
+            <button
+              onClick={onClose}
+              className="lg:hidden p-2 hover:bg-white/10 rounded-lg transition-colors"
+              aria-label="Tutup sidebar"
+            >
+              <X className="w-5 h-5" />
+            </button>
           </div>
 
           <nav className="space-y-2">
