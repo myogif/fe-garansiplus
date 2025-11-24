@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Search } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
-import { getStores, createStore } from '../../api/managers';
+import { getStores, createStore, deleteStore } from '../../api/managers';
 import StoresTable from '../../components/StoresTable';
 import StoreFormModal from '../../components/Modals/StoreFormModal';
+import ConfirmDelete from '../../components/Modals/ConfirmDelete';
 import Pagination from '../../components/Pagination';
 import useDebounce from '../../hooks/useDebounce';
 import MainLayout from '../../components/MainLayout';
@@ -17,6 +18,8 @@ const StoresList = () => {
   const [page, setPage] = useState(1);
   const [pagination, setPagination] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [selectedStore, setSelectedStore] = useState(null);
   const [toast, setToast] = useState({ show: false, message: '', type: 'success' });
 
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
@@ -48,6 +51,16 @@ const StoresList = () => {
     setIsModalOpen(true);
   };
 
+  const handleDelete = (store) => {
+    setSelectedStore(store);
+    setIsConfirmOpen(true);
+  };
+
+  const handleCloseConfirm = () => {
+    setIsConfirmOpen(false);
+    setSelectedStore(null);
+  };
+
   const handleSave = async (formData) => {
     try {
       await createStore(formData);
@@ -56,6 +69,19 @@ const StoresList = () => {
     } catch (error) {
       console.error('Failed to create store:', error);
       showToast('Failed to create store', 'error');
+    }
+  };
+
+  const handleConfirmDelete = async () => {
+    try {
+      await deleteStore(selectedStore.id);
+      loadStores();
+      showToast('Store deleted successfully');
+    } catch (error) {
+      console.error('Failed to delete store:', error);
+      showToast('Failed to delete store', 'error');
+    } finally {
+      setSelectedStore(null);
     }
   };
 
@@ -87,7 +113,7 @@ const StoresList = () => {
           </div>
         </div>
 
-        <StoresTable stores={stores} loading={loading} />
+        <StoresTable stores={stores} loading={loading} role={role} onDelete={handleDelete} />
 
         {pagination && <Pagination pagination={pagination} onPageChange={setPage} />}
       </div>
@@ -96,6 +122,14 @@ const StoresList = () => {
         isOpen={isModalOpen}
         closeModal={() => setIsModalOpen(false)}
         onSave={handleSave}
+      />
+
+      <ConfirmDelete
+        isOpen={isConfirmOpen}
+        closeModal={handleCloseConfirm}
+        onConfirm={handleConfirmDelete}
+        title="Delete Store"
+        message={`Are you sure you want to delete ${selectedStore?.name || 'this store'}?`}
       />
 
       {toast.show && <Toast message={toast.message} type={toast.type} />}

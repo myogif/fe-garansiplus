@@ -1,6 +1,7 @@
-import { Mail, Phone, MapPin, CheckCircle, XCircle } from 'lucide-react';
+import { Menu } from '@headlessui/react';
+import { Mail, Phone, MapPin, CheckCircle, XCircle, Trash2, MoreVertical } from 'lucide-react';
 
-const StoresTable = ({ stores, loading }) => {
+const StoresTable = ({ stores, loading, role, onDelete }) => {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
@@ -27,6 +28,9 @@ const StoresTable = ({ stores, loading }) => {
             <th className="text-left py-4 px-4 font-semibold text-gray-700">Address</th>
             <th className="text-left py-4 px-4 font-semibold text-gray-700">Contact</th>
             <th className="text-center py-4 px-4 font-semibold text-gray-700">Status</th>
+            {role === 'MANAGER' && (
+              <th className="text-center py-4 px-4 font-semibold text-gray-700">Action</th>
+            )}
           </tr>
         </thead>
         <tbody>
@@ -76,6 +80,33 @@ const StoresTable = ({ stores, loading }) => {
                   </span>
                 )}
               </td>
+              {role === 'MANAGER' && (
+                <td className="py-4 px-4 text-center">
+                  <Menu as="div" className="relative inline-block text-left">
+                    <Menu.Button className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors">
+                      <MoreVertical size={16} className="text-gray-600" />
+                    </Menu.Button>
+
+                    <Menu.Items className="absolute right-0 mt-2 w-48 origin-top-right rounded-lg bg-white border border-gray-200 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-10">
+                      <div className="p-1">
+                        <Menu.Item>
+                          {({ active }) => (
+                            <button
+                              onClick={() => onDelete && onDelete(store)}
+                              className={`${
+                                active ? 'bg-red-50' : ''
+                              } group flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-sm text-red-600 transition-colors`}
+                            >
+                              <Trash2 className="w-4 h-4 text-red-500" />
+                              Delete
+                            </button>
+                          )}
+                        </Menu.Item>
+                      </div>
+                    </Menu.Items>
+                  </Menu>
+                </td>
+              )}
             </tr>
           ))}
         </tbody>
