@@ -33,7 +33,7 @@ const ManagerDashboard = () => {
       { title: 'Total Toko', value: stats.totalStores },
       { title: 'Total Supervisor', value: stats.totalSupervisors },
       { title: 'Total Sales', value: stats.totalSales },
-      { title: 'Total Customer', value: stats.totalCustomers },
+      { title: 'Total Customer', value: stats.totalProducts },
     ],
     [stats]
   );

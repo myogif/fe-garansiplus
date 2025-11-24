@@ -142,12 +142,6 @@ const ProductsList = () => {
           created_at_from: dateFilter.start_date,
           created_at_to: dateFilter.end_date,
         });
-      } else {
-        await exportSalesProductsToExcel({
-          code: '',
-          created_at_from: dateFilter.start_date,
-          created_at_to: dateFilter.end_date,
-        });
       }
     } catch (error) {
       console.error('Export failed:', error);
