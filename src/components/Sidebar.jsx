@@ -55,7 +55,7 @@ const Sidebar = ({ isOpen, onClose }) => {
       {/* Backdrop - klik di luar sidebar untuk menutup */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black/60 z-40 lg:hidden"
+          className="fixed inset-0 bg-black/60 z-40"
           onClick={onClose}
         />
       )}
@@ -72,17 +72,17 @@ const Sidebar = ({ isOpen, onClose }) => {
               alt="Garansi+"
               className="h-12 w-auto object-contain"
             />
-            {/* Tombol Close (X) - hanya muncul di mobile */}
+            {/* Tombol Close (X) - muncul di semua ukuran layar */}
             <button
               onClick={onClose}
-              className="lg:hidden p-2 hover:bg-white/10 rounded-lg transition-colors"
+              className="p-2 hover:bg-white/10 rounded-lg transition-colors"
               aria-label="Tutup sidebar"
             >
               <X className="w-5 h-5" />
             </button>
           </div>
 
-          <nav className="space-y-2">
+          <nav className="space-y-2 flex-1" onClick={(e) => e.stopPropagation()}>
             {links.map((link) => (
               <NavLink
                 key={link.to}
@@ -101,6 +101,9 @@ const Sidebar = ({ isOpen, onClose }) => {
               </NavLink>
             ))}
           </nav>
+
+          {/* Area kosong di bawah menu - klik untuk menutup */}
+          <div className="flex-1" onClick={onClose}></div>
         </div>
       </aside>
     </>
