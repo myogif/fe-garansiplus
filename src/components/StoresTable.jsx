@@ -1,6 +1,6 @@
-import { Mail, Phone, MapPin, CheckCircle, XCircle } from 'lucide-react';
+import { Mail, Phone, MapPin, CheckCircle, XCircle, Trash2 } from 'lucide-react';
 
-const StoresTable = ({ stores, loading }) => {
+const StoresTable = ({ stores, loading, role, onDelete }) => {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
@@ -27,6 +27,9 @@ const StoresTable = ({ stores, loading }) => {
             <th className="text-left py-4 px-4 font-semibold text-gray-700">Address</th>
             <th className="text-left py-4 px-4 font-semibold text-gray-700">Contact</th>
             <th className="text-center py-4 px-4 font-semibold text-gray-700">Status</th>
+            {role === 'MANAGER' && (
+              <th className="text-center py-4 px-4 font-semibold text-gray-700">Action</th>
+            )}
           </tr>
         </thead>
         <tbody>
@@ -76,6 +79,17 @@ const StoresTable = ({ stores, loading }) => {
                   </span>
                 )}
               </td>
+              {role === 'MANAGER' && (
+                <td className="py-4 px-4 text-center">
+                  <button
+                    onClick={() => onDelete && onDelete(store)}
+                    className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-red-600 bg-red-50 hover:bg-red-100 rounded-lg transition-colors"
+                  >
+                    <Trash2 size={16} />
+                    Delete
+                  </button>
+                </td>
+              )}
             </tr>
           ))}
         </tbody>
