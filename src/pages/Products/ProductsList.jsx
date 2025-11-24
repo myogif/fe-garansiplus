@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import { Search, Download } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { fetchProducts, createProduct, updateProduct, deleteProduct, fetchProductByCode, exportManagerProductsToExcel } from '../../api/products';
-import { updateSalesProduct, deleteSalesProduct, exportSalesProductsToExcel, fetchSalesProductDetail, useProduct } from '../../api/sales';
+import { updateSalesProduct, deleteSalesProduct, exportSalesProductsToExcel, fetchSalesProductDetail, useProduct, downloadProductCertificate } from '../../api/sales';
+import { exportSupervisorProductsToExcel } from '../../api/supervisors';
 import ProductsTable from '../../components/ProductsTable';
 import ProductFormModal from '../../components/Modals/ProductFormModal';
 import ConfirmDelete from '../../components/Modals/ConfirmDelete';
@@ -135,6 +136,12 @@ const ProductsList = () => {
           created_at_from: dateFilter.start_date,
           created_at_to: dateFilter.end_date,
         });
+      } else if (role === 'SUPERVISOR') {
+        await exportSupervisorProductsToExcel({
+          code: '',
+          created_at_from: dateFilter.start_date,
+          created_at_to: dateFilter.end_date,
+        });
       } else {
         await exportSalesProductsToExcel({
           code: '',
@@ -169,6 +176,16 @@ const ProductsList = () => {
     }
   };
 
+  const handleCetak = async (product) => {
+    try {
+      await downloadProductCertificate(product.id);
+      showToast('Sertifikat berhasil diunduh');
+    } catch (error) {
+      console.error('Failed to download certificate:', error);
+      showToast('Gagal mengunduh sertifikat', 'error');
+    }
+  };
+
   return (
     <MainLayout>
       <div className="bg-white rounded-2xl shadow-sm p-6">
@@ -184,7 +201,7 @@ const ProductsList = () => {
                   Add Product
                 </button>
               )}
-              {(role === 'SALES' || role === 'MANAGER') && role !== 'SERVICE_CENTER' && (
+              {(role === 'SALES' || role === 'MANAGER' || role === 'SUPERVISOR') && role !== 'SERVICE_CENTER' && (
                 <button
                   onClick={() => setIsExportModalOpen(true)}
                   className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2.5 rounded-xl transition-colors font-medium"
@@ -215,6 +232,7 @@ const ProductsList = () => {
           onEdit={handleEdit}
           onDelete={handleDelete}
           onGunakan={handleGunakan}
+          onCetak={handleCetak}
         />
 
         {pagination && <Pagination pagination={pagination} onPageChange={handlePageChange} />}

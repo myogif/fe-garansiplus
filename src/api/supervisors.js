@@ -33,6 +33,43 @@ export const deleteSupervisor = (id) => client.delete(`/api/managers/supervisors
 export const createSalesUser = (payload) => client.post('/api/supervisors/sales', payload);
 export const deleteSalesUser = (id) => client.delete(`/api/supervisors/sales/${id}`);
 
+export async function exportSupervisorProductsToExcel({ code = '', created_at_from = '', created_at_to = '' } = {}) {
+  const searchParams = new URLSearchParams({
+    page: 1,
+    limit: 10,
+    sortBy: 'createdAt',
+    sortOrder: 'desc',
+    export: 'excel',
+  });
+
+  if (code) {
+    searchParams.append('code', code);
+  }
+  if (created_at_from) {
+    searchParams.append('created_at_from', created_at_from);
+  }
+  if (created_at_to) {
+    searchParams.append('created_at_to', created_at_to);
+  }
+
+  const res = await client.get(`/api/supervisors/products?${searchParams}`, {
+    responseType: 'blob',
+  });
+
+  const blob = new Blob([res.data], {
+    type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  });
+
+  const url = window.URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = `products_supervisor_${new Date().toISOString().split('T')[0]}.xlsx`;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  window.URL.revokeObjectURL(url);
+}
+
 export async function listSalesUsers(role, { page = 1, limit = 10, search = '' } = {}) {
   const searchParams = new URLSearchParams({
     page,
