@@ -19,3 +19,5 @@ export async function createStore(storeData) {
   const res = await client.post('/api/managers/stores', storeData);
   return res.data?.data;
 }
+
+export const deleteStore = (id) => client.delete(`/api/toko/${id}`);
