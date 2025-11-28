@@ -220,7 +220,7 @@ const ProductsList = () => {
   const handleConfirmUse = async () => {
     try {
       const response = await useProduct(selectedProduct.id);
-      const data = response?.data || response;
+      const data = response;
 
       if (data?.success === true || data?.status === true) {
         const message = data.message || 'Product has been marked as used successfully';
