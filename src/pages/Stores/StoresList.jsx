@@ -63,25 +63,78 @@ const StoresList = () => {
 
   const handleSave = async (formData) => {
     try {
-      await createStore(formData);
-      loadStores();
-      showToast('Store created successfully');
+      const response = await createStore(formData);
+      const data = response?.data || response;
+
+      if (data?.success === true || data?.status === true) {
+        const message = data.message || 'Store created successfully';
+        showToast(message, 'success');
+        loadStores();
+        return data;
+      } else {
+        let errorText = 'Failed to create store';
+        if (data?.errors && Array.isArray(data.errors) && data.errors.length > 0) {
+          errorText = data.errors.join(', ');
+        } else if (data?.message) {
+          errorText = data.message;
+        }
+        showToast(errorText, 'error');
+        return data;
+      }
     } catch (error) {
       console.error('Failed to create store:', error);
-      showToast('Failed to create store', 'error');
+
+      let errorText = 'Failed to create store';
+      if (error?.response?.data) {
+        const errorData = error.response.data;
+        if (errorData.errors && Array.isArray(errorData.errors) && errorData.errors.length > 0) {
+          errorText = errorData.errors.join(', ');
+        } else if (errorData.message) {
+          errorText = errorData.message;
+        }
+      } else if (error?.message) {
+        errorText = error.message;
+      }
+
+      showToast(errorText, 'error');
+      throw error;
     }
   };
 
   const handleConfirmDelete = async () => {
     try {
       const response = await deleteStore(selectedStore.id);
-      const message = response?.data?.message || 'Store deleted successfully';
-      loadStores();
-      showToast(message);
+      const data = response?.data || response;
+
+      if (data?.success === true || data?.status === true) {
+        const message = data.message || 'Store deleted successfully';
+        showToast(message, 'success');
+        loadStores();
+      } else {
+        let errorText = 'Failed to delete store';
+        if (data?.errors && Array.isArray(data.errors) && data.errors.length > 0) {
+          errorText = data.errors.join(', ');
+        } else if (data?.message) {
+          errorText = data.message;
+        }
+        showToast(errorText, 'error');
+      }
     } catch (error) {
       console.error('Failed to delete store:', error);
-      const message = error?.response?.data?.message || 'Failed to delete store';
-      showToast(message, 'error');
+
+      let errorText = 'Failed to delete store';
+      if (error?.response?.data) {
+        const errorData = error.response.data;
+        if (errorData.errors && Array.isArray(errorData.errors) && errorData.errors.length > 0) {
+          errorText = errorData.errors.join(', ');
+        } else if (errorData.message) {
+          errorText = errorData.message;
+        }
+      } else if (error?.message) {
+        errorText = error.message;
+      }
+
+      showToast(errorText, 'error');
     } finally {
       setSelectedStore(null);
     }

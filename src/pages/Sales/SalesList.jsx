@@ -8,6 +8,7 @@ import ConfirmDelete from '../../components/Modals/ConfirmDelete';
 import Pagination from '../../components/Pagination';
 import useDebounce from '../../hooks/useDebounce';
 import MainLayout from '../../components/MainLayout';
+import Toast from '../../components/Toast';
 
 const SalesList = () => {
   const { role } = useAuth();
@@ -20,6 +21,7 @@ const SalesList = () => {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [selectedPerson, setSelectedPerson] = useState(null);
   const [error, setError] = useState(null);
+  const [toast, setToast] = useState({ show: false, message: '', type: 'success' });
 
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
@@ -57,21 +59,85 @@ const SalesList = () => {
     setIsConfirmOpen(true);
   };
 
+  const showToast = (message, type = 'success') => {
+    setToast({ show: true, message, type });
+    setTimeout(() => setToast({ show: false, message: '', type: 'success' }), 3000);
+  };
+
   const handleSave = async (formData) => {
     try {
-      await createSalesUser(formData);
-      loadPeople();
+      const response = await createSalesUser(formData);
+      const data = response?.data || response;
+
+      if (data?.success === true || data?.status === true) {
+        const message = data.message || 'Sales user created successfully';
+        showToast(message, 'success');
+        loadPeople();
+        return data;
+      } else {
+        let errorText = 'Failed to create sales user';
+        if (data?.errors && Array.isArray(data.errors) && data.errors.length > 0) {
+          errorText = data.errors.join(', ');
+        } else if (data?.message) {
+          errorText = data.message;
+        }
+        showToast(errorText, 'error');
+        return data;
+      }
     } catch (error) {
       console.error('Failed to save sales user:', error);
+
+      let errorText = 'Failed to save sales user';
+      if (error?.response?.data) {
+        const errorData = error.response.data;
+        if (errorData.errors && Array.isArray(errorData.errors) && errorData.errors.length > 0) {
+          errorText = errorData.errors.join(', ');
+        } else if (errorData.message) {
+          errorText = errorData.message;
+        }
+      } else if (error?.message) {
+        errorText = error.message;
+      }
+
+      showToast(errorText, 'error');
+      throw error;
     }
   };
 
   const handleConfirmDelete = async () => {
     try {
-      await deleteSalesUser(selectedPerson.id);
-      loadPeople();
+      const response = await deleteSalesUser(selectedPerson.id);
+      const data = response?.data || response;
+
+      if (data?.success === true || data?.status === true) {
+        const message = data.message || 'Sales user deleted successfully';
+        showToast(message, 'success');
+        loadPeople();
+      } else {
+        let errorText = 'Failed to delete sales user';
+        if (data?.errors && Array.isArray(data.errors) && data.errors.length > 0) {
+          errorText = data.errors.join(', ');
+        } else if (data?.message) {
+          errorText = data.message;
+        }
+        showToast(errorText, 'error');
+      }
     } catch (error) {
       console.error('Failed to delete sales user:', error);
+
+      let errorText = 'Failed to delete sales user';
+      if (error?.response?.data) {
+        const errorData = error.response.data;
+        if (errorData.errors && Array.isArray(errorData.errors) && errorData.errors.length > 0) {
+          errorText = errorData.errors.join(', ');
+        } else if (errorData.message) {
+          errorText = errorData.message;
+        }
+      } else if (error?.message) {
+        errorText = error.message;
+      }
+
+      showToast(errorText, 'error');
     }
   };
 
@@ -146,6 +212,8 @@ const SalesList = () => {
           />
         </>
       )}
+
+      {toast.show && <Toast message={toast.message} type={toast.type} />}
     </MainLayout>
   );
 };

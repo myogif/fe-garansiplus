@@ -44,17 +44,47 @@ const CustomersList = () => {
 
   const handleDownloadCertificate = async (warrantyId) => {
     try {
-      await downloadCertificate(warrantyId);
-      setToast({
-        show: true,
-        message: 'Sertifikat berhasil diunduh',
-        type: 'success',
-      });
+      const response = await downloadCertificate(warrantyId);
+      const data = response?.data || response;
+
+      if (data?.success === true || data?.status === true) {
+        const message = data.message || 'Sertifikat berhasil diunduh';
+        setToast({
+          show: true,
+          message: message,
+          type: 'success',
+        });
+      } else {
+        let errorText = 'Gagal mengunduh sertifikat';
+        if (data?.errors && Array.isArray(data.errors) && data.errors.length > 0) {
+          errorText = data.errors.join(', ');
+        } else if (data?.message) {
+          errorText = data.message;
+        }
+        setToast({
+          show: true,
+          message: errorText,
+          type: 'error',
+        });
+      }
     } catch (error) {
       console.error('Failed to download certificate:', error);
+
+      let errorText = 'Gagal mengunduh sertifikat';
+      if (error?.response?.data) {
+        const errorData = error.response.data;
+        if (errorData.errors && Array.isArray(errorData.errors) && errorData.errors.length > 0) {
+          errorText = errorData.errors.join(', ');
+        } else if (errorData.message) {
+          errorText = errorData.message;
+        }
+      } else if (error?.message) {
+        errorText = error.message;
+      }
+
       setToast({
         show: true,
-        message: 'Gagal mengunduh sertifikat',
+        message: errorText,
         type: 'error',
       });
     }

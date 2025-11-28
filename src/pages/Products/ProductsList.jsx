@@ -82,11 +82,12 @@ const ProductsList = () => {
 
   const handleSave = async (formData) => {
     try {
+      let response;
       if (selectedProduct) {
         if (role === 'SALES') {
-          await updateSalesProduct(selectedProduct.id, formData);
+          response = await updateSalesProduct(selectedProduct.id, formData);
         } else {
-          await updateProduct(selectedProduct.id, formData);
+          response = await updateProduct(selectedProduct.id, formData);
         }
       } else {
         const payload = {
@@ -100,27 +101,84 @@ const ProductsList = () => {
           customer_phone: formData.customer_phone,
           customer_email: formData.customer_email,
         };
-        await createProduct(payload);
+        response = await createProduct(payload);
       }
-      setIsModalOpen(false);
-      loadProducts();
-      showToast('Product saved successfully');
+
+      const data = response?.data || response;
+
+      if (data?.success === true || data?.status === true) {
+        const message = data.message || (selectedProduct ? 'Product updated successfully' : 'Product created successfully');
+        showToast(message, 'success');
+        setIsModalOpen(false);
+        loadProducts();
+      } else {
+        let errorText = 'Failed to save product';
+        if (data?.errors && Array.isArray(data.errors) && data.errors.length > 0) {
+          errorText = data.errors.join(', ');
+        } else if (data?.message) {
+          errorText = data.message;
+        }
+        showToast(errorText, 'error');
+      }
     } catch (error) {
       console.error('Failed to save product:', error);
-      showToast('Failed to save product. Please try again.', 'error');
+
+      let errorText = 'Failed to save product. Please try again.';
+      if (error?.response?.data) {
+        const errorData = error.response.data;
+        if (errorData.errors && Array.isArray(errorData.errors) && errorData.errors.length > 0) {
+          errorText = errorData.errors.join(', ');
+        } else if (errorData.message) {
+          errorText = errorData.message;
+        }
+      } else if (error?.message) {
+        errorText = error.message;
+      }
+
+      showToast(errorText, 'error');
     }
   };
 
   const handleConfirmDelete = async () => {
     try {
+      let response;
       if (role === 'SALES') {
-        await deleteSalesProduct(selectedProduct.id);
+        response = await deleteSalesProduct(selectedProduct.id);
       } else {
-        await deleteProduct(selectedProduct.id, role);
+        response = await deleteProduct(selectedProduct.id, role);
       }
-      loadProducts();
+
+      const data = response?.data || response;
+
+      if (data?.success === true || data?.status === true) {
+        const message = data.message || 'Product deleted successfully';
+        showToast(message, 'success');
+        loadProducts();
+      } else {
+        let errorText = 'Failed to delete product';
+        if (data?.errors && Array.isArray(data.errors) && data.errors.length > 0) {
+          errorText = data.errors.join(', ');
+        } else if (data?.message) {
+          errorText = data.message;
+        }
+        showToast(errorText, 'error');
+      }
     } catch (error) {
       console.error('Failed to delete product:', error);
+
+      let errorText = 'Failed to delete product';
+      if (error?.response?.data) {
+        const errorData = error.response.data;
+        if (errorData.errors && Array.isArray(errorData.errors) && errorData.errors.length > 0) {
+          errorText = errorData.errors.join(', ');
+        } else if (errorData.message) {
+          errorText = errorData.message;
+        }
+      } else if (error?.message) {
+        errorText = error.message;
+      }
+
+      showToast(errorText, 'error');
     }
   };
 
@@ -161,12 +219,38 @@ const ProductsList = () => {
 
   const handleConfirmUse = async () => {
     try {
-      await useProduct(selectedProduct.id);
-      loadProducts();
-      showToast('Product has been marked as used successfully');
+      const response = await useProduct(selectedProduct.id);
+      const data = response?.data || response;
+
+      if (data?.success === true || data?.status === true) {
+        const message = data.message || 'Product has been marked as used successfully';
+        showToast(message, 'success');
+        loadProducts();
+      } else {
+        let errorText = 'Failed to use product';
+        if (data?.errors && Array.isArray(data.errors) && data.errors.length > 0) {
+          errorText = data.errors.join(', ');
+        } else if (data?.message) {
+          errorText = data.message;
+        }
+        showToast(errorText, 'error');
+      }
     } catch (error) {
       console.error('Failed to use product:', error);
-      showToast('Failed to use product. Please try again.', 'error');
+
+      let errorText = 'Failed to use product. Please try again.';
+      if (error?.response?.data) {
+        const errorData = error.response.data;
+        if (errorData.errors && Array.isArray(errorData.errors) && errorData.errors.length > 0) {
+          errorText = errorData.errors.join(', ');
+        } else if (errorData.message) {
+          errorText = errorData.message;
+        }
+      } else if (error?.message) {
+        errorText = error.message;
+      }
+
+      showToast(errorText, 'error');
     }
   };
 
