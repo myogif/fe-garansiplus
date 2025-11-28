@@ -99,13 +99,10 @@ const SupervisorFormModal = ({ isOpen, closeModal, onSave }) => {
       setMessage({ type: '', text: '' });
       
       const response = await onSave(payload);
-      
-      // Check if response indicates success
-      // Handle both success formats: response.success === true or response.status !== false
-      if (response && (response.success === true || (response.status !== false && response.success !== false))) {
+
+      if (response && response.success === true) {
         setMessage({ type: 'success', text: response.message || 'Supervisor created successfully!' });
-        
-        // Reset form and close modal after showing success message
+
         setTimeout(() => {
           setFormData({
             name: '',
@@ -119,17 +116,16 @@ const SupervisorFormModal = ({ isOpen, closeModal, onSave }) => {
           closeModal();
         }, 1500);
       } else {
-        // Handle failure response - check for success: false or status: false
-        setMessage({ 
-          type: 'error', 
-          text: response?.message || 'Failed to create supervisor. Please try again.' 
+        setMessage({
+          type: 'error',
+          text: response?.message || 'Failed to create supervisor. Please try again.'
         });
       }
     } catch (error) {
       console.error('Failed to save supervisor:', error);
-      setMessage({ 
-        type: 'error', 
-        text: error?.response?.data?.message || error?.message || 'Failed to create supervisor. Please try again.' 
+      setMessage({
+        type: 'error',
+        text: error?.response?.data?.message || error?.message || 'Failed to create supervisor. Please try again.'
       });
     } finally {
       setSubmitting(false);
