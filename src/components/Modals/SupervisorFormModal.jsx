@@ -1,6 +1,6 @@
 import { Dialog, Transition, Combobox } from '@headlessui/react';
 import { Fragment, useState, useEffect } from 'react';
-import { Check, ChevronDown } from 'lucide-react';
+import { Check, ChevronDown, X, CheckCircle, AlertCircle } from 'lucide-react';
 import { fetchStores } from '../../api/managers';
 
 const SupervisorFormModal = ({ isOpen, closeModal, onSave }) => {
@@ -14,10 +14,14 @@ const SupervisorFormModal = ({ isOpen, closeModal, onSave }) => {
   const [selectedStore, setSelectedStore] = useState(null);
   const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [message, setMessage] = useState({ type: '', text: '' });
 
   useEffect(() => {
     if (isOpen) {
       loadStores();
+      // Clear message when modal opens
+      setMessage({ type: '', text: '' });
     }
   }, [isOpen]);
 
@@ -25,9 +29,22 @@ const SupervisorFormModal = ({ isOpen, closeModal, onSave }) => {
     try {
       setLoading(true);
       const data = await fetchStores();
-      setStores(data);
+      
+      // fetchStores() return res.data, jadi data bisa berupa response object atau array langsung
+      if (data && data.success === false) {
+        // Jika response gagal
+        setMessage({ type: 'error', text: data.message || 'Failed to load stores.' });
+        setStores([]);
+      } else {
+        // Jika sukses, data bisa berupa array atau object dengan property data
+        setStores(data.data || data);
+      }
     } catch (error) {
       console.error('Failed to fetch stores:', error);
+      // Error dari axios, response ada di error.response.data
+      const errorMessage = error?.response?.data?.message || error?.message || 'Failed to load stores. Please try again.';
+      setMessage({ type: 'error', text: errorMessage });
+      setStores([]);
     } finally {
       setLoading(false);
     }
@@ -44,17 +61,22 @@ const SupervisorFormModal = ({ isOpen, closeModal, onSave }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    // Clear message on input change
+    if (message.text) setMessage({ type: '', text: '' });
   };
 
   const handleStoreSelect = (store) => {
     setSelectedStore(store);
     setFormData((prev) => ({ ...prev, store_id: store?.id || '' }));
+    // Clear message on selection change
+    if (message.text) setMessage({ type: '', text: '' });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!selectedStore) {
+      setMessage({ type: 'error', text: 'Please select a store' });
       return;
     }
 
@@ -72,16 +94,46 @@ const SupervisorFormModal = ({ isOpen, closeModal, onSave }) => {
       }
     };
 
-    await onSave(payload);
-    setFormData({
-      name: '',
-      phone: '',
-      password: '',
-      store_id: '',
-    });
-    setSelectedStore(null);
-    setQuery('');
-    closeModal();
+    try {
+      setSubmitting(true);
+      setMessage({ type: '', text: '' });
+      
+      const response = await onSave(payload);
+      
+      // Check if response indicates success
+      // Handle both success formats: response.success === true or response.status !== false
+      if (response && (response.success === true || (response.status !== false && response.success !== false))) {
+        setMessage({ type: 'success', text: response.message || 'Supervisor created successfully!' });
+        
+        // Reset form and close modal after showing success message
+        setTimeout(() => {
+          setFormData({
+            name: '',
+            phone: '',
+            password: '',
+            store_id: '',
+          });
+          setSelectedStore(null);
+          setQuery('');
+          setMessage({ type: '', text: '' });
+          closeModal();
+        }, 1500);
+      } else {
+        // Handle failure response - check for success: false or status: false
+        setMessage({ 
+          type: 'error', 
+          text: response?.message || 'Failed to create supervisor. Please try again.' 
+        });
+      }
+    } catch (error) {
+      console.error('Failed to save supervisor:', error);
+      setMessage({ 
+        type: 'error', 
+        text: error?.response?.data?.message || error?.message || 'Failed to create supervisor. Please try again.' 
+      });
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const handleClose = () => {
@@ -93,6 +145,7 @@ const SupervisorFormModal = ({ isOpen, closeModal, onSave }) => {
     });
     setSelectedStore(null);
     setQuery('');
+    setMessage({ type: '', text: '' });
     closeModal();
   };
 
@@ -122,13 +175,45 @@ const SupervisorFormModal = ({ isOpen, closeModal, onSave }) => {
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="w-full max-w-2xl transform overflow-visible rounded-2xl bg-white shadow-xl transition-all">                <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4">
+              <Dialog.Panel className="w-full max-w-2xl transform overflow-visible rounded-2xl bg-white shadow-xl transition-all">
+                <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4">
                   <Dialog.Title className="text-xl font-semibold text-white">
                     Add Supervisor
                   </Dialog.Title>
                 </div>
 
                 <form onSubmit={handleSubmit} className="p-6">
+                  {/* Message Alert */}
+                  {message.text && (
+                    <div className={`mb-6 p-4 rounded-xl flex items-start gap-3 ${
+                      message.type === 'success' 
+                        ? 'bg-green-50 border border-green-200' 
+                        : 'bg-red-50 border border-red-200'
+                    }`}>
+                      {message.type === 'success' ? (
+                        <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                      ) : (
+                        <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+                      )}
+                      <div className="flex-1">
+                        <p className={`text-sm font-medium ${
+                          message.type === 'success' ? 'text-green-800' : 'text-red-800'
+                        }`}>
+                          {message.text}
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setMessage({ type: '', text: '' })}
+                        className={`flex-shrink-0 ${
+                          message.type === 'success' ? 'text-green-600 hover:text-green-800' : 'text-red-600 hover:text-red-800'
+                        }`}
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    </div>
+                  )}
+
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="col-span-1 md:col-span-2">
                       <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
@@ -141,7 +226,8 @@ const SupervisorFormModal = ({ isOpen, closeModal, onSave }) => {
                         required
                         value={formData.name}
                         onChange={handleChange}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#C9F35B] focus:border-transparent transition-all"
+                        disabled={submitting}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#C9F35B] focus:border-transparent transition-all disabled:bg-gray-100 disabled:cursor-not-allowed"
                         placeholder="Enter supervisor name"
                       />
                     </div>
@@ -157,7 +243,8 @@ const SupervisorFormModal = ({ isOpen, closeModal, onSave }) => {
                         required
                         value={formData.phone}
                         onChange={handleChange}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#C9F35B] focus:border-transparent transition-all"
+                        disabled={submitting}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#C9F35B] focus:border-transparent transition-all disabled:bg-gray-100 disabled:cursor-not-allowed"
                         placeholder="Enter phone number"
                       />
                     </div>
@@ -173,7 +260,8 @@ const SupervisorFormModal = ({ isOpen, closeModal, onSave }) => {
                         required
                         value={formData.password}
                         onChange={handleChange}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#C9F35B] focus:border-transparent transition-all"
+                        disabled={submitting}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#C9F35B] focus:border-transparent transition-all disabled:bg-gray-100 disabled:cursor-not-allowed"
                         placeholder="Enter password"
                       />
                     </div>
@@ -182,15 +270,16 @@ const SupervisorFormModal = ({ isOpen, closeModal, onSave }) => {
                       <label className="block text-sm font-medium text-gray-700 mb-2">
                         Store <span className="text-red-500">*</span>
                       </label>
-                      <Combobox value={selectedStore} onChange={handleStoreSelect}>
+                      <Combobox value={selectedStore} onChange={handleStoreSelect} disabled={submitting}>
                         <div className="relative">
                           <div className="relative">
                             <Combobox.Input
-                              className="w-full px-4 py-3 pr-10 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                              className="w-full px-4 py-3 pr-10 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all disabled:bg-gray-100 disabled:cursor-not-allowed"
                               displayValue={(store) => store ? `${store.kode_toko} - ${store.name}` : ''}
                               onChange={(event) => setQuery(event.target.value)}
                               placeholder="Search store by code or name"
                               required
+                              disabled={submitting}
                             />
                             <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-3">
                               <ChevronDown className="h-5 w-5 text-gray-400" aria-hidden="true" />
@@ -252,15 +341,27 @@ const SupervisorFormModal = ({ isOpen, closeModal, onSave }) => {
                     <button
                       type="button"
                       onClick={handleClose}
-                      className="px-6 py-3 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors"
+                      disabled={submitting}
+                      className="px-6 py-3 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       Cancel
                     </button>
                     <button
                       type="submit"
-                      className="px-6 py-3 text-sm font-medium text-gray-900 bg-[#C9F35B] rounded-xl hover:bg-[#B8E047] transition-colors shadow-sm hover:shadow-md"
+                      disabled={submitting}
+                      className="px-6 py-3 text-sm font-medium text-gray-900 bg-[#C9F35B] rounded-xl hover:bg-[#B8E047] transition-colors shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                     >
-                      Save Supervisor
+                      {submitting ? (
+                        <>
+                          <svg className="animate-spin h-4 w-4 text-gray-900" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                          </svg>
+                          Saving...
+                        </>
+                      ) : (
+                        'Save Supervisor'
+                      )}
                     </button>
                   </div>
                 </form>
