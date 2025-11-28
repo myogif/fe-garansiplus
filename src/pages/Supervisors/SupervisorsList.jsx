@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { Search } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import {
@@ -14,6 +14,7 @@ import ConfirmDelete from '../../components/Modals/ConfirmDelete';
 import Pagination from '../../components/Pagination';
 import useDebounce from '../../hooks/useDebounce';
 import MainLayout from '../../components/MainLayout';
+import Toast from '../../components/Toast';
 
 const SupervisorsList = () => {
   const { role, token } = useAuth();
@@ -25,6 +26,7 @@ const SupervisorsList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [selectedPerson, setSelectedPerson] = useState(null);
+  const [toast, setToast] = useState({ show: false, message: '', type: 'success' });
 
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
@@ -58,16 +60,37 @@ const SupervisorsList = () => {
     setIsConfirmOpen(true);
   };
 
+  const showToast = useCallback((message, type = 'success') => {
+    setToast({ show: true, message, type });
+  }, []);
+
+  const hideToast = useCallback(() => {
+    setToast((prev) => ({ ...prev, show: false }));
+  }, []);
+
   const handleSave = async (formData) => {
     try {
       if (role === 'MANAGER') {
-        await createSupervisor(formData);
+        const response = await createSupervisor(formData);
+        if (response.data?.success || response.data?.status) {
+          showToast(response.data?.message || 'Supervisor created successfully', 'success');
+          loadPeople();
+        } else {
+          showToast(response.data?.message || 'Failed to create supervisor', 'error');
+        }
       } else {
-        await createSalesUser(formData);
+        const response = await createSalesUser(formData);
+        if (response.data?.success || response.data?.status) {
+          showToast(response.data?.message || 'Sales user created successfully', 'success');
+          loadPeople();
+        } else {
+          showToast(response.data?.message || 'Failed to create sales user', 'error');
+        }
       }
-      loadPeople();
     } catch (error) {
       console.error('Failed to save person:', error);
+      const errorMessage = error.response?.data?.message || error.message || 'Failed to save. Please try again.';
+      showToast(errorMessage, 'error');
     }
   };
 
@@ -138,6 +161,13 @@ const SupervisorsList = () => {
         message={`Are you sure you want to delete this ${
           role === 'MANAGER' ? 'supervisor' : 'sales user'
         }?`}
+      />
+
+      <Toast
+        show={toast.show}
+        message={toast.message}
+        type={toast.type}
+        onClose={hideToast}
       />
     </MainLayout>
   );

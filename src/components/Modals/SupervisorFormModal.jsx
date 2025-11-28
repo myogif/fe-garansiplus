@@ -51,9 +51,28 @@ const SupervisorFormModal = ({ isOpen, closeModal, onSave }) => {
     setFormData((prev) => ({ ...prev, store_id: store?.id || '' }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSave(formData);
+
+    if (!selectedStore) {
+      return;
+    }
+
+    const payload = {
+      phone: formData.phone,
+      password: formData.password,
+      name: formData.name,
+      store: {
+        kode_toko: selectedStore.kode_toko,
+        name: selectedStore.name,
+        address: selectedStore.address,
+        phone: selectedStore.phone,
+        email: selectedStore.email,
+        isActive: selectedStore.isActive
+      }
+    };
+
+    await onSave(payload);
     setFormData({
       name: '',
       phone: '',
