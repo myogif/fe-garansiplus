@@ -18,6 +18,7 @@ const authReducer = (state, action) => {
         user: action.payload.user,
         isAuthed: true,
         role: action.payload.user.role,
+        loading: false,
       };
     case 'LOGOUT':
       return {
@@ -26,6 +27,7 @@ const authReducer = (state, action) => {
         user: null,
         isAuthed: false,
         role: null,
+        loading: false,
       };
     case 'RESTORE_SESSION':
       return {
@@ -34,6 +36,12 @@ const authReducer = (state, action) => {
         user: action.payload.user,
         isAuthed: true,
         role: action.payload.user.role,
+        loading: false,
+      };
+    case 'SET_LOADING':
+      return {
+        ...state,
+        loading: action.payload,
       };
     default:
       return state;
@@ -45,23 +53,31 @@ const initialState = {
   user: null,
   isAuthed: false,
   role: null,
+  loading: true,
 };
 
 export const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
 
   useEffect(() => {
-    const token = getStoredToken();
-    const user = getStoredUser();
+    const restoreSession = () => {
+      const token = getStoredToken();
+      const user = getStoredUser();
 
-    if (token && user && !isTokenExpired(token)) {
-      dispatch({
-        type: 'RESTORE_SESSION',
-        payload: { token, user },
-      });
-    } else if (token) {
-      authLogout();
-    }
+      if (token && user && !isTokenExpired(token)) {
+        dispatch({
+          type: 'RESTORE_SESSION',
+          payload: { token, user },
+        });
+      } else {
+        if (token) {
+          authLogout();
+        }
+        dispatch({ type: 'SET_LOADING', payload: false });
+      }
+    };
+
+    restoreSession();
   }, []);
 
   const login = async (phone, password) => {

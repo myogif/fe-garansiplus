@@ -225,6 +225,7 @@ const ProductsList = () => {
       if (data?.success === true || data?.status === true) {
         const message = data.message || 'Product has been marked as used successfully';
         showToast(message, 'success');
+        setIsConfirmUseOpen(false);
         loadProducts();
       } else {
         let errorText = 'Failed to use product';
