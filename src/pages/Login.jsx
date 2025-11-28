@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Eye, EyeOff, Shield } from 'lucide-react';
 
@@ -102,12 +102,12 @@ const Login = () => {
               </div>
 
               <div className="text-right mb-8">
-                <button
-                  type="button"
+                <Link
+                  to="/forgot-password"
                   className="text-sm text-gray-600 hover:text-gray-900"
                 >
                   Lupa Password?
-                </button>
+                </Link>
               </div>
 
               <button

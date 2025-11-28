@@ -9,6 +9,7 @@ import StoresList from '../pages/Stores/StoresList';
 import SalesList from '../pages/Sales/SalesList';
 import CustomersList from '../pages/Customers/CustomersList';
 import Login from '../pages/Login';
+import ForgotPassword from '../pages/ForgotPassword';
 import UpdatePassword from '../pages/UpdatePassword';
 import { useAuth } from '../context/AuthContext';
 
@@ -27,6 +28,10 @@ export default function AppRoutes() {
       <Route
         path="/login"
         element={isAuthed ? <Navigate to={getRedirectPath()} replace /> : <Login />}
+      />
+      <Route
+        path="/forgot-password"
+        element={isAuthed ? <Navigate to={getRedirectPath()} replace /> : <ForgotPassword />}
       />
       <Route
         path="/dashboard"
