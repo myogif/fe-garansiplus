@@ -111,29 +111,13 @@ const SalesTable = ({ people, loading, role, onDelete }) => {
             className="relative bg-white border border-gray-200 rounded-xl p-4 hover:shadow-md transition-shadow"
           >
             {role === 'SUPERVISOR' && (
-              <Menu as="div" className="absolute top-4 right-4 z-20">
-                <Menu.Button className="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-gray-100 hover:bg-gray-200 transition-colors">
-                  <MoreVertical size={18} className="text-gray-600" />
-                </Menu.Button>
-
-                <Menu.Items className="absolute right-0 mt-2 w-40 origin-top-right rounded-lg bg-white border border-gray-200 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-30">
-                  <div className="p-1">
-                    <Menu.Item>
-                      {({ active }) => (
-                        <button
-                          onClick={() => onDelete && onDelete(person)}
-                          className={`${
-                            active ? 'bg-red-50' : ''
-                          } group flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm text-red-600 transition-colors`}
-                        >
-                          <Trash2 className="w-4 h-4 text-red-500" />
-                          Delete
-                        </button>
-                      )}
-                    </Menu.Item>
-                  </div>
-                </Menu.Items>
-              </Menu>
+              <button
+                onClick={() => onDelete && onDelete(person)}
+                className="absolute top-4 right-4 w-9 h-9 flex items-center justify-center rounded-lg bg-red-50 hover:bg-red-100 transition-colors z-20"
+                aria-label="Delete"
+              >
+                <Trash2 size={18} className="text-red-600" />
+              </button>
             )}
 
             <div className="space-y-3 pr-12">
