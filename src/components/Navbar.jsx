@@ -28,14 +28,7 @@ const Navbar = ({ onMenuClick }) => {
 
           <div className="flex-1 flex justify-center">
             <div className="relative w-full max-w-2xl">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-white/50 w-5 h-5" />
-              <input
-                type="text"
-                placeholder="Cari …"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-[#12172a] border border-white/10 text-white placeholder:text-white/50 rounded-full pl-12 pr-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-[#C9F35B]"
-              />
+              
             </div>
           </div>
 
