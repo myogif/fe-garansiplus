@@ -105,7 +105,7 @@ const ProductDetail = () => {
           <div className="flex items-center gap-3 mb-6">
             <span className="text-gray-600">Nomor Kepesertaan</span>
             <span className="font-semibold text-gray-900">
-              {product.code || '-'}
+              {product.nomorKepesertaan || '-'}
             </span>
             <StatusPill status={product.status || (product.isActive ? 'Aktif' : 'Expired')} />
           </div>

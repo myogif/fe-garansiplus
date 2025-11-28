@@ -159,8 +159,8 @@ const SalesProductDetail = () => {
               </div>
 
               <div>
-                <label className="text-sm font-medium text-gray-500">Membership Number</label>
-                <p className="text-gray-900 font-medium">{product.membership_number || '-'}</p>
+                <label className="text-sm font-medium text-gray-500">Nomor Kepesertaan</label>
+                <p className="text-gray-900 font-medium">{product.nomorKepesertaan || '-'}</p>
               </div>
 
               <div>
