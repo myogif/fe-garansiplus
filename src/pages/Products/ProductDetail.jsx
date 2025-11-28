@@ -115,7 +115,7 @@ const ProductDetail = () => {
           <div>
             <label className="block text-sm text-gray-500 mb-2">Nama</label>
             <p className="text-gray-900 font-medium">
-              {product.customer_name || '-'}
+              {product.customerName || '-'}
             </p>
           </div>
 
@@ -124,14 +124,14 @@ const ProductDetail = () => {
               Nomor Telepon
             </label>
             <p className="text-gray-900 font-medium">
-              {product.customer_phone || '-'}
+              {product.customerPhone || '-'}
             </p>
           </div>
 
           <div>
             <label className="block text-sm text-gray-500 mb-2">Email</label>
             <p className="text-gray-900 font-medium">
-              {product.customer_email || '-'}
+              {product.customerEmail || '-'}
             </p>
           </div>
 
