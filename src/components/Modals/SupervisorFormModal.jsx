@@ -84,14 +84,7 @@ const SupervisorFormModal = ({ isOpen, closeModal, onSave }) => {
       phone: formData.phone,
       password: formData.password,
       name: formData.name,
-      store: {
-        kode_toko: selectedStore.kode_toko,
-        name: selectedStore.name,
-        address: selectedStore.address,
-        phone: selectedStore.phone,
-        email: selectedStore.email,
-        isActive: selectedStore.isActive
-      }
+      storeId: selectedStore.id
     };
 
     try {

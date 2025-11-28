@@ -72,25 +72,58 @@ const SupervisorsList = () => {
     try {
       if (role === 'MANAGER') {
         const response = await createSupervisor(formData);
-        if (response.data?.success || response.data?.status) {
-          showToast(response.data?.message || 'Supervisor created successfully', 'success');
+        const data = response.data;
+
+        if (data?.success === true) {
+          showToast(data.message || 'Supervisor created successfully', 'success');
           loadPeople();
+          return data;
         } else {
-          showToast(response.data?.message || 'Failed to create supervisor', 'error');
+          let errorText = 'Failed to create supervisor';
+          if (data?.errors && Array.isArray(data.errors) && data.errors.length > 0) {
+            errorText = data.errors.join(', ');
+          } else if (data?.message) {
+            errorText = data.message;
+          }
+          showToast(errorText, 'error');
+          return data;
         }
       } else {
         const response = await createSalesUser(formData);
-        if (response.data?.success || response.data?.status) {
-          showToast(response.data?.message || 'Sales user created successfully', 'success');
+        const data = response.data;
+
+        if (data?.success === true) {
+          showToast(data.message || 'Sales user created successfully', 'success');
           loadPeople();
+          return data;
         } else {
-          showToast(response.data?.message || 'Failed to create sales user', 'error');
+          let errorText = 'Failed to create sales user';
+          if (data?.errors && Array.isArray(data.errors) && data.errors.length > 0) {
+            errorText = data.errors.join(', ');
+          } else if (data?.message) {
+            errorText = data.message;
+          }
+          showToast(errorText, 'error');
+          return data;
         }
       }
     } catch (error) {
       console.error('Failed to save person:', error);
-      const errorMessage = error.response?.data?.message || error.message || 'Failed to save. Please try again.';
-      showToast(errorMessage, 'error');
+
+      let errorText = 'Failed to save. Please try again.';
+      if (error?.response?.data) {
+        const errorData = error.response.data;
+        if (errorData.errors && Array.isArray(errorData.errors) && errorData.errors.length > 0) {
+          errorText = errorData.errors.join(', ');
+        } else if (errorData.message) {
+          errorText = errorData.message;
+        }
+      } else if (error?.message) {
+        errorText = error.message;
+      }
+
+      showToast(errorText, 'error');
+      throw error;
     }
   };
 
