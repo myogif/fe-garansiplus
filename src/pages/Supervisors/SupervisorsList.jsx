@@ -129,14 +129,44 @@ const SupervisorsList = () => {
 
   const handleConfirmDelete = async () => {
     try {
+      let response;
       if (role === 'MANAGER') {
-        await deleteSupervisor(selectedPerson.id);
+        response = await deleteSupervisor(selectedPerson.id);
       } else {
-        await deleteSalesUser(selectedPerson.id);
+        response = await deleteSalesUser(selectedPerson.id);
       }
-      loadPeople();
+
+      const data = response?.data || response;
+
+      if (data?.success === true || data?.status === true) {
+        const message = data.message || `${role === 'MANAGER' ? 'Supervisor' : 'Sales user'} deleted successfully`;
+        showToast(message, 'success');
+        loadPeople();
+      } else {
+        let errorText = `Failed to delete ${role === 'MANAGER' ? 'supervisor' : 'sales user'}`;
+        if (data?.errors && Array.isArray(data.errors) && data.errors.length > 0) {
+          errorText = data.errors.join(', ');
+        } else if (data?.message) {
+          errorText = data.message;
+        }
+        showToast(errorText, 'error');
+      }
     } catch (error) {
       console.error('Failed to delete person:', error);
+
+      let errorText = `Failed to delete ${role === 'MANAGER' ? 'supervisor' : 'sales user'}`;
+      if (error?.response?.data) {
+        const errorData = error.response.data;
+        if (errorData.errors && Array.isArray(errorData.errors) && errorData.errors.length > 0) {
+          errorText = errorData.errors.join(', ');
+        } else if (errorData.message) {
+          errorText = errorData.message;
+        }
+      } else if (error?.message) {
+        errorText = error.message;
+      }
+
+      showToast(errorText, 'error');
     }
   };
 
