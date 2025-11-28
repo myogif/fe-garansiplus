@@ -185,10 +185,10 @@ const SupervisorFormModal = ({ isOpen, closeModal, onSave }) => {
               leave="ease-in duration-200"
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
-            >
+              >
               <Dialog.Panel className="w-full max-w-2xl transform overflow-visible rounded-2xl bg-white shadow-xl transition-all">
-                <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4">
-                  <Dialog.Title className="text-xl font-semibold text-white">
+                <div className="bg-[#C9F35B] hover:bg-[#B8E047]  px-6 py-4">
+                  <Dialog.Title className="text-xl font-semibold text-black">
                     Add Supervisor
                   </Dialog.Title>
                 </div>
