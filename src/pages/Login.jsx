@@ -32,10 +32,10 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black">
-      <div className="flex flex-col items-center justify-start min-h-screen">
-        <div className="w-full max-w-md px-6 pt-24 pb-8">
-          <div className="flex items-center justify-center mb-12">
+    <div className="h-screen bg-black overflow-hidden">
+      <div className="flex flex-col items-center justify-center h-full">
+        <div className="w-full max-w-md px-6 mb-8">
+          <div className="flex items-center justify-center">
             <div className="flex items-center gap-1">
               <Shield className="w-12 h-12 text-white" strokeWidth={1.5} />
               <div className="flex items-center">
@@ -47,20 +47,20 @@ const Login = () => {
         </div>
 
         <div className="w-full max-w-md px-6">
-          <div className="bg-white rounded-t-[2rem] px-8 py-10 shadow-2xl">
+          <div className="bg-white rounded-[2rem] px-8 py-8 shadow-2xl">
             <h1 className="text-2xl font-bold text-gray-900 mb-2">Login</h1>
-            <p className="text-gray-500 text-sm mb-8">
+            <p className="text-gray-500 text-sm mb-6">
               Silahkan login ke akun anda!
             </p>
 
             {error && (
-              <div className="mb-6 p-3 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm">
+              <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm">
                 {error}
               </div>
             )}
 
             <form onSubmit={handleSubmit}>
-              <div className="mb-6">
+              <div className="mb-4">
                 <label className="block text-gray-700 text-sm mb-2">
                   No. Hp
                 </label>
@@ -74,7 +74,7 @@ const Login = () => {
                 />
               </div>
 
-              <div className="mb-4">
+              <div className="mb-3">
                 <label className="block text-gray-700 text-sm mb-2">
                   Password
                 </label>
@@ -101,7 +101,7 @@ const Login = () => {
                 </div>
               </div>
 
-              <div className="text-right mb-8">
+              <div className="text-right mb-6">
                 <Link
                   to="/forgot-password"
                   className="text-sm text-gray-600 hover:text-gray-900"
