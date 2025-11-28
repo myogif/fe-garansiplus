@@ -3,9 +3,8 @@ import { Fragment } from 'react';
 import { AlertTriangle } from 'lucide-react';
 
 const ConfirmUseProduct = ({ isOpen, closeModal, onConfirm, product }) => {
-  const handleConfirm = () => {
-    onConfirm();
-    closeModal();
+  const handleConfirm = async () => {
+    await onConfirm();
   };
 
   return (
