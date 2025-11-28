@@ -116,16 +116,38 @@ const SupervisorFormModal = ({ isOpen, closeModal, onSave }) => {
           closeModal();
         }, 1500);
       } else {
+        let errorText = 'Failed to create supervisor. Please try again.';
+
+        if (response?.errors && Array.isArray(response.errors) && response.errors.length > 0) {
+          errorText = response.errors.join(', ');
+        } else if (response?.message) {
+          errorText = response.message;
+        }
+
         setMessage({
           type: 'error',
-          text: response?.message || 'Failed to create supervisor. Please try again.'
+          text: errorText
         });
       }
     } catch (error) {
       console.error('Failed to save supervisor:', error);
+
+      let errorText = 'Failed to create supervisor. Please try again.';
+
+      if (error?.response?.data) {
+        const errorData = error.response.data;
+        if (errorData.errors && Array.isArray(errorData.errors) && errorData.errors.length > 0) {
+          errorText = errorData.errors.join(', ');
+        } else if (errorData.message) {
+          errorText = errorData.message;
+        }
+      } else if (error?.message) {
+        errorText = error.message;
+      }
+
       setMessage({
         type: 'error',
-        text: error?.response?.data?.message || error?.message || 'Failed to create supervisor. Please try again.'
+        text: errorText
       });
     } finally {
       setSubmitting(false);
