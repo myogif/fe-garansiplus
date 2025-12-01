@@ -6,7 +6,7 @@ export async function listRolePeople(role, { page = 1, limit = 10, search = '' }
     limit,
   });
   if (search) {
-    searchParams.append('search', search);
+    searchParams.append('q', search);
   }
 
   const url = (role === 'MANAGER' || role === 'SERVICE_CENTER')
@@ -78,7 +78,7 @@ export async function listSalesUsers(role, { page = 1, limit = 10, search = '' }
     sortOrder: 'desc',
   });
   if (search) {
-    searchParams.append('search', search);
+    searchParams.append('q', search);
   }
 
   const url = (role === 'MANAGER' || role === 'SERVICE_CENTER')

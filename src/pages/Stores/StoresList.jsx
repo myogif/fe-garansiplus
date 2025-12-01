@@ -44,7 +44,10 @@ const StoresList = () => {
 
   const showToast = (message, type = 'success') => {
     setToast({ show: true, message, type });
-    setTimeout(() => setToast({ show: false, message: '', type: 'success' }), 3000);
+  };
+
+  const hideToast = () => {
+    setToast({ show: false, message: '', type: 'success' });
   };
 
   const handleCreate = () => {
@@ -63,10 +66,9 @@ const StoresList = () => {
 
   const handleSave = async (formData) => {
     try {
-      const response = await createStore(formData);
-      const data = response?.data || response;
+      const data = await createStore(formData);
 
-      if (data?.success === true || data?.status === true) {
+      if (data?.success === true) {
         const message = data.message || 'Store created successfully';
         showToast(message, 'success');
         loadStores();
@@ -104,9 +106,9 @@ const StoresList = () => {
   const handleConfirmDelete = async () => {
     try {
       const response = await deleteStore(selectedStore.id);
-      const data = response?.data || response;
+      const data = response?.data;
 
-      if (data?.success === true || data?.status === true) {
+      if (data?.success === true) {
         const message = data.message || 'Store deleted successfully';
         showToast(message, 'success');
         loadStores();
@@ -187,7 +189,12 @@ const StoresList = () => {
         message={`Are you sure you want to delete ${selectedStore?.name || 'this store'}?`}
       />
 
-      {toast.show && <Toast message={toast.message} type={toast.type} />}
+      <Toast
+        show={toast.show}
+        message={toast.message}
+        type={toast.type}
+        onClose={hideToast}
+      />
     </MainLayout>
   );
 };

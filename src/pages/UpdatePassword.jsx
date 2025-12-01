@@ -1,7 +1,10 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Lock, Eye, EyeOff } from 'lucide-react';
+import { updatePassword, getStoredUser } from '../services/auth';
 
 const UpdatePassword = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     currentPassword: '',
     newPassword: '',
@@ -20,7 +23,7 @@ const UpdatePassword = () => {
     });
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (formData.newPassword !== formData.confirmPassword) {
       setToast({
         type: 'error',
@@ -39,24 +42,48 @@ const UpdatePassword = () => {
 
     setIsLoading(true);
 
-    // Simulate API call
-    setTimeout(() => {
-      setToast({
-        type: 'success',
-        message: 'Password updated successfully',
-      });
-      setIsLoading(false);
-      
-      // Reset form after success
-      setTimeout(() => {
-        setFormData({
-          currentPassword: '',
-          newPassword: '',
-          confirmPassword: '',
+    try {
+      const response = await updatePassword(formData.currentPassword, formData.newPassword);
+
+      if (response.success) {
+        setToast({
+          type: 'success',
+          message: response.message || 'Password updated successfully',
         });
-        setToast(null);
-      }, 2000);
-    }, 1500);
+
+        setTimeout(() => {
+          const user = getStoredUser();
+          const role = user?.role;
+
+          if (role === 'MANAGER' || role === 'SERVICE_CENTER') {
+            navigate('/dashboard');
+          } else {
+            navigate('/products');
+          }
+        }, 1500);
+      } else {
+        setToast({
+          type: 'error',
+          message: response.message || 'Failed to update password',
+        });
+      }
+    } catch (error) {
+      console.error('Failed to update password:', error);
+
+      let errorMessage = 'Failed to update password. Please try again.';
+      if (error?.response?.data?.message) {
+        errorMessage = error.response.data.message;
+      } else if (error?.message) {
+        errorMessage = error.message;
+      }
+
+      setToast({
+        type: 'error',
+        message: errorMessage,
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
