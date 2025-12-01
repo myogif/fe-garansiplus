@@ -98,9 +98,16 @@ const ProductDetail = () => {
             <span className="font-medium">Back</span>
           </button>
 
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">
-            Detail Klaim {product.name}
-          </h1>
+          <div className="flex items-center gap-3 mb-4">
+            <h1 className="text-2xl font-bold text-gray-900">
+              {product.name}
+            </h1>
+            {product.type && (
+              <span className="px-4 py-1.5 bg-[#C9F35B] text-gray-900 rounded-full text-sm font-medium uppercase">
+                {product.type}
+              </span>
+            )}
+          </div>
 
           <div className="flex items-center gap-3 mb-6">
             <span className="text-gray-600">Nomor Kepesertaan</span>
