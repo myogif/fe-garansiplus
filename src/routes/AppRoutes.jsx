@@ -14,7 +14,16 @@ import UpdatePassword from '../pages/UpdatePassword';
 import { useAuth } from '../context/AuthContext';
 
 export default function AppRoutes() {
-  const { isAuthed, role } = useAuth();
+  const { isAuthed, role, loading } = useAuth();
+
+  // FIX: Prevent routing logic from running until auth is restored
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
+      </div>
+    );
+  }
 
   const getRedirectPath = () => {
     if (!isAuthed) {

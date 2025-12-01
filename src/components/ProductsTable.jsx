@@ -101,7 +101,7 @@ const ProductsTable = ({ products, loading, role, onEdit, onDelete, onGunakan, o
                         : `/products/${product.sku}`;
                       navigate(path);
                     }}
-                    className="p-2 text-[#C9F35B] hover:bg-[#C9F35B]/10 rounded-lg transition-colors"
+                    className="p-2 text-grey hover:bg-grey rounded-lg transition-colors"
                     title="Detail"
                   >
                     <Info className="w-4 h-4" />

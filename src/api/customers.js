@@ -6,7 +6,7 @@ export async function fetchCustomers({ page = 1, limit = 10, search = '' } = {})
     limit,
   });
   if (search) {
-    searchParams.append('search', search);
+    searchParams.append('q', search);
   }
 
   const url = `/api/managers/products?${searchParams}`;
