@@ -22,15 +22,21 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response && error.response.status === 401) {
-      localStorage.removeItem('gp_token');
-      localStorage.removeItem('gp_user');
+      const isLoginRequest = error.config.url.includes('/auth/login');
 
-      const event = new CustomEvent('auth:expired', {
-        detail: { message: 'Token expired' },
-      });
-      window.dispatchEvent(event);
+      if (!isLoginRequest) {
+        localStorage.removeItem('gp_token');
+        localStorage.removeItem('gp_user');
 
-      window.location.href = '/login';
+        const event = new CustomEvent('auth:expired', {
+          detail: { message: 'Session expired. Please login again.' },
+        });
+        window.dispatchEvent(event);
+
+        if (!window.location.pathname.includes('/login')) {
+          window.location.href = '/login';
+        }
+      }
     }
     return Promise.reject(error);
   }
