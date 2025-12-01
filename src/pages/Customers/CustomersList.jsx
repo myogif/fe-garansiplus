@@ -123,13 +123,12 @@ const CustomersList = () => {
         {pagination && <Pagination pagination={pagination} onPageChange={handlePageChange} />}
       </div>
 
-      {toast.show && (
-        <Toast
-          message={toast.message}
-          type={toast.type}
-          onClose={() => setToast({ ...toast, show: false })}
-        />
-      )}
+      <Toast
+        show={toast.show}
+        message={toast.message}
+        type={toast.type}
+        onClose={() => setToast({ ...toast, show: false })}
+      />
     </MainLayout>
   );
 };

@@ -44,7 +44,10 @@ const StoresList = () => {
 
   const showToast = (message, type = 'success') => {
     setToast({ show: true, message, type });
-    setTimeout(() => setToast({ show: false, message: '', type: 'success' }), 3000);
+  };
+
+  const hideToast = () => {
+    setToast({ show: false, message: '', type: 'success' });
   };
 
   const handleCreate = () => {
@@ -187,7 +190,12 @@ const StoresList = () => {
         message={`Are you sure you want to delete ${selectedStore?.name || 'this store'}?`}
       />
 
-      {toast.show && <Toast message={toast.message} type={toast.type} />}
+      <Toast
+        show={toast.show}
+        message={toast.message}
+        type={toast.type}
+        onClose={hideToast}
+      />
     </MainLayout>
   );
 };

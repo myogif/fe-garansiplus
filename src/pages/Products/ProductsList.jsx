@@ -209,7 +209,10 @@ const ProductsList = () => {
 
   const showToast = (message, type = 'success') => {
     setToast({ show: true, message, type });
-    setTimeout(() => setToast({ show: false, message: '', type: 'success' }), 3000);
+  };
+
+  const hideToast = () => {
+    setToast({ show: false, message: '', type: 'success' });
   };
 
   const handleGunakan = (product) => {
@@ -345,7 +348,12 @@ const ProductsList = () => {
         product={selectedProduct}
       />
 
-      {toast.show && <Toast message={toast.message} type={toast.type} />}
+      <Toast
+        show={toast.show}
+        message={toast.message}
+        type={toast.type}
+        onClose={hideToast}
+      />
     </MainLayout>
   );
 };
