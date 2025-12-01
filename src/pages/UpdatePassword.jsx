@@ -1,8 +1,10 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Lock, Eye, EyeOff } from 'lucide-react';
-import { updatePassword } from '../services/auth';
+import { updatePassword, getStoredUser } from '../services/auth';
 
 const UpdatePassword = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     currentPassword: '',
     newPassword: '',
@@ -50,13 +52,15 @@ const UpdatePassword = () => {
         });
 
         setTimeout(() => {
-          setFormData({
-            currentPassword: '',
-            newPassword: '',
-            confirmPassword: '',
-          });
-          setToast(null);
-        }, 2000);
+          const user = getStoredUser();
+          const role = user?.role;
+
+          if (role === 'MANAGER' || role === 'SERVICE_CENTER') {
+            navigate('/dashboard');
+          } else {
+            navigate('/products');
+          }
+        }, 1500);
       } else {
         setToast({
           type: 'error',
