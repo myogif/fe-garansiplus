@@ -10,7 +10,7 @@ export async function fetchStores() {
 
 export async function getStores(page = 1, limit = 10, search = '') {
   const params = { page, limit };
-  if (search) params.search = search;
+  if (search) params.q = search;
   const res = await client.get('/api/managers/stores', { params });
   return res.data?.data || { items: [], pagination: null };
 }

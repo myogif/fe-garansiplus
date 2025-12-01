@@ -6,7 +6,7 @@ export async function fetchProducts(role, { page = 1, limit = 10, mine = true, s
     limit,
   });
   if (search) {
-    searchParams.append('search', search);
+    searchParams.append('q', search);
   }
 
   const url =
