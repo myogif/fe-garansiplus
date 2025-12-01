@@ -17,7 +17,7 @@ export async function getStores(page = 1, limit = 10, search = '') {
 
 export async function createStore(storeData) {
   const res = await client.post('/api/managers/stores', storeData);
-  return res.data?.data;
+  return res.data;
 }
 
 export const deleteStore = (id) => client.delete(`/api/toko/${id}`);
