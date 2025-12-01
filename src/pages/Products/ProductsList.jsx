@@ -283,7 +283,7 @@ const ProductsList = () => {
                   Add Product
                 </button>
               )}
-              {(role === 'SALES' || role === 'MANAGER' || role === 'SUPERVISOR') && role !== 'SERVICE_CENTER' && (
+              {(role === 'MANAGER' || role === 'SUPERVISOR') && (
                 <button
                   onClick={() => setIsExportModalOpen(true)}
                   className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2.5 rounded-xl transition-colors font-medium"
