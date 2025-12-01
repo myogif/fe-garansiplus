@@ -80,6 +80,7 @@ const ManagerDashboard = () => {
         ? storesRaw.map((store, index) => ({
             name: store.name || store.storeName || store.title || `Toko ${index + 1}`,
             address: store.address || store.storeAddress || store.location || 'Alamat tidak tersedia',
+            productCount: pickNumber(store, ['productCount', 'product_count', 'totalProducts'], 0),
             score: pickNumber(store, ['score', 'total', 'sales', 'value', 'productCount'], null),
             rank: store.rank || index + 1,
           }))
@@ -311,7 +312,9 @@ const renderStoreRow = (store, idx) => (
               <Crown size={16} className="text-[#C7F064] fill-[#C7F064]" />
             )}
           </div>
-          <p className="text-xs text-gray-500 leading-relaxed">{store.address}</p>
+          <p className="text-xs text-gray-500 leading-relaxed">
+            Total Produk: {store.productCount || 0}
+          </p>
         </div>
       </div>
     </div>
