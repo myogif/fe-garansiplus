@@ -67,13 +67,28 @@ export const AuthProvider = ({ children }) => {
         const user = getStoredUser();
         const loggedInFlag = getIsLoggedIn();
 
-        if (token && user && loggedInFlag && !isTokenExpired(token)) {
+        console.log('🔍 Session Restoration Debug:');
+        console.log('  - Token exists:', !!token);
+        console.log('  - User exists:', !!user);
+        console.log('  - isLoggedIn flag:', loggedInFlag);
+        console.log('  - Token expired:', token ? isTokenExpired(token) : 'N/A');
+
+        if (token && user && !isTokenExpired(token)) {
+          console.log('✅ Restoring session - all checks passed');
+
+          if (!loggedInFlag) {
+            console.log('  ℹ️ Setting missing isLoggedIn flag');
+            localStorage.setItem('isLoggedIn', 'true');
+          }
+
           dispatch({
             type: 'RESTORE_SESSION',
             payload: { token, user },
           });
         } else {
-          if (token || loggedInFlag) {
+          console.log('❌ Session restoration failed');
+          console.log('  Reason:', !token ? 'No token' : !user ? 'No user' : 'Token expired');
+          if (token) {
             authLogout();
           }
           dispatch({ type: 'SET_LOADING', payload: false });
