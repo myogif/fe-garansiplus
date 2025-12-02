@@ -75,11 +75,11 @@ const SupervisorsList = () => {
         const data = response.data;
 
         if (data?.success === true) {
-          showToast(data.message || 'Supervisor created successfully', 'success');
+          showToast(data.message || 'Supervisor berhasil dibuat', 'success');
           loadPeople();
           return data;
         } else {
-          let errorText = 'Failed to create supervisor';
+          let errorText = 'Gagal membuat supervisor';
           if (data?.errors && Array.isArray(data.errors) && data.errors.length > 0) {
             errorText = data.errors.join(', ');
           } else if (data?.message) {
@@ -93,11 +93,11 @@ const SupervisorsList = () => {
         const data = response.data;
 
         if (data?.success === true) {
-          showToast(data.message || 'Sales user created successfully', 'success');
+          showToast(data.message || 'Pengguna sales berhasil dibuat', 'success');
           loadPeople();
           return data;
         } else {
-          let errorText = 'Failed to create sales user';
+          let errorText = 'Gagal membuat pengguna sales';
           if (data?.errors && Array.isArray(data.errors) && data.errors.length > 0) {
             errorText = data.errors.join(', ');
           } else if (data?.message) {
@@ -110,7 +110,7 @@ const SupervisorsList = () => {
     } catch (error) {
       console.error('Failed to save person:', error);
 
-      let errorText = 'Failed to save. Please try again.';
+      let errorText = 'Gagal menyimpan. Silakan coba lagi.';
       if (error?.response?.data) {
         const errorData = error.response.data;
         if (errorData.errors && Array.isArray(errorData.errors) && errorData.errors.length > 0) {
@@ -139,11 +139,11 @@ const SupervisorsList = () => {
       const data = response?.data || response;
 
       if (data?.success === true || data?.status === true) {
-        const message = data.message || `${role === 'MANAGER' ? 'Supervisor' : 'Sales user'} deleted successfully`;
+        const message = data.message || `${role === 'MANAGER' ? 'Supervisor' : 'Pengguna sales'} berhasil dihapus`;
         showToast(message, 'success');
         loadPeople();
       } else {
-        let errorText = `Failed to delete ${role === 'MANAGER' ? 'supervisor' : 'sales user'}`;
+        let errorText = `Gagal menghapus ${role === 'MANAGER' ? 'supervisor' : 'pengguna sales'}`;
         if (data?.errors && Array.isArray(data.errors) && data.errors.length > 0) {
           errorText = data.errors.join(', ');
         } else if (data?.message) {
@@ -176,14 +176,14 @@ const SupervisorsList = () => {
         <div className="mb-6">
           <div className="flex items-center justify-between mb-6">
             <h1 className="text-2xl font-bold text-gray-900">
-              {role === 'MANAGER' || role === 'SERVICE_CENTER' ? 'Supervisor List' : 'Sales List'}
+              {role === 'MANAGER' || role === 'SERVICE_CENTER' ? 'Daftar Supervisor' : 'Daftar Sales'}
             </h1>
             {role !== 'SERVICE_CENTER' && (
               <button
                 onClick={handleCreate}
                 className="bg-[#C9F35B] hover:bg-[#B8E047] text-gray-900 px-6 py-2.5 rounded-xl font-medium transition-colors shadow-sm hover:shadow-md"
               >
-                {role === 'MANAGER' ? 'Add Supervisor' : 'Add Sales'}
+                {role === 'MANAGER' ? 'Tambah Supervisor' : 'Tambah Sales'}
               </button>
             )}
           </div>
@@ -192,7 +192,7 @@ const SupervisorsList = () => {
             <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
             <input
               type="text"
-              placeholder="Search supervisors..."
+              placeholder="Cari supervisor..."
               className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-transparent"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -220,10 +220,10 @@ const SupervisorsList = () => {
         isOpen={isConfirmOpen}
         closeModal={() => setIsConfirmOpen(false)}
         onConfirm={handleConfirmDelete}
-        title={`Delete ${role === 'MANAGER' ? 'Supervisor' : 'Sales User'}`}
-        message={`Are you sure you want to delete this ${
-          role === 'MANAGER' ? 'supervisor' : 'sales user'
-        }?`}
+        title={`Hapus ${role === 'MANAGER' ? 'Supervisor' : 'Pengguna Sales'}`}
+        message={`Apakah Anda yakin ingin menghapus ${
+          role === 'MANAGER' ? 'supervisor' : 'pengguna sales'
+        } ini?`}
       />
 
       <Toast

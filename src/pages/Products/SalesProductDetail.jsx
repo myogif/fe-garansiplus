@@ -118,7 +118,7 @@ const SalesProductDetail = () => {
             className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
           >
             <ArrowLeft size={20} />
-            <span>Back to Products</span>
+            <span>Kembali ke Produk</span>
           </button>
 
           <button
@@ -151,10 +151,10 @@ const SalesProductDetail = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="space-y-4">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">Product Information</h2>
+              <h2 className="text-lg font-semibold text-gray-900 mb-4">Informasi Produk</h2>
 
               <div>
-                <label className="text-sm font-medium text-gray-500">Product Code</label>
+                <label className="text-sm font-medium text-gray-500">Kode Produk</label>
                 <p className="text-gray-900 font-medium">{product.code}</p>
               </div>
 
@@ -164,17 +164,17 @@ const SalesProductDetail = () => {
               </div>
 
               <div>
-                <label className="text-sm font-medium text-gray-500">Product Price</label>
+                <label className="text-sm font-medium text-gray-500">Harga Produk</label>
                 <p className="text-gray-900 font-medium">{formatCurrency(product.price)}</p>
               </div>
 
               <div>
-                <label className="text-sm font-medium text-gray-500">Warranty Price</label>
+                <label className="text-sm font-medium text-gray-500">Biaya Garansi</label>
                 <p className="text-gray-900 font-medium">{formatCurrency(product.priceWarranty)}</p>
               </div>
 
               <div>
-                <label className="text-sm font-medium text-gray-500">Warranty Percentage</label>
+                <label className="text-sm font-medium text-gray-500">Persentase Garansi</label>
                 <p className="text-gray-900 font-medium">{product.persen}%</p>
               </div>
 
@@ -185,15 +185,15 @@ const SalesProductDetail = () => {
             </div>
 
             <div className="space-y-4">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">Customer Information</h2>
+              <h2 className="text-lg font-semibold text-gray-900 mb-4">Informasi Pelanggan</h2>
 
               <div>
-                <label className="text-sm font-medium text-gray-500">Customer Name</label>
+                <label className="text-sm font-medium text-gray-500">Nama Pelanggan</label>
                 <p className="text-gray-900 font-medium">{product.customerName || '-'}</p>
               </div>
 
               <div>
-                <label className="text-sm font-medium text-gray-500">Phone Number</label>
+                <label className="text-sm font-medium text-gray-500">Nomor Telepon</label>
                 <p className="text-gray-900 font-medium">{product.customerPhone || '-'}</p>
               </div>
 
@@ -204,25 +204,25 @@ const SalesProductDetail = () => {
 
               {product.store && (
                 <>
-                  <h2 className="text-lg font-semibold text-gray-900 mb-4 mt-8">Store Information</h2>
+                  <h2 className="text-lg font-semibold text-gray-900 mb-4 mt-8">Informasi Toko</h2>
 
                   <div>
-                    <label className="text-sm font-medium text-gray-500">Store Name</label>
+                    <label className="text-sm font-medium text-gray-500">Nama Toko</label>
                     <p className="text-gray-900 font-medium">{product.store.name}</p>
                   </div>
 
                   <div>
-                    <label className="text-sm font-medium text-gray-500">Store Code</label>
+                    <label className="text-sm font-medium text-gray-500">Kode Toko</label>
                     <p className="text-gray-900 font-medium">{product.store.kode_toko}</p>
                   </div>
 
                   <div>
-                    <label className="text-sm font-medium text-gray-500">Address</label>
+                    <label className="text-sm font-medium text-gray-500">Alamat</label>
                     <p className="text-gray-900">{product.store.address}</p>
                   </div>
 
                   <div>
-                    <label className="text-sm font-medium text-gray-500">Contact</label>
+                    <label className="text-sm font-medium text-gray-500">Kontak</label>
                     <p className="text-gray-900">{product.store.phone}</p>
                     <p className="text-gray-900 text-sm">{product.store.email}</p>
                   </div>
@@ -233,18 +233,18 @@ const SalesProductDetail = () => {
 
           {product.creator && (
             <div className="mt-8 pt-8 border-t border-gray-200">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">Creator Information</h2>
+              <h2 className="text-lg font-semibold text-gray-900 mb-4">Informasi Pembuat</h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
-                  <label className="text-sm font-medium text-gray-500">Creator Name</label>
+                  <label className="text-sm font-medium text-gray-500">Nama Pembuat</label>
                   <p className="text-gray-900 font-medium">{product.creator.name}</p>
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-gray-500">Role</label>
+                  <label className="text-sm font-medium text-gray-500">Peran</label>
                   <p className="text-gray-900 font-medium">{product.creator.role}</p>
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-gray-500">Phone</label>
+                  <label className="text-sm font-medium text-gray-500">Telepon</label>
                   <p className="text-gray-900 font-medium">{product.creator.phone}</p>
                 </div>
               </div>
@@ -254,11 +254,11 @@ const SalesProductDetail = () => {
           <div className="mt-8 pt-8 border-t border-gray-200">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="text-sm font-medium text-gray-500">Created At</label>
+                <label className="text-sm font-medium text-gray-500">Dibuat Pada</label>
                 <p className="text-gray-900">{formatDate(product.createdAt)}</p>
               </div>
               <div>
-                <label className="text-sm font-medium text-gray-500">Last Updated</label>
+                <label className="text-sm font-medium text-gray-500">Terakhir Diperbarui</label>
                 <p className="text-gray-900">{formatDate(product.updatedAt)}</p>
               </div>
             </div>

@@ -69,7 +69,7 @@ const ProductsList = () => {
       setIsModalOpen(true);
     } catch (error) {
       console.error('Failed to fetch product details:', error);
-      showToast('Failed to load product details', 'error');
+      showToast('Gagal memuat detail produk', 'error');
     } finally {
       setLoading(false);
     }
@@ -110,12 +110,12 @@ const ProductsList = () => {
       const data = response?.data || response;
 
       if (data?.success === true || data?.status === true) {
-        const message = data.message || (selectedProduct ? 'Product updated successfully' : 'Product created successfully');
+        const message = data.message || (selectedProduct ? 'Produk berhasil diperbarui' : 'Produk berhasil dibuat');
         showToast(message, 'success');
         setIsModalOpen(false);
         loadProducts();
       } else {
-        let errorText = 'Failed to save product';
+        let errorText = 'Gagal menyimpan produk';
         if (data?.errors && Array.isArray(data.errors) && data.errors.length > 0) {
           errorText = data.errors.join(', ');
         } else if (data?.message) {
@@ -126,7 +126,7 @@ const ProductsList = () => {
     } catch (error) {
       console.error('Failed to save product:', error);
 
-      let errorText = 'Failed to save product. Please try again.';
+      let errorText = 'Gagal menyimpan produk. Silakan coba lagi.';
       if (error?.response?.data) {
         const errorData = error.response.data;
         if (errorData.errors && Array.isArray(errorData.errors) && errorData.errors.length > 0) {
@@ -154,11 +154,11 @@ const ProductsList = () => {
       const data = response?.data || response;
 
       if (data?.success === true || data?.status === true) {
-        const message = data.message || 'Product deleted successfully';
+        const message = data.message || 'Produk berhasil dihapus';
         showToast(message, 'success');
         loadProducts();
       } else {
-        let errorText = 'Failed to delete product';
+        let errorText = 'Gagal menghapus produk';
         if (data?.errors && Array.isArray(data.errors) && data.errors.length > 0) {
           errorText = data.errors.join(', ');
         } else if (data?.message) {
@@ -206,7 +206,7 @@ const ProductsList = () => {
       }
     } catch (error) {
       console.error('Export failed:', error);
-      showToast('Failed to export data', 'error');
+      showToast('Gagal mengekspor data', 'error');
     }
   };
 
@@ -234,7 +234,7 @@ const ProductsList = () => {
         setIsConfirmUseOpen(false);
         loadProducts();
       } else {
-        let errorText = 'Failed to use product';
+        let errorText = 'Gagal menggunakan produk';
         if (data?.errors && Array.isArray(data.errors) && data.errors.length > 0) {
           errorText = data.errors.join(', ');
         } else if (data?.message) {
@@ -245,7 +245,7 @@ const ProductsList = () => {
     } catch (error) {
       console.error('Failed to use product:', error);
 
-      let errorText = 'Failed to use product. Please try again.';
+      let errorText = 'Gagal menggunakan produk. Silakan coba lagi.';
       if (error?.response?.data) {
         const errorData = error.response.data;
         if (errorData.errors && Array.isArray(errorData.errors) && errorData.errors.length > 0) {
@@ -276,14 +276,14 @@ const ProductsList = () => {
       <div className="bg-white rounded-2xl shadow-sm p-6">
         <div className="mb-6">
           <div className="flex items-center justify-between mb-6">
-            <h1 className="text-2xl font-bold text-gray-900">Product List</h1>
+            <h1 className="text-2xl font-bold text-gray-900">Daftar Produk</h1>
             <div className="flex items-center gap-3">
               {role === 'SALES' && (
                 <button
                   onClick={handleCreate}
                   className="bg-[#C9F35B] hover:bg-[#B8E047] text-gray-900 px-6 py-2.5 rounded-xl font-medium transition-colors shadow-sm hover:shadow-md"
                 >
-                  Add Product
+                  Tambah Produk
                 </button>
               )}
               {(role === 'MANAGER' || role === 'SUPERVISOR') && (
@@ -302,7 +302,7 @@ const ProductsList = () => {
             <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
             <input
               type="text"
-              placeholder="Search products..."
+              placeholder="Cari produk..."
               className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-transparent"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -334,8 +334,8 @@ const ProductsList = () => {
         isOpen={isConfirmOpen}
         closeModal={() => setIsConfirmOpen(false)}
         onConfirm={handleConfirmDelete}
-        title="Delete Product"
-        message="Are you sure you want to delete this product?"
+        title="Hapus Produk"
+        message="Apakah Anda yakin ingin menghapus produk ini?"
       />
 
       <ExportExcelModal

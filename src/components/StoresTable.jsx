@@ -12,7 +12,7 @@ const StoresTable = ({ stores, loading, role, onDelete }) => {
   if (stores.length === 0) {
     return (
       <div className="text-center py-12">
-        <p className="text-gray-500">No stores found</p>
+        <p className="text-gray-500">Tidak ada toko ditemukan</p>
       </div>
     );
   }
@@ -22,13 +22,13 @@ const StoresTable = ({ stores, loading, role, onDelete }) => {
       <table className="w-full">
         <thead>
           <tr className="border-b border-gray-200">
-            <th className="text-left py-4 px-4 font-semibold text-gray-700">Store Code</th>
-            <th className="text-left py-4 px-4 font-semibold text-gray-700">Name</th>
-            <th className="text-left py-4 px-4 font-semibold text-gray-700">Address</th>
-            <th className="text-left py-4 px-4 font-semibold text-gray-700">Contact</th>
+            <th className="text-left py-4 px-4 font-semibold text-gray-700">Kode Toko</th>
+            <th className="text-left py-4 px-4 font-semibold text-gray-700">Nama</th>
+            <th className="text-left py-4 px-4 font-semibold text-gray-700">Alamat</th>
+            <th className="text-left py-4 px-4 font-semibold text-gray-700">Kontak</th>
             <th className="text-center py-4 px-4 font-semibold text-gray-700">Status</th>
             {role === 'MANAGER' && (
-              <th className="text-center py-4 px-4 font-semibold text-gray-700">Action</th>
+              <th className="text-center py-4 px-4 font-semibold text-gray-700">Aksi</th>
             )}
           </tr>
         </thead>
@@ -70,12 +70,12 @@ const StoresTable = ({ stores, loading, role, onDelete }) => {
                 {store.isActive ? (
                   <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-700">
                     <CheckCircle size={14} />
-                    Active
+                    Aktif
                   </span>
                 ) : (
                   <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-700">
                     <XCircle size={14} />
-                    Inactive
+                    Tidak Aktif
                   </span>
                 )}
               </td>

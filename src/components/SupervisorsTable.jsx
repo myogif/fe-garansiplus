@@ -16,7 +16,7 @@ const SupervisorsTable = ({ people, loading, role, onDelete }) => {
     return (
       <div className="text-center py-12 bg-white rounded-2xl">
         <p className="text-gray-500">
-          No {role === 'MANAGER' ? 'supervisors' : 'sales users'} found.
+          Tidak ada {role === 'MANAGER' ? 'supervisor' : 'pengguna sales'} ditemukan.
         </p>
       </div>
     );
@@ -28,19 +28,19 @@ const SupervisorsTable = ({ people, loading, role, onDelete }) => {
         <thead>
           <tr className="bg-gray-50 border-b border-gray-200">
             <th className="py-3 px-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
-              Name
+              Nama
             </th>
             <th className="py-3 px-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
-              Email/Phone
+              Email/Telepon
             </th>
             <th className="py-3 px-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
-              Store
+              Toko
             </th>
             <th className="py-3 px-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
-              Created At
+              Dibuat Pada
             </th>
             <th className="py-3 px-4 text-center text-xs font-medium text-gray-600 uppercase tracking-wider">
-              Action
+              Aksi
             </th>
           </tr>
         </thead>

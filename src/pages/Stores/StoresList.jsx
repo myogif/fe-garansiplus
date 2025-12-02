@@ -32,7 +32,7 @@ const StoresList = () => {
       setPagination(pg);
     } catch (error) {
       console.error('Failed to fetch stores:', error);
-      showToast('Failed to load stores', 'error');
+      showToast('Gagal memuat daftar toko', 'error');
     } finally {
       setLoading(false);
     }
@@ -69,12 +69,12 @@ const StoresList = () => {
       const data = await createStore(formData);
 
       if (data?.success === true) {
-        const message = data.message || 'Store created successfully';
+        const message = data.message || 'Toko berhasil dibuat';
         showToast(message, 'success');
         loadStores();
         return data;
       } else {
-        let errorText = 'Failed to create store';
+        let errorText = 'Gagal membuat toko';
         if (data?.errors && Array.isArray(data.errors) && data.errors.length > 0) {
           errorText = data.errors.join(', ');
         } else if (data?.message) {
@@ -86,7 +86,7 @@ const StoresList = () => {
     } catch (error) {
       console.error('Failed to create store:', error);
 
-      let errorText = 'Failed to create store';
+      let errorText = 'Gagal membuat toko';
       if (error?.response?.data) {
         const errorData = error.response.data;
         if (errorData.errors && Array.isArray(errorData.errors) && errorData.errors.length > 0) {
@@ -109,11 +109,11 @@ const StoresList = () => {
       const data = response?.data;
 
       if (data?.success === true) {
-        const message = data.message || 'Store deleted successfully';
+        const message = data.message || 'Toko berhasil dihapus';
         showToast(message, 'success');
         loadStores();
       } else {
-        let errorText = 'Failed to delete store';
+        let errorText = 'Gagal menghapus toko';
         if (data?.errors && Array.isArray(data.errors) && data.errors.length > 0) {
           errorText = data.errors.join(', ');
         } else if (data?.message) {
@@ -147,13 +147,13 @@ const StoresList = () => {
       <div className="bg-white rounded-2xl shadow-sm p-6">
         <div className="mb-6">
           <div className="flex items-center justify-between mb-6">
-            <h1 className="text-2xl font-bold text-gray-900">Store List</h1>
+            <h1 className="text-2xl font-bold text-gray-900">Daftar Toko</h1>
             {role === 'MANAGER' && (
               <button
                 onClick={handleCreate}
                 className="bg-[#C9F35B] hover:bg-[#B8E047] text-gray-900 px-6 py-2.5 rounded-xl font-medium transition-colors shadow-sm hover:shadow-md"
               >
-                Add Store
+                Tambah Toko
               </button>
             )}
           </div>
@@ -162,7 +162,7 @@ const StoresList = () => {
             <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
             <input
               type="text"
-              placeholder="Search stores..."
+              placeholder="Cari toko..."
               className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-transparent"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -185,8 +185,8 @@ const StoresList = () => {
         isOpen={isConfirmOpen}
         closeModal={handleCloseConfirm}
         onConfirm={handleConfirmDelete}
-        title="Delete Store"
-        message={`Are you sure you want to delete ${selectedStore?.name || 'this store'}?`}
+        title="Hapus Toko"
+        message={`Apakah Anda yakin ingin menghapus ${selectedStore?.name || 'toko ini'}?`}
       />
 
       <Toast

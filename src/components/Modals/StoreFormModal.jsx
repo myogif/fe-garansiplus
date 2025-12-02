@@ -69,7 +69,7 @@ const StoreFormModal = ({ isOpen, closeModal, onSave }) => {
                 <div className="bg-gradient-to-r from-[#C9F35B] to-[#B8E047] px-6 py-4">
                   <div className="flex items-center justify-between">
                     <Dialog.Title className="text-xl font-semibold text-gray-900">
-                      Add Store
+                      Tambah Toko
                     </Dialog.Title>
                     <button
                       onClick={closeModal}
@@ -84,7 +84,7 @@ const StoreFormModal = ({ isOpen, closeModal, onSave }) => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                       <label htmlFor="kode_toko" className="block text-sm font-medium text-gray-700 mb-2">
-                        Store Code <span className="text-red-500">*</span>
+                        Kode Toko <span className="text-red-500">*</span>
                       </label>
                       <input
                         type="text"
@@ -94,13 +94,13 @@ const StoreFormModal = ({ isOpen, closeModal, onSave }) => {
                         value={formData.kode_toko}
                         onChange={handleChange}
                         className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#C9F35B] focus:border-transparent transition-all"
-                        placeholder="e.g., TOKO001"
+                        placeholder="contoh: TOKO001"
                       />
                     </div>
 
                     <div>
                       <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-                        Store Name <span className="text-red-500">*</span>
+                        Nama Toko <span className="text-red-500">*</span>
                       </label>
                       <input
                         type="text"
@@ -110,13 +110,13 @@ const StoreFormModal = ({ isOpen, closeModal, onSave }) => {
                         value={formData.name}
                         onChange={handleChange}
                         className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#C9F35B] focus:border-transparent transition-all"
-                        placeholder="Enter store name"
+                        placeholder="Masukkan nama toko"
                       />
                     </div>
 
                     <div className="md:col-span-2">
                       <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-2">
-                        Address <span className="text-red-500">*</span>
+                        Alamat <span className="text-red-500">*</span>
                       </label>
                       <textarea
                         name="address"
@@ -126,13 +126,13 @@ const StoreFormModal = ({ isOpen, closeModal, onSave }) => {
                         value={formData.address}
                         onChange={handleChange}
                         className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#C9F35B] focus:border-transparent transition-all resize-none"
-                        placeholder="Enter store address"
+                        placeholder="Masukkan alamat toko"
                       ></textarea>
                     </div>
 
                     <div>
                       <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
-                        Phone
+                        Telepon
                       </label>
                       <input
                         type="text"
@@ -141,7 +141,7 @@ const StoreFormModal = ({ isOpen, closeModal, onSave }) => {
                         value={formData.phone}
                         onChange={handleChange}
                         className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#C9F35B] focus:border-transparent transition-all"
-                        placeholder="e.g., 081234567890"
+                        placeholder="contoh: 081234567890"
                       />
                     </div>
 
@@ -169,7 +169,7 @@ const StoreFormModal = ({ isOpen, closeModal, onSave }) => {
                           onChange={handleChange}
                           className="w-4 h-4 text-[#C9F35B] border-gray-300 rounded focus:ring-[#C9F35B]"
                         />
-                        <span className="text-sm font-medium text-gray-700">Active Store</span>
+                        <span className="text-sm font-medium text-gray-700">Toko Aktif</span>
                       </label>
                     </div>
                   </div>
@@ -180,13 +180,13 @@ const StoreFormModal = ({ isOpen, closeModal, onSave }) => {
                       onClick={closeModal}
                       className="px-6 py-3 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors"
                     >
-                      Cancel
+                      Batal
                     </button>
                     <button
                       type="submit"
                       className="px-6 py-3 text-sm font-medium text-gray-900 bg-[#C9F35B] rounded-xl hover:bg-[#B8E047] transition-colors shadow-sm hover:shadow-md"
                     >
-                      Save Store
+                      Simpan
                     </button>
                   </div>
                 </form>

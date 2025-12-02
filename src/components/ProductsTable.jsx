@@ -17,7 +17,7 @@ const ProductsTable = ({ products, loading, role, onEdit, onDelete, onGunakan, o
   if (products.length === 0) {
     return (
       <div className="text-center py-12 bg-white rounded-2xl">
-        <p className="text-gray-500">No products found.</p>
+        <p className="text-gray-500">Tidak ada produk ditemukan.</p>
       </div>
     );
   }
@@ -32,12 +32,12 @@ const ProductsTable = ({ products, loading, role, onEdit, onDelete, onGunakan, o
 
   const getStatusBadge = (status) => {
     const statusConfig = {
-      'ACTIVE': { bg: 'bg-green-100', text: 'text-green-700', label: 'Active' },
-      'Aktif': { bg: 'bg-green-100', text: 'text-green-700', label: 'Active' },
-      'USED': { bg: 'bg-yellow-100', text: 'text-yellow-700', label: 'Used' },
-      'Used': { bg: 'bg-yellow-100', text: 'text-yellow-700', label: 'Used' },
-      'INACTIVE': { bg: 'bg-red-100', text: 'text-red-700', label: 'Expired' },
-      'Expired': { bg: 'bg-red-100', text: 'text-red-700', label: 'Expired' },
+      'ACTIVE': { bg: 'bg-green-100', text: 'text-green-700', label: 'Aktif' },
+      'Aktif': { bg: 'bg-green-100', text: 'text-green-700', label: 'Aktif' },
+      'USED': { bg: 'bg-yellow-100', text: 'text-yellow-700', label: 'Digunakan' },
+      'Used': { bg: 'bg-yellow-100', text: 'text-yellow-700', label: 'Digunakan' },
+      'INACTIVE': { bg: 'bg-red-100', text: 'text-red-700', label: 'Kadaluarsa' },
+      'Expired': { bg: 'bg-red-100', text: 'text-red-700', label: 'Kadaluarsa' },
     };
 
     const config = statusConfig[status] || { bg: 'bg-gray-100', text: 'text-gray-700', label: status || 'Unknown' };
@@ -55,16 +55,16 @@ const ProductsTable = ({ products, loading, role, onEdit, onDelete, onGunakan, o
         <thead>
           <tr className="bg-gray-50 border-b border-gray-200">
             <th className="py-3 px-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
-              Product Name
+              Nama Produk
             </th>
             <th className="py-3 px-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
-              Product Code
+              Kode Produk
             </th>
             <th className="py-3 px-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
-              Product Price
+              Harga Produk
             </th>
             <th className="py-3 px-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
-              Warranty (%)
+              Garansi (%)
             </th>
             <th className="py-3 px-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
               Status
@@ -136,12 +136,12 @@ const ProductsTable = ({ products, loading, role, onEdit, onDelete, onGunakan, o
                             : 'Use product'
                         }
                       >
-                        Use
+                        Gunakan
                       </button>
                       <button
                         onClick={() => onCetak && onCetak(product)}
                         className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                        title="Print Certificate"
+                        title="Cetak Sertifikat"
                       >
                         <FileText className="w-4 h-4" />
                       </button>

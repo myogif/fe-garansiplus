@@ -33,7 +33,7 @@ const SupervisorFormModal = ({ isOpen, closeModal, onSave }) => {
       // fetchStores() return res.data, jadi data bisa berupa response object atau array langsung
       if (data && data.success === false) {
         // Jika response gagal
-        setMessage({ type: 'error', text: data.message || 'Failed to load stores.' });
+        setMessage({ type: 'error', text: data.message || 'Gagal memuat toko.' });
         setStores([]);
       } else {
         // Jika sukses, data bisa berupa array atau object dengan property data
@@ -42,7 +42,7 @@ const SupervisorFormModal = ({ isOpen, closeModal, onSave }) => {
     } catch (error) {
       console.error('Failed to fetch stores:', error);
       // Error dari axios, response ada di error.response.data
-      const errorMessage = error?.response?.data?.message || error?.message || 'Failed to load stores. Please try again.';
+      const errorMessage = error?.response?.data?.message || error?.message || 'Gagal memuat toko. Silakan coba lagi.';
       setMessage({ type: 'error', text: errorMessage });
       setStores([]);
     } finally {
@@ -76,7 +76,7 @@ const SupervisorFormModal = ({ isOpen, closeModal, onSave }) => {
     e.preventDefault();
 
     if (!selectedStore) {
-      setMessage({ type: 'error', text: 'Please select a store' });
+      setMessage({ type: 'error', text: 'Silakan pilih toko' });
       return;
     }
 
@@ -94,7 +94,7 @@ const SupervisorFormModal = ({ isOpen, closeModal, onSave }) => {
       const response = await onSave(payload);
 
       if (response && response.success === true) {
-        setMessage({ type: 'success', text: response.message || 'Supervisor created successfully!' });
+        setMessage({ type: 'success', text: response.message || 'Supervisor berhasil dibuat!' });
 
         setTimeout(() => {
           setFormData({
@@ -109,7 +109,7 @@ const SupervisorFormModal = ({ isOpen, closeModal, onSave }) => {
           closeModal();
         }, 1500);
       } else {
-        let errorText = 'Failed to create supervisor. Please try again.';
+        let errorText = 'Gagal membuat supervisor. Silakan coba lagi.';
 
         if (response?.errors && Array.isArray(response.errors) && response.errors.length > 0) {
           errorText = response.errors.join(', ');
@@ -189,7 +189,7 @@ const SupervisorFormModal = ({ isOpen, closeModal, onSave }) => {
               <Dialog.Panel className="w-full max-w-2xl transform overflow-visible rounded-2xl bg-white shadow-xl transition-all">
                 <div className="bg-[#C9F35B] hover:bg-[#B8E047]  px-6 py-4">
                   <Dialog.Title className="text-xl font-semibold text-black">
-                    Add Supervisor
+                    Tambah Supervisor
                   </Dialog.Title>
                 </div>
 
@@ -228,7 +228,7 @@ const SupervisorFormModal = ({ isOpen, closeModal, onSave }) => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="col-span-1 md:col-span-2">
                       <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-                        Name <span className="text-red-500">*</span>
+                        Nama <span className="text-red-500">*</span>
                       </label>
                       <input
                         type="text"
@@ -239,13 +239,13 @@ const SupervisorFormModal = ({ isOpen, closeModal, onSave }) => {
                         onChange={handleChange}
                         disabled={submitting}
                         className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#C9F35B] focus:border-transparent transition-all disabled:bg-gray-100 disabled:cursor-not-allowed"
-                        placeholder="Enter supervisor name"
+                        placeholder="Masukkan nama supervisor"
                       />
                     </div>
 
                     <div>
                       <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
-                        Phone <span className="text-red-500">*</span>
+                        Telepon <span className="text-red-500">*</span>
                       </label>
                       <input
                         type="text"
@@ -256,7 +256,7 @@ const SupervisorFormModal = ({ isOpen, closeModal, onSave }) => {
                         onChange={handleChange}
                         disabled={submitting}
                         className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#C9F35B] focus:border-transparent transition-all disabled:bg-gray-100 disabled:cursor-not-allowed"
-                        placeholder="Enter phone number"
+                        placeholder="Masukkan nomor telepon"
                       />
                     </div>
 
@@ -273,13 +273,13 @@ const SupervisorFormModal = ({ isOpen, closeModal, onSave }) => {
                         onChange={handleChange}
                         disabled={submitting}
                         className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#C9F35B] focus:border-transparent transition-all disabled:bg-gray-100 disabled:cursor-not-allowed"
-                        placeholder="Enter password"
+                        placeholder="Masukkan password"
                       />
                     </div>
 
                     <div className="col-span-1 md:col-span-2">
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Store <span className="text-red-500">*</span>
+                        Toko <span className="text-red-500">*</span>
                       </label>
                       <Combobox value={selectedStore} onChange={handleStoreSelect} disabled={submitting}>
                         <div className="relative">
@@ -288,7 +288,7 @@ const SupervisorFormModal = ({ isOpen, closeModal, onSave }) => {
                               className="w-full px-4 py-3 pr-10 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all disabled:bg-gray-100 disabled:cursor-not-allowed"
                               displayValue={(store) => store ? `${store.kode_toko} - ${store.name}` : ''}
                               onChange={(event) => setQuery(event.target.value)}
-                              placeholder="Search store by code or name"
+                              placeholder="Cari toko berdasarkan kode atau nama"
                               required
                               disabled={submitting}
                             />
@@ -305,9 +305,9 @@ const SupervisorFormModal = ({ isOpen, closeModal, onSave }) => {
                           >
                             <Combobox.Options className="absolute z-10 mt-1 max-h-[280px] w-full overflow-auto rounded-xl bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                               {loading ? (
-                                <div className="px-4 py-2 text-sm text-gray-500">Loading stores...</div>
+                                <div className="px-4 py-2 text-sm text-gray-500">Memuat toko...</div>
                               ) : filteredStores.length === 0 && query !== '' ? (
-                                <div className="px-4 py-2 text-sm text-gray-500">No stores found.</div>
+                                <div className="px-4 py-2 text-sm text-gray-500">Tidak ada toko ditemukan.</div>
                               ) : (
                                 filteredStores.map((store) => (
                                   <Combobox.Option
@@ -355,7 +355,7 @@ const SupervisorFormModal = ({ isOpen, closeModal, onSave }) => {
                       disabled={submitting}
                       className="px-6 py-3 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      Cancel
+                      Batal
                     </button>
                     <button
                       type="submit"
@@ -368,10 +368,10 @@ const SupervisorFormModal = ({ isOpen, closeModal, onSave }) => {
                             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                           </svg>
-                          Saving...
+                          Menyimpan...
                         </>
                       ) : (
-                        'Save Supervisor'
+                        'Simpan'
                       )}
                     </button>
                   </div>
