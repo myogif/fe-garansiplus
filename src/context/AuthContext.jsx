@@ -63,38 +63,57 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const restoreSession = () => {
       try {
+        console.log('🔍 Starting session restoration...');
+
         const token = getStoredToken();
         const user = getStoredUser();
         const loggedInFlag = getIsLoggedIn();
 
-        console.log('🔍 Session Restoration Debug:');
+        console.log('📊 Session Data:');
         console.log('  - Token exists:', !!token);
+        console.log('  - Token value:', token ? `${token.substring(0, 20)}...` : 'null');
         console.log('  - User exists:', !!user);
+        console.log('  - User data:', user);
         console.log('  - isLoggedIn flag:', loggedInFlag);
-        console.log('  - Token expired:', token ? isTokenExpired(token) : 'N/A');
 
-        if (token && user && !isTokenExpired(token)) {
-          console.log('✅ Restoring session - all checks passed');
-
-          if (!loggedInFlag) {
-            console.log('  ℹ️ Setting missing isLoggedIn flag');
-            localStorage.setItem('isLoggedIn', 'true');
-          }
-
-          dispatch({
-            type: 'RESTORE_SESSION',
-            payload: { token, user },
-          });
-        } else {
-          console.log('❌ Session restoration failed');
-          console.log('  Reason:', !token ? 'No token' : !user ? 'No user' : 'Token expired');
-          if (token) {
-            authLogout();
-          }
+        if (!token) {
+          console.log('❌ No token found in localStorage');
           dispatch({ type: 'SET_LOADING', payload: false });
+          return;
         }
+
+        if (!user) {
+          console.log('❌ No user found in localStorage');
+          authLogout();
+          dispatch({ type: 'SET_LOADING', payload: false });
+          return;
+        }
+
+        const tokenExpired = isTokenExpired(token);
+        console.log('  - Token expired check result:', tokenExpired);
+
+        if (tokenExpired) {
+          console.log('❌ Token is expired');
+          authLogout();
+          dispatch({ type: 'SET_LOADING', payload: false });
+          return;
+        }
+
+        console.log('✅ All checks passed - restoring session');
+
+        if (!loggedInFlag) {
+          console.log('  ℹ️ Setting missing isLoggedIn flag');
+          localStorage.setItem('isLoggedIn', 'true');
+        }
+
+        dispatch({
+          type: 'RESTORE_SESSION',
+          payload: { token, user },
+        });
+
+        console.log('✅ Session restored successfully');
       } catch (error) {
-        console.error('Failed to restore session:', error);
+        console.error('❌ Failed to restore session:', error);
         authLogout();
         dispatch({ type: 'SET_LOADING', payload: false });
       }

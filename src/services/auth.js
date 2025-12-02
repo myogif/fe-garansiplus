@@ -27,16 +27,45 @@ export const decodeJWT = (token) => {
 };
 
 export const isTokenExpired = (token) => {
-  const decoded = decodeJWT(token);
-  if (!decoded || !decoded.exp) return true;
+  try {
+    const decoded = decodeJWT(token);
 
-  const currentTime = Date.now() / 1000;
-  return decoded.exp < currentTime;
+    if (!decoded) {
+      console.warn('⚠️ Could not decode JWT token');
+      return false;
+    }
+
+    if (!decoded.exp) {
+      console.log('ℹ️ Token has no expiration field - treating as valid');
+      return false;
+    }
+
+    const currentTime = Date.now() / 1000;
+    const isExpired = decoded.exp < currentTime;
+
+    if (isExpired) {
+      console.log('⏰ Token expired at:', new Date(decoded.exp * 1000));
+    }
+
+    return isExpired;
+  } catch (error) {
+    console.error('Error checking token expiration:', error);
+    return false;
+  }
 };
 
 export const getStoredUser = () => {
-  const userStr = localStorage.getItem('gp_user');
-  return userStr ? JSON.parse(userStr) : null;
+  try {
+    const userStr = localStorage.getItem('gp_user');
+    if (!userStr) return null;
+
+    const user = JSON.parse(userStr);
+    console.log('📦 Retrieved user from storage:', user?.role);
+    return user;
+  } catch (error) {
+    console.error('Error parsing stored user:', error);
+    return null;
+  }
 };
 
 export const getStoredToken = () => {
