@@ -27,7 +27,6 @@ const Sidebar = ({ isOpen, onClose }) => {
       { to: '/stores', icon: Store, label: 'Toko' },
       { to: '/supervisors', icon: Users, label: 'Supervisor' },
       { to: '/sales', icon: UserCheck, label: 'Sales' },
-      { to: '/customers', icon: Users, label: 'Customer' },
     ],
     SUPERVISOR: [
       { to: '/products', icon: Package, label: 'Produk' },

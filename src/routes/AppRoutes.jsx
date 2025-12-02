@@ -98,14 +98,14 @@ export default function AppRoutes() {
           </ProtectedRoute>
         }
       />
-      <Route
+      {/* <Route
         path="/customers"
         element={
           <ProtectedRoute allowedRoles={['MANAGER', 'SERVICE_CENTER']}>
             <CustomersList />
           </ProtectedRoute>
         }
-      />
+      /> */}
       <Route
         path="/update-password"
         element={
