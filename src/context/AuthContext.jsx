@@ -78,6 +78,16 @@ export const AuthProvider = ({ children }) => {
     };
 
     restoreSession();
+
+    const handleAuthExpired = () => {
+      dispatch({ type: 'LOGOUT' });
+    };
+
+    window.addEventListener('auth:expired', handleAuthExpired);
+
+    return () => {
+      window.removeEventListener('auth:expired', handleAuthExpired);
+    };
   }, []);
 
   const login = async (phone, password) => {

@@ -14,6 +14,25 @@ client.interceptors.request.use((config) => {
 client.interceptors.response.use(
   (res) => res,
   (err) => {
+    if (err.response && (err.response.status === 401 || err.response.status === 403)) {
+      const isLoginRequest = err.config.url.includes('/auth/login');
+
+      if (!isLoginRequest) {
+        localStorage.removeItem('gp_token');
+        localStorage.removeItem('gp_user');
+        localStorage.removeItem('token');
+
+        const event = new CustomEvent('auth:expired', {
+          detail: { message: 'Sesi berakhir. Silakan login kembali.' },
+        });
+        window.dispatchEvent(event);
+
+        if (!window.location.pathname.includes('/login')) {
+          window.location.href = '/login';
+        }
+      }
+    }
+
     const msg = err?.response?.data?.message || err.message || 'Request failed';
     console.error(msg);
     return Promise.reject(err);
