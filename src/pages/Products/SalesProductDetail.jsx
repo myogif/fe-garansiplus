@@ -144,7 +144,7 @@ const SalesProductDetail = () => {
                 {product.status}
               </span>
               <span className="px-3 py-1 rounded-full text-sm font-medium bg-[#C9F35B]/20 text-gray-900">
-                {product.type}
+                {product.tipe}
               </span>
             </div>
           </div>
@@ -189,17 +189,17 @@ const SalesProductDetail = () => {
 
               <div>
                 <label className="text-sm font-medium text-gray-500">Customer Name</label>
-                <p className="text-gray-900 font-medium">{product.customer_name || '-'}</p>
+                <p className="text-gray-900 font-medium">{product.customerName || '-'}</p>
               </div>
 
               <div>
                 <label className="text-sm font-medium text-gray-500">Phone Number</label>
-                <p className="text-gray-900 font-medium">{product.customer_phone || '-'}</p>
+                <p className="text-gray-900 font-medium">{product.customerPhone || '-'}</p>
               </div>
 
               <div>
                 <label className="text-sm font-medium text-gray-500">Email</label>
-                <p className="text-gray-900 font-medium">{product.customer_email || '-'}</p>
+                <p className="text-gray-900 font-medium">{product.customerEmail || '-'}</p>
               </div>
 
               {product.store && (
@@ -255,11 +255,11 @@ const SalesProductDetail = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="text-sm font-medium text-gray-500">Created At</label>
-                <p className="text-gray-900">{formatDate(product.created_at)}</p>
+                <p className="text-gray-900">{formatDate(product.createdAt)}</p>
               </div>
               <div>
                 <label className="text-sm font-medium text-gray-500">Last Updated</label>
-                <p className="text-gray-900">{formatDate(product.updated_at)}</p>
+                <p className="text-gray-900">{formatDate(product.updatedAt)}</p>
               </div>
             </div>
           </div>
