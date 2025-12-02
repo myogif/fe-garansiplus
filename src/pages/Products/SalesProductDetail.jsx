@@ -108,7 +108,14 @@ const SalesProductDetail = () => {
 
         <div className="bg-white rounded-2xl shadow-sm p-8">
           <div className="mb-6">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">{product.name}</h1>
+            <div className="flex items-center gap-3 mb-3 flex-wrap">
+              <h1 className="text-2xl md:text-3xl font-bold text-gray-900">{product.name}</h1>
+              {product.tipe && (
+                <span className="px-4 py-1.5 bg-[#C9F35B] text-gray-900 rounded-lg text-xs font-bold uppercase tracking-wide">
+                  {product.tipe}
+                </span>
+              )}
+            </div>
             <div className="flex items-center gap-3">
               <span
                 className={`px-3 py-1 rounded-full text-sm font-medium ${
@@ -118,9 +125,6 @@ const SalesProductDetail = () => {
                 }`}
               >
                 {product.status}
-              </span>
-              <span className="px-3 py-1 rounded-full text-sm font-medium bg-[#C9F35B]/20 text-gray-900">
-                {product.tipe}
               </span>
             </div>
           </div>

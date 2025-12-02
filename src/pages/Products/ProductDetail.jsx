@@ -98,12 +98,12 @@ const ProductDetail = () => {
             <span className="font-medium">Back</span>
           </button>
 
-          <div className="flex items-center gap-3 mb-4">
-            <h1 className="text-2xl font-bold text-gray-900">
+          <div className="flex items-center gap-3 mb-4 flex-wrap">
+            <h1 className="text-2xl md:text-3xl font-bold text-gray-900">
               {product.name}
             </h1>
             {product.type && (
-              <span className="px-4 py-1.5 bg-[#C9F35B] text-gray-900 rounded-full text-sm font-medium uppercase">
+              <span className="px-4 py-1.5 bg-[#C9F35B] text-gray-900 rounded-lg text-xs font-bold uppercase tracking-wide">
                 {product.type}
               </span>
             )}
