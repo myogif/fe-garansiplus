@@ -3,10 +3,10 @@ import { Fragment, useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 
 const WARRANTY_OPTIONS = [
-  { label: '3% - 6 Bulan', value: 3, months: 6 },
-  { label: '5% - 12 Bulan', value: 5, months: 12 },
-  { label: '10% - 24 Bulan', value: 10, months: 24 },
-  { label: 'Custom (Manual)', value: 'custom' }
+  { label: '3% - 6 months', value: 3, months: 6 },
+  { label: '5% - 12 months', value: 5, months: 12 },
+  { label: '10% - 24 months', value: 10, months: 24 },
+  { label: 'Custom', value: 'custom' }
 ];
 
 const ProductFormModal = ({ isOpen, closeModal, product, onSave }) => {
@@ -169,7 +169,7 @@ const ProductFormModal = ({ isOpen, closeModal, product, onSave }) => {
                     as="h3"
                     className="text-xl font-semibold text-gray-900"
                   >
-                    {product ? 'Edit Produk' : 'Tambah Produk'}
+                    {product ? 'Edit Product' : 'Add Product'}
                   </Dialog.Title>
                   <button
                     onClick={closeModal}
@@ -184,7 +184,7 @@ const ProductFormModal = ({ isOpen, closeModal, product, onSave }) => {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
                         <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-                          Nama Produk <span className="text-red-500">*</span>
+                          Product Name <span className="text-red-500">*</span>
                         </label>
                         <input
                           type="text"
@@ -194,13 +194,13 @@ const ProductFormModal = ({ isOpen, closeModal, product, onSave }) => {
                           value={formData.name}
                           onChange={handleChange}
                           className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C9F35B] focus:border-transparent"
-                          placeholder="Masukkan nama produk"
+                          placeholder="Enter product name"
                         />
                       </div>
 
                       <div>
                         <label htmlFor="code" className="block text-sm font-medium text-gray-700 mb-2">
-                          Kode Produk <span className="text-red-500">*</span>
+                          Product Code <span className="text-red-500">*</span>
                         </label>
                         <input
                           type="text"
@@ -210,13 +210,13 @@ const ProductFormModal = ({ isOpen, closeModal, product, onSave }) => {
                           value={formData.code}
                           onChange={handleChange}
                           className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C9F35B] focus:border-transparent"
-                          placeholder="contoh: APPLE-I123PM-001"
+                          placeholder="e.g., APPLE-I123PM-001"
                         />
                       </div>
 
                       <div>
                         <label htmlFor="invoice_number" className="block text-sm font-medium text-gray-700 mb-2">
-                          Nomor Nota <span className="text-red-500">*</span>
+                          Invoice Number <span className="text-red-500">*</span>
                         </label>
                         <input
                           type="text"
@@ -226,13 +226,13 @@ const ProductFormModal = ({ isOpen, closeModal, product, onSave }) => {
                           value={formData.invoice_number}
                           onChange={handleChange}
                           className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C9F35B] focus:border-transparent"
-                          placeholder="contoh: INV-2025-001"
+                          placeholder="e.g., INV-2025-001"
                         />
                       </div>
 
                       <div>
                         <label htmlFor="tipe" className="block text-sm font-medium text-gray-700 mb-2">
-                          Tipe <span className="text-red-500">*</span>
+                          Type <span className="text-red-500">*</span>
                         </label>
                         <input
                           type="text"
@@ -242,13 +242,13 @@ const ProductFormModal = ({ isOpen, closeModal, product, onSave }) => {
                           value={formData.tipe}
                           onChange={handleChange}
                           className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C9F35B] focus:border-transparent"
-                          placeholder="contoh: SMARTPHONE"
+                          placeholder="e.g., SMARTPHONE"
                         />
                       </div>
 
                       <div>
                         <label htmlFor="price" className="block text-sm font-medium text-gray-700 mb-2">
-                          Harga <span className="text-red-500">*</span>
+                          Price <span className="text-red-500">*</span>
                         </label>
                         <input
                           type="number"
@@ -258,13 +258,13 @@ const ProductFormModal = ({ isOpen, closeModal, product, onSave }) => {
                           value={formData.price}
                           onChange={handleChange}
                           className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C9F35B] focus:border-transparent"
-                          placeholder="Masukkan harga"
+                          placeholder="Enter price"
                         />
                       </div>
 
                       <div>
                         <label htmlFor="warranty_plan" className="block text-sm font-medium text-gray-700 mb-2">
-                          Paket Garansi <span className="text-red-500">*</span>
+                          Warranty Plan <span className="text-red-500">*</span>
                         </label>
                         <select
                           id="warranty_plan"
@@ -274,7 +274,7 @@ const ProductFormModal = ({ isOpen, closeModal, product, onSave }) => {
                           onChange={handleWarrantyPlanChange}
                           className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C9F35B] focus:border-transparent"
                         >
-                          <option value="">Pilih paket garansi</option>
+                          <option value="">Select warranty plan</option>
                           {WARRANTY_OPTIONS.map((option) => (
                             <option key={option.value} value={option.value}>
                               {option.label}
@@ -287,7 +287,7 @@ const ProductFormModal = ({ isOpen, closeModal, product, onSave }) => {
                         <>
                           <div>
                             <label htmlFor="custom_persen" className="block text-sm font-medium text-gray-700 mb-2">
-                              Persentase Custom (%) <span className="text-red-500">*</span>
+                              Custom Percentage (%) <span className="text-red-500">*</span>
                             </label>
                             <input
                               type="number"
@@ -299,13 +299,13 @@ const ProductFormModal = ({ isOpen, closeModal, product, onSave }) => {
                               value={formData.persen}
                               onChange={handleChange}
                               className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C9F35B] focus:border-transparent"
-                              placeholder="contoh: 7.5"
+                              placeholder="e.g., 7.5"
                             />
                           </div>
 
                           <div>
                             <label htmlFor="custom_months" className="block text-sm font-medium text-gray-700 mb-2">
-                              Lama Garansi (Bulan) <span className="text-red-500">*</span>
+                              Warranty Duration (months) <span className="text-red-500">*</span>
                             </label>
                             <input
                               type="number"
@@ -317,7 +317,7 @@ const ProductFormModal = ({ isOpen, closeModal, product, onSave }) => {
                               value={warrantyMonths}
                               onChange={(e) => setWarrantyMonths(e.target.value)}
                               className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C9F35B] focus:border-transparent"
-                              placeholder="contoh: 18"
+                              placeholder="e.g., 18"
                             />
                           </div>
                         </>
@@ -326,17 +326,17 @@ const ProductFormModal = ({ isOpen, closeModal, product, onSave }) => {
                       {!isCustomPlan && warrantyMonths && (
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-2">
-                            Durasi Garansi
+                            Warranty Duration
                           </label>
                           <div className="w-full px-4 py-2.5 border border-gray-200 rounded-lg bg-gray-50 text-gray-700">
-                            {warrantyMonths} bulan
+                            {warrantyMonths} months
                           </div>
                         </div>
                       )}
 
                       <div>
                         <label htmlFor="price_warranty" className="block text-sm font-medium text-gray-700 mb-2">
-                          Biaya Garansi <span className="text-red-500">*</span>
+                          Warranty Price <span className="text-red-500">*</span>
                         </label>
                         <input
                           type="number"
@@ -355,13 +355,13 @@ const ProductFormModal = ({ isOpen, closeModal, product, onSave }) => {
                           className={`w-full px-4 py-2.5 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C9F35B] focus:border-transparent ${
                             !isCustomPlan ? 'bg-gray-50 border-gray-200 text-gray-700 cursor-not-allowed' : 'border-gray-300'
                           }`}
-                          placeholder="Otomatis dihitung atau masukkan nilai custom"
+                          placeholder="Auto-calculated or enter custom amount"
                         />
                       </div>
 
                       <div>
                         <label htmlFor="customer_name" className="block text-sm font-medium text-gray-700 mb-2">
-                          Nama Pelanggan <span className="text-red-500">*</span>
+                          Customer Name <span className="text-red-500">*</span>
                         </label>
                         <input
                           type="text"
@@ -371,13 +371,13 @@ const ProductFormModal = ({ isOpen, closeModal, product, onSave }) => {
                           value={formData.customer_name}
                           onChange={handleChange}
                           className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C9F35B] focus:border-transparent"
-                          placeholder="Masukkan nama pelanggan"
+                          placeholder="Enter customer name"
                         />
                       </div>
 
                       <div>
                         <label htmlFor="customer_phone" className="block text-sm font-medium text-gray-700 mb-2">
-                          Nomor Telepon <span className="text-red-500">*</span>
+                          Customer Phone <span className="text-red-500">*</span>
                         </label>
                         <input
                           type="text"
@@ -387,13 +387,13 @@ const ProductFormModal = ({ isOpen, closeModal, product, onSave }) => {
                           value={formData.customer_phone}
                           onChange={handleChange}
                           className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C9F35B] focus:border-transparent"
-                          placeholder="contoh: 081233344455"
+                          placeholder="e.g., 081233344455"
                         />
                       </div>
 
                       <div>
                         <label htmlFor="customer_email" className="block text-sm font-medium text-gray-700 mb-2">
-                          Email Pelanggan <span className="text-red-500">*</span>
+                          Customer Email <span className="text-red-500">*</span>
                         </label>
                         <input
                           type="email"
@@ -403,13 +403,13 @@ const ProductFormModal = ({ isOpen, closeModal, product, onSave }) => {
                           value={formData.customer_email}
                           onChange={handleChange}
                           className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C9F35B] focus:border-transparent"
-                          placeholder="pelanggan@example.com"
+                          placeholder="customer@example.com"
                         />
                       </div>
 
                       <div className="md:col-span-2">
                         <label htmlFor="notes" className="block text-sm font-medium text-gray-700 mb-2">
-                          Catatan
+                          Notes
                         </label>
                         <textarea
                           name="notes"
@@ -418,7 +418,7 @@ const ProductFormModal = ({ isOpen, closeModal, product, onSave }) => {
                           value={formData.notes}
                           onChange={handleChange}
                           className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
-                          placeholder="Catatan tambahan tentang produk"
+                          placeholder="Additional notes about the product"
                         ></textarea>
                       </div>
                     </div>
@@ -430,14 +430,14 @@ const ProductFormModal = ({ isOpen, closeModal, product, onSave }) => {
                       onClick={closeModal}
                       className="px-6 py-2.5 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-100 transition-colors"
                     >
-                      Batal
+                      Cancel
                     </button>
                     <button
                       type="submit"
                       disabled={!isFormValid()}
                       className="px-6 py-2.5 bg-[#C9F35B] hover:bg-[#B8E047] text-gray-900 rounded-lg font-medium transition-colors shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-[#C9F35B]"
                     >
-                      {product ? 'Perbarui' : 'Buat Produk'}
+                      {product ? 'Update Product' : 'Create Product'}
                     </button>
                   </div>
                 </form>

@@ -276,7 +276,7 @@ const ProductsList = () => {
       <div className="bg-white rounded-2xl shadow-sm p-6">
         <div className="mb-6">
           <div className="flex items-center justify-between mb-6">
-            <h1 className="text-2xl font-bold text-gray-900">Daftar Produk</h1>
+            <h1 className="text-2xl font-bold text-gray-900">Product List</h1>
             <div className="flex items-center gap-3">
               {role === 'SALES' && (
                 <button
@@ -302,7 +302,7 @@ const ProductsList = () => {
             <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
             <input
               type="text"
-              placeholder="Cari..."
+              placeholder="Search products..."
               className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-transparent"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}

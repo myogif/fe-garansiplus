@@ -32,8 +32,8 @@ const ProductsTable = ({ products, loading, role, onEdit, onDelete, onGunakan, o
 
   const getStatusBadge = (status) => {
     const statusConfig = {
-      'ACTIVE': { bg: 'bg-green-100', text: 'text-green-700', label: 'Aktif' },
-      'Aktif': { bg: 'bg-green-100', text: 'text-green-700', label: 'Aktif' },
+      'ACTIVE': { bg: 'bg-green-100', text: 'text-green-700', label: 'Active' },
+      'Aktif': { bg: 'bg-green-100', text: 'text-green-700', label: 'Active' },
       'USED': { bg: 'bg-yellow-100', text: 'text-yellow-700', label: 'Used' },
       'Used': { bg: 'bg-yellow-100', text: 'text-yellow-700', label: 'Used' },
       'INACTIVE': { bg: 'bg-red-100', text: 'text-red-700', label: 'Expired' },
@@ -55,16 +55,16 @@ const ProductsTable = ({ products, loading, role, onEdit, onDelete, onGunakan, o
         <thead>
           <tr className="bg-gray-50 border-b border-gray-200">
             <th className="py-3 px-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
-              Nama Produk
+              Product Name
             </th>
             <th className="py-3 px-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
-              Kode Produk
+              Product Code
             </th>
             <th className="py-3 px-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
-              Harga Produk
+              Product Price
             </th>
             <th className="py-3 px-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
-              Garansi (%)
+              Warranty (%)
             </th>
             <th className="py-3 px-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
               Status
@@ -136,12 +136,12 @@ const ProductsTable = ({ products, loading, role, onEdit, onDelete, onGunakan, o
                             : 'Use product'
                         }
                       >
-                        Gunakan
+                        Use
                       </button>
                       <button
                         onClick={() => onCetak && onCetak(product)}
                         className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                        title="Cetak Sertifikat"
+                        title="Print Certificate"
                       >
                         <FileText className="w-4 h-4" />
                       </button>

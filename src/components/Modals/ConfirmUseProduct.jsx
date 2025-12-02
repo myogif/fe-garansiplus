@@ -41,23 +41,23 @@ const ConfirmUseProduct = ({ isOpen, closeModal, onConfirm, product }) => {
                     </div>
                     <div className="flex-1">
                       <Dialog.Title className="text-lg font-semibold text-gray-900">
-                        Konfirmasi Gunakan Produk
+                        Confirm Use Product
                       </Dialog.Title>
                     </div>
                   </div>
 
                   <div className="mb-6">
                     <p className="text-gray-600 mb-4">
-                      Apakah Anda yakin ingin menggunakan produk ini? Produk akan ditandai sebagai sudah digunakan.
+                      Are you sure you want to use this product? The product will be marked as used.
                     </p>
                     {product && (
                       <div className="bg-gray-50 rounded-lg p-4 space-y-2">
                         <div className="flex justify-between">
-                          <span className="text-sm text-gray-500">Nama Produk:</span>
+                          <span className="text-sm text-gray-500">Product Name:</span>
                           <span className="text-sm font-medium text-gray-900">{product.name}</span>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-sm text-gray-500">Kode:</span>
+                          <span className="text-sm text-gray-500">Code:</span>
                           <span className="text-sm font-medium text-gray-900">{product.sku || product.code}</span>
                         </div>
                       </div>
@@ -70,14 +70,14 @@ const ConfirmUseProduct = ({ isOpen, closeModal, onConfirm, product }) => {
                       onClick={closeModal}
                       className="flex-1 px-4 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors"
                     >
-                      Batal
+                      Cancel
                     </button>
                     <button
                       type="button"
                       onClick={handleConfirm}
                       className="flex-1 px-4 py-2.5 text-sm font-medium text-gray-900 bg-[#C9F35B] rounded-xl hover:bg-[#B8E047] transition-colors shadow-sm hover:shadow-md"
                     >
-                      Ya, Gunakan
+                      Yes, Use It
                     </button>
                   </div>
                 </div>

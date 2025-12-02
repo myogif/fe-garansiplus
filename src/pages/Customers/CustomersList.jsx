@@ -30,7 +30,7 @@ const CustomersList = () => {
       console.error('Failed to fetch customers:', error);
       setToast({
         show: true,
-        message: 'Gagal memuat data customer',
+        message: 'Failed to load customers',
         type: 'error',
       });
     } finally {
@@ -48,14 +48,14 @@ const CustomersList = () => {
       const data = response?.data || response;
 
       if (data?.success === true || data?.status === true) {
-        const message = data.message || 'Sertifikat berhasil diunduh';
+        const message = data.message || 'Certificate downloaded successfully';
         setToast({
           show: true,
           message: message,
           type: 'success',
         });
       } else {
-        let errorText = 'Gagal mengunduh sertifikat';
+        let errorText = 'Failed to download certificate';
         if (data?.errors && Array.isArray(data.errors) && data.errors.length > 0) {
           errorText = data.errors.join(', ');
         } else if (data?.message) {
@@ -99,14 +99,14 @@ const CustomersList = () => {
       <div className="bg-white rounded-2xl shadow-sm p-6">
         <div className="mb-6">
           <div className="mb-6">
-            <h1 className="text-2xl font-bold text-gray-900">Daftar Customer</h1>
+            <h1 className="text-2xl font-bold text-gray-900">Customer List</h1>
           </div>
 
           <div className="relative">
             <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
             <input
               type="text"
-              placeholder="Cari customer..."
+              placeholder="Search customers..."
               className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-transparent"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}

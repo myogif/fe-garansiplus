@@ -176,7 +176,7 @@ const SupervisorsList = () => {
         <div className="mb-6">
           <div className="flex items-center justify-between mb-6">
             <h1 className="text-2xl font-bold text-gray-900">
-              {role === 'MANAGER' || role === 'SERVICE_CENTER' ? 'Daftar Supervisor' : 'Daftar Sales'}
+              {role === 'MANAGER' || role === 'SERVICE_CENTER' ? 'Supervisor List' : 'Sales List'}
             </h1>
             {role !== 'SERVICE_CENTER' && (
               <button
@@ -192,7 +192,7 @@ const SupervisorsList = () => {
             <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
             <input
               type="text"
-              placeholder="Cari..."
+              placeholder="Search supervisors..."
               className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-transparent"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
