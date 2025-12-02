@@ -96,10 +96,13 @@ const ProductsList = () => {
           code: formData.code,
           price: Number(formData.price),
           persen: Number(formData.persen),
+          price_warranty: Number(formData.price_warranty),
           notes: formData.notes,
           customer_name: formData.customer_name,
           customer_phone: formData.customer_phone,
           customer_email: formData.customer_email,
+          invoice_number: formData.invoice_number,
+          warranty_months: Number(formData.warranty_months),
         };
         response = await createProduct(payload);
       }
