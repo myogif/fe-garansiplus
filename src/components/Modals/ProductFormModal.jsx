@@ -2,6 +2,13 @@ import { Dialog, Transition } from '@headlessui/react';
 import { Fragment, useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 
+const WARRANTY_OPTIONS = [
+  { label: '3% - 6 months', value: 3, months: 6 },
+  { label: '5% - 12 months', value: 5, months: 12 },
+  { label: '10% - 24 months', value: 10, months: 24 },
+  { label: 'Custom', value: 'custom' }
+];
+
 const ProductFormModal = ({ isOpen, closeModal, product, onSave }) => {
   const [formData, setFormData] = useState({
     name: '',
@@ -14,7 +21,12 @@ const ProductFormModal = ({ isOpen, closeModal, product, onSave }) => {
     customer_name: '',
     customer_phone: '',
     customer_email: '',
+    invoice_number: '',
   });
+
+  const [warrantyMonths, setWarrantyMonths] = useState('');
+  const [priceWarranty, setPriceWarranty] = useState('');
+  const [isCustomPlan, setIsCustomPlan] = useState(false);
 
   useEffect(() => {
     if (product) {
@@ -29,7 +41,13 @@ const ProductFormModal = ({ isOpen, closeModal, product, onSave }) => {
         customer_name: product.customer_name || '',
         customer_phone: product.customer_phone || '',
         customer_email: product.customer_email || '',
+        invoice_number: product.invoice_number || '',
       });
+      setWarrantyMonths(product.warranty_months || '');
+      setPriceWarranty(product.price_warranty || '');
+
+      const isPredefined = WARRANTY_OPTIONS.some(opt => opt.value === product.persen && opt.value !== 'custom');
+      setIsCustomPlan(!isPredefined);
     } else {
       setFormData({
         name: '',
@@ -42,19 +60,81 @@ const ProductFormModal = ({ isOpen, closeModal, product, onSave }) => {
         customer_name: '',
         customer_phone: '',
         customer_email: '',
+        invoice_number: '',
       });
+      setWarrantyMonths('');
+      setPriceWarranty('');
+      setIsCustomPlan(false);
     }
   }, [product, isOpen]);
+
+  useEffect(() => {
+    if (!isCustomPlan && formData.price && formData.persen) {
+      const pw = (Number(formData.price) * Number(formData.persen)) / 100;
+      setPriceWarranty(pw);
+    }
+  }, [formData.price, formData.persen, isCustomPlan]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleWarrantyPlanChange = (e) => {
+    const selectedValue = e.target.value;
+
+    if (selectedValue === 'custom') {
+      setIsCustomPlan(true);
+      setFormData((prev) => ({ ...prev, persen: '' }));
+      setWarrantyMonths('');
+      setPriceWarranty('');
+    } else {
+      setIsCustomPlan(false);
+      const selectedOption = WARRANTY_OPTIONS.find(opt => opt.value === Number(selectedValue));
+      if (selectedOption) {
+        setFormData((prev) => ({ ...prev, persen: selectedOption.value }));
+        setWarrantyMonths(selectedOption.months);
+      }
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSave(formData);
+
+    const payload = {
+      name: formData.name,
+      tipe: formData.tipe,
+      code: formData.code,
+      price: Number(formData.price),
+      persen: Number(formData.persen),
+      notes: formData.notes,
+      customer_name: formData.customer_name,
+      customer_phone: formData.customer_phone,
+      customer_email: formData.customer_email,
+      invoice_number: formData.invoice_number,
+      warranty_months: Number(warrantyMonths),
+      price_warranty: Number(priceWarranty)
+    };
+
+    onSave(payload);
     closeModal();
+  };
+
+  const isFormValid = () => {
+    const baseValid = formData.name && formData.code && formData.tipe &&
+                      formData.price && formData.invoice_number &&
+                      formData.customer_name && formData.customer_phone &&
+                      formData.customer_email;
+
+    if (!baseValid) return false;
+
+    if (isCustomPlan) {
+      return formData.persen && !isNaN(formData.persen) &&
+             warrantyMonths && !isNaN(warrantyMonths) && Number(warrantyMonths) > 0 &&
+             priceWarranty && !isNaN(priceWarranty);
+    } else {
+      return formData.persen && warrantyMonths && !isNaN(priceWarranty);
+    }
   };
 
   return (
@@ -135,6 +215,22 @@ const ProductFormModal = ({ isOpen, closeModal, product, onSave }) => {
                       </div>
 
                       <div>
+                        <label htmlFor="invoice_number" className="block text-sm font-medium text-gray-700 mb-2">
+                          Invoice Number / Nomor Nota <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                          type="text"
+                          name="invoice_number"
+                          id="invoice_number"
+                          required
+                          value={formData.invoice_number}
+                          onChange={handleChange}
+                          className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C9F35B] focus:border-transparent"
+                          placeholder="e.g., INV-2025-001"
+                        />
+                      </div>
+
+                      <div>
                         <label htmlFor="tipe" className="block text-sm font-medium text-gray-700 mb-2">
                           Type <span className="text-red-500">*</span>
                         </label>
@@ -167,25 +263,100 @@ const ProductFormModal = ({ isOpen, closeModal, product, onSave }) => {
                       </div>
 
                       <div>
-                        <label htmlFor="persen" className="block text-sm font-medium text-gray-700 mb-2">
-                          Percentage <span className="text-red-500">*</span>
+                        <label htmlFor="warranty_plan" className="block text-sm font-medium text-gray-700 mb-2">
+                          Warranty Plan <span className="text-red-500">*</span>
                         </label>
                         <select
-                          id="persen"
-                          name="persen"
+                          id="warranty_plan"
+                          name="warranty_plan"
                           required
-                          value={formData.persen === 3 ? '3' : formData.persen === 6 ? '5' : ''}
-                          onChange={(e) => {
-                            const selectedLabel = e.target.value;
-                            const persenValue = selectedLabel === '3' ? 3 : 6;
-                            setFormData(prev => ({ ...prev, persen: persenValue }));
-                          }}
+                          value={isCustomPlan ? 'custom' : formData.persen}
+                          onChange={handleWarrantyPlanChange}
                           className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C9F35B] focus:border-transparent"
                         >
-                          <option value="">Select percentage</option>
-                          <option value="3">3</option>
-                          <option value="5">5</option>
+                          <option value="">Select warranty plan</option>
+                          {WARRANTY_OPTIONS.map((option) => (
+                            <option key={option.value} value={option.value}>
+                              {option.label}
+                            </option>
+                          ))}
                         </select>
+                      </div>
+
+                      {isCustomPlan && (
+                        <>
+                          <div>
+                            <label htmlFor="custom_persen" className="block text-sm font-medium text-gray-700 mb-2">
+                              Custom Percentage (%) <span className="text-red-500">*</span>
+                            </label>
+                            <input
+                              type="number"
+                              name="persen"
+                              id="custom_persen"
+                              required
+                              min="0"
+                              step="0.01"
+                              value={formData.persen}
+                              onChange={handleChange}
+                              className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C9F35B] focus:border-transparent"
+                              placeholder="e.g., 7.5"
+                            />
+                          </div>
+
+                          <div>
+                            <label htmlFor="custom_months" className="block text-sm font-medium text-gray-700 mb-2">
+                              Custom Warranty Months <span className="text-red-500">*</span>
+                            </label>
+                            <input
+                              type="number"
+                              name="warranty_months"
+                              id="custom_months"
+                              required
+                              min="1"
+                              step="1"
+                              value={warrantyMonths}
+                              onChange={(e) => setWarrantyMonths(e.target.value)}
+                              className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C9F35B] focus:border-transparent"
+                              placeholder="e.g., 18"
+                            />
+                          </div>
+                        </>
+                      )}
+
+                      {!isCustomPlan && warrantyMonths && (
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Warranty Duration
+                          </label>
+                          <div className="w-full px-4 py-2.5 border border-gray-200 rounded-lg bg-gray-50 text-gray-700">
+                            {warrantyMonths} months
+                          </div>
+                        </div>
+                      )}
+
+                      <div>
+                        <label htmlFor="price_warranty" className="block text-sm font-medium text-gray-700 mb-2">
+                          Warranty Price / Biaya Garansi <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                          type="number"
+                          name="price_warranty"
+                          id="price_warranty"
+                          required
+                          min="0"
+                          step="0.01"
+                          value={priceWarranty}
+                          onChange={(e) => {
+                            if (isCustomPlan) {
+                              setPriceWarranty(e.target.value);
+                            }
+                          }}
+                          readOnly={!isCustomPlan}
+                          className={`w-full px-4 py-2.5 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C9F35B] focus:border-transparent ${
+                            !isCustomPlan ? 'bg-gray-50 border-gray-200 text-gray-700 cursor-not-allowed' : 'border-gray-300'
+                          }`}
+                          placeholder="Auto-calculated or enter custom amount"
+                        />
                       </div>
 
                       <div>
@@ -263,7 +434,8 @@ const ProductFormModal = ({ isOpen, closeModal, product, onSave }) => {
                     </button>
                     <button
                       type="submit"
-                      className="px-6 py-2.5 bg-[#C9F35B] hover:bg-[#B8E047] text-gray-900 rounded-lg font-medium transition-colors shadow-sm hover:shadow-md"
+                      disabled={!isFormValid()}
+                      className="px-6 py-2.5 bg-[#C9F35B] hover:bg-[#B8E047] text-gray-900 rounded-lg font-medium transition-colors shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-[#C9F35B]"
                     >
                       {product ? 'Update' : 'Create'}
                     </button>
