@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Download } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import MainLayout from '../../components/MainLayout';
-import { fetchSalesProductDetail, exportSalesProductsToExcel } from '../../api/sales';
-import ExportExcelModal from '../../components/Modals/ExportExcelModal';
+import { fetchSalesProductDetail } from '../../api/sales';
 
 const SalesProductDetail = () => {
   const { code } = useParams();
@@ -11,7 +10,6 @@ const SalesProductDetail = () => {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [isExportModalOpen, setIsExportModalOpen] = useState(false);
 
   useEffect(() => {
     loadProduct();
@@ -31,18 +29,6 @@ const SalesProductDetail = () => {
     }
   };
 
-  const handleExport = async (dateFilter) => {
-    try {
-      await exportSalesProductsToExcel({
-        code: code,
-        created_at_from: dateFilter.start_date,
-        created_at_to: dateFilter.end_date,
-      });
-    } catch (error) {
-      console.error('Export failed:', error);
-      alert('Failed to export data');
-    }
-  };
 
   const formatCurrency = (value) => {
     return new Intl.NumberFormat('id-ID', {
@@ -112,23 +98,13 @@ const SalesProductDetail = () => {
   return (
     <MainLayout>
       <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <button
-            onClick={() => navigate('/products')}
-            className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
-          >
-            <ArrowLeft size={20} />
-            <span>Kembali ke Produk</span>
-          </button>
-
-          <button
-            onClick={() => setIsExportModalOpen(true)}
-            className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors font-medium"
-          >
-            <Download size={18} />
-            Export Excel
-          </button>
-        </div>
+        <button
+          onClick={() => navigate('/products')}
+          className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
+        >
+          <ArrowLeft size={20} />
+          <span>Kembali ke Produk</span>
+        </button>
 
         <div className="bg-white rounded-2xl shadow-sm p-8">
           <div className="mb-6">
@@ -265,12 +241,6 @@ const SalesProductDetail = () => {
           </div>
         </div>
       </div>
-
-      <ExportExcelModal
-        isOpen={isExportModalOpen}
-        closeModal={() => setIsExportModalOpen(false)}
-        onExport={handleExport}
-      />
     </MainLayout>
   );
 };
