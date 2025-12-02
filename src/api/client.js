@@ -21,6 +21,7 @@ client.interceptors.response.use(
         localStorage.removeItem('gp_token');
         localStorage.removeItem('gp_user');
         localStorage.removeItem('token');
+        localStorage.removeItem('isLoggedIn');
 
         const event = new CustomEvent('auth:expired', {
           detail: { message: 'Sesi berakhir. Silakan login kembali.' },

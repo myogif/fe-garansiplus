@@ -27,6 +27,7 @@ api.interceptors.response.use(
       if (!isLoginRequest) {
         localStorage.removeItem('gp_token');
         localStorage.removeItem('gp_user');
+        localStorage.removeItem('isLoggedIn');
 
         const event = new CustomEvent('auth:expired', {
           detail: { message: 'Session expired. Please login again.' },

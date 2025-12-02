@@ -7,6 +7,7 @@ export const login = async (phone, password) => {
 
   localStorage.setItem('gp_token', token);
   localStorage.setItem('gp_user', JSON.stringify(user));
+  localStorage.setItem('isLoggedIn', 'true');
 
   return { token, user };
 };
@@ -14,6 +15,7 @@ export const login = async (phone, password) => {
 export const logout = () => {
   localStorage.removeItem('gp_token');
   localStorage.removeItem('gp_user');
+  localStorage.removeItem('isLoggedIn');
 };
 
 export const decodeJWT = (token) => {
@@ -39,6 +41,10 @@ export const getStoredUser = () => {
 
 export const getStoredToken = () => {
   return localStorage.getItem('gp_token');
+};
+
+export const isLoggedIn = () => {
+  return localStorage.getItem('isLoggedIn') === 'true';
 };
 
 export const getRole = () => {

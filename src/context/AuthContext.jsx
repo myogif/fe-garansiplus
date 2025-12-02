@@ -5,6 +5,7 @@ import {
   getStoredUser,
   getStoredToken,
   isTokenExpired,
+  isLoggedIn as getIsLoggedIn,
 } from '../services/auth';
 
 const AuthContext = createContext();
@@ -61,18 +62,25 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const restoreSession = () => {
-      const token = getStoredToken();
-      const user = getStoredUser();
+      try {
+        const token = getStoredToken();
+        const user = getStoredUser();
+        const loggedInFlag = getIsLoggedIn();
 
-      if (token && user && !isTokenExpired(token)) {
-        dispatch({
-          type: 'RESTORE_SESSION',
-          payload: { token, user },
-        });
-      } else {
-        if (token) {
-          authLogout();
+        if (token && user && loggedInFlag && !isTokenExpired(token)) {
+          dispatch({
+            type: 'RESTORE_SESSION',
+            payload: { token, user },
+          });
+        } else {
+          if (token || loggedInFlag) {
+            authLogout();
+          }
+          dispatch({ type: 'SET_LOADING', payload: false });
         }
+      } catch (error) {
+        console.error('Failed to restore session:', error);
+        authLogout();
         dispatch({ type: 'SET_LOADING', payload: false });
       }
     };
