@@ -68,12 +68,23 @@ const ProductFormModal = ({ isOpen, closeModal, product, onSave }) => {
     }
   }, [product, isOpen]);
 
+  const [totalPrice, setTotalPrice] = useState('');
+
   useEffect(() => {
     if (!isCustomPlan && formData.price && formData.persen) {
       const pw = (Number(formData.price) * Number(formData.persen)) / 100;
       setPriceWarranty(pw);
     }
   }, [formData.price, formData.persen, isCustomPlan]);
+
+  useEffect(() => {
+    if (formData.price && priceWarranty) {
+      const total = Number(formData.price) + Number(priceWarranty);
+      setTotalPrice(total);
+    } else {
+      setTotalPrice('');
+    }
+  }, [formData.price, priceWarranty]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -118,6 +129,14 @@ const ProductFormModal = ({ isOpen, closeModal, product, onSave }) => {
 
     onSave(payload);
     closeModal();
+  };
+
+  const formatCurrency = (value) => {
+    return new Intl.NumberFormat('id-ID', {
+      style: 'currency',
+      currency: 'IDR',
+      minimumFractionDigits: 0
+    }).format(value);
   };
 
   const isFormValid = () => {
@@ -199,6 +218,22 @@ const ProductFormModal = ({ isOpen, closeModal, product, onSave }) => {
                       </div>
 
                       <div>
+                        <label htmlFor="tipe" className="block text-sm font-medium text-gray-700 mb-2">
+                          Tipe <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                          type="text"
+                          name="tipe"
+                          id="tipe"
+                          required
+                          value={formData.tipe}
+                          onChange={handleChange}
+                          className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C9F35B] focus:border-transparent"
+                          placeholder="contoh: LIGHTNING"
+                        />
+                      </div>
+
+                      <div>
                         <label htmlFor="code" className="block text-sm font-medium text-gray-700 mb-2">
                           Kode Produk <span className="text-red-500">*</span>
                         </label>
@@ -227,22 +262,6 @@ const ProductFormModal = ({ isOpen, closeModal, product, onSave }) => {
                           onChange={handleChange}
                           className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C9F35B] focus:border-transparent"
                           placeholder="contoh: INV-2025-001"
-                        />
-                      </div>
-
-                      <div>
-                        <label htmlFor="tipe" className="block text-sm font-medium text-gray-700 mb-2">
-                          Tipe <span className="text-red-500">*</span>
-                        </label>
-                        <input
-                          type="text"
-                          name="tipe"
-                          id="tipe"
-                          required
-                          value={formData.tipe}
-                          onChange={handleChange}
-                          className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C9F35B] focus:border-transparent"
-                          placeholder="contoh: SMARTPHONE"
                         />
                       </div>
 
@@ -356,6 +375,21 @@ const ProductFormModal = ({ isOpen, closeModal, product, onSave }) => {
                             !isCustomPlan ? 'bg-gray-50 border-gray-200 text-gray-700 cursor-not-allowed' : 'border-gray-300'
                           }`}
                           placeholder="Otomatis dihitung atau masukkan nilai kustom"
+                        />
+                      </div>
+
+                      <div>
+                        <label htmlFor="total_price" className="block text-sm font-medium text-gray-700 mb-2">
+                          Total Harga
+                        </label>
+                        <input
+                          type="text"
+                          name="total_price"
+                          id="total_price"
+                          readOnly
+                          value={totalPrice ? new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(totalPrice) : ''}
+                          className="w-full px-4 py-2.5 border border-gray-200 rounded-lg bg-gray-50 text-gray-900 font-semibold cursor-not-allowed"
+                          placeholder="Otomatis dihitung"
                         />
                       </div>
 
