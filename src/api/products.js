@@ -20,6 +20,7 @@ export async function fetchProducts(role, { page = 1, limit = 10, mine = true, s
   const items = (data.items ?? res.data ?? []).map((p) => ({
     id: p.id,
     name: p.name,
+    tipe: p.tipe,
     sku: p.code,
     price: p.price,
     priceWarranty: p.priceWarranty,
@@ -74,6 +75,7 @@ export async function fetchProductByCode(role, code) {
     id: p.id,
     name: p.name,
     sku: p.code,
+    tipe: p.tipe,
     code: p.code,
     type: p.tipe,
     price: p.price,

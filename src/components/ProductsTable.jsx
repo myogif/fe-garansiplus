@@ -58,6 +58,10 @@ const ProductsTable = ({ products, loading, role, onEdit, onDelete, onGunakan, o
               Nama Produk
             </th>
             <th className="py-3 px-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+              Tipe
+            </th>
+
+            <th className="py-3 px-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
               Kode Produk
             </th>
             <th className="py-3 px-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
@@ -66,6 +70,10 @@ const ProductsTable = ({ products, loading, role, onEdit, onDelete, onGunakan, o
             <th className="py-3 px-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
               Garansi (%)
             </th>
+            <th className="py-3 px-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+              Total Harga
+            </th>
+
             <th className="py-3 px-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
               Status
             </th>
@@ -81,6 +89,9 @@ const ProductsTable = ({ products, loading, role, onEdit, onDelete, onGunakan, o
                 {product.name}
               </td>
               <td className="py-4 px-4 text-sm text-gray-600">
+                {product.tipe}
+              </td>
+              <td className="py-4 px-4 text-sm text-gray-600">
                 {product.sku}
               </td>
               <td className="py-4 px-4 text-sm text-gray-900 font-medium">
@@ -88,6 +99,9 @@ const ProductsTable = ({ products, loading, role, onEdit, onDelete, onGunakan, o
               </td>
               <td className="py-4 px-4 text-sm text-gray-900">
                 {formatPrice(product.priceWarranty)} ( {product.persen} % )
+              </td>
+              <td className="py-4 px-4 text-sm text-gray-900">
+                {formatPrice(product.price + product.priceWarranty)}
               </td>
               <td className="py-4 px-4">
                 {getStatusBadge(product.status)}
