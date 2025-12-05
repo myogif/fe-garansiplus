@@ -1,13 +1,31 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Dialog } from '@headlessui/react';
 import { X, Download } from 'lucide-react';
+import { fetchStores } from '../../api/managers';
 
 const ExportExcelModal = ({ isOpen, closeModal, onExport }) => {
   const [formData, setFormData] = useState({
+    store_id: 'ALL',
     start_date: '',
     end_date: '',
   });
   const [loading, setLoading] = useState(false);
+  const [stores, setStores] = useState([]);
+
+  useEffect(() => {
+    const loadStores = async () => {
+      try {
+        const storesList = await fetchStores();
+        setStores(storesList);
+      } catch (error) {
+        console.error('Failed to fetch stores:', error);
+      }
+    };
+
+    if (isOpen) {
+      loadStores();
+    }
+  }, [isOpen]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -15,7 +33,7 @@ const ExportExcelModal = ({ isOpen, closeModal, onExport }) => {
     try {
       await onExport(formData);
       closeModal();
-      setFormData({ start_date: '', end_date: '' });
+      setFormData({ store_id: 'ALL', start_date: '', end_date: '' });
     } catch (error) {
       console.error('Export failed:', error);
     } finally {
@@ -49,6 +67,26 @@ const ExportExcelModal = ({ isOpen, closeModal, onExport }) => {
           </div>
 
           <form onSubmit={handleSubmit} className="p-6 space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Filter Toko
+              </label>
+              <select
+                name="store_id"
+                value={formData.store_id}
+                onChange={handleChange}
+                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C9F35B] focus:border-transparent"
+                required
+              >
+                <option value="ALL">ALL</option>
+                {stores.map((store) => (
+                  <option key={store.id} value={store.id}>
+                    {store.name} - {store.kode_toko}
+                  </option>
+                ))}
+              </select>
+            </div>
+
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Start From

@@ -33,10 +33,8 @@ export const deleteSupervisor = (id) => client.delete(`/api/managers/supervisors
 export const createSalesUser = (payload) => client.post('/api/supervisors/sales', payload);
 export const deleteSalesUser = (id) => client.delete(`/api/supervisors/sales/${id}`);
 
-export async function exportSupervisorProductsToExcel({ code = '', created_at_from = '', created_at_to = '' } = {}) {
+export async function exportSupervisorProductsToExcel({ code = '', created_at_from = '', created_at_to = '', store_id = '' } = {}) {
   const searchParams = new URLSearchParams({
-    page: 1,
-    limit: 10,
     sortBy: 'createdAt',
     sortOrder: 'desc',
     export: 'excel',
@@ -50,6 +48,9 @@ export async function exportSupervisorProductsToExcel({ code = '', created_at_fr
   }
   if (created_at_to) {
     searchParams.append('created_at_to', created_at_to);
+  }
+  if (store_id && store_id !== 'ALL') {
+    searchParams.append('store_id', store_id);
   }
 
   const res = await client.get(`/api/supervisors/products?${searchParams}`, {

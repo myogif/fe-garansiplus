@@ -196,12 +196,14 @@ const ProductsList = () => {
           code: '',
           created_at_from: dateFilter.start_date,
           created_at_to: dateFilter.end_date,
+          store_id: dateFilter.store_id,
         });
       } else if (role === 'SUPERVISOR') {
         await exportSupervisorProductsToExcel({
           code: '',
           created_at_from: dateFilter.start_date,
           created_at_to: dateFilter.end_date,
+          store_id: dateFilter.store_id,
         });
       }
     } catch (error) {
