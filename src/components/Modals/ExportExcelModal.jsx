@@ -3,7 +3,7 @@ import { Dialog } from '@headlessui/react';
 import { X, Download } from 'lucide-react';
 import { fetchStores } from '../../api/managers';
 
-const ExportExcelModal = ({ isOpen, closeModal, onExport }) => {
+const ExportExcelModal = ({ isOpen, closeModal, onExport, role }) => {
   const [formData, setFormData] = useState({
     store_id: 'ALL',
     start_date: '',
@@ -22,10 +22,10 @@ const ExportExcelModal = ({ isOpen, closeModal, onExport }) => {
       }
     };
 
-    if (isOpen) {
+    if (isOpen && (role === 'MANAGER' || role === 'SERVICE_CENTER')) {
       loadStores();
     }
-  }, [isOpen]);
+  }, [isOpen, role]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -67,25 +67,27 @@ const ExportExcelModal = ({ isOpen, closeModal, onExport }) => {
           </div>
 
           <form onSubmit={handleSubmit} className="p-6 space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Filter Toko
-              </label>
-              <select
-                name="store_id"
-                value={formData.store_id}
-                onChange={handleChange}
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C9F35B] focus:border-transparent"
-                required
-              >
-                <option value="ALL">ALL</option>
-                {stores.map((store) => (
-                  <option key={store.id} value={store.id}>
-                    {store.name} - {store.kode_toko}
-                  </option>
-                ))}
-              </select>
-            </div>
+            {(role === 'MANAGER' || role === 'SERVICE_CENTER') && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Filter Toko
+                </label>
+                <select
+                  name="store_id"
+                  value={formData.store_id}
+                  onChange={handleChange}
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C9F35B] focus:border-transparent"
+                  required
+                >
+                  <option value="ALL">ALL</option>
+                  {stores.map((store) => (
+                    <option key={store.id} value={store.id}>
+                      {store.name} - {store.kode_toko}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">

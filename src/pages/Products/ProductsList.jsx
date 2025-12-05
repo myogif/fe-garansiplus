@@ -191,7 +191,7 @@ const ProductsList = () => {
 
   const handleExport = async (dateFilter) => {
     try {
-      if (role === 'MANAGER') {
+      if (role === 'MANAGER' || role === 'SERVICE_CENTER') {
         await exportManagerProductsToExcel({
           code: '',
           created_at_from: dateFilter.start_date,
@@ -203,7 +203,6 @@ const ProductsList = () => {
           code: '',
           created_at_from: dateFilter.start_date,
           created_at_to: dateFilter.end_date,
-          store_id: dateFilter.store_id,
         });
       }
     } catch (error) {
@@ -344,6 +343,7 @@ const ProductsList = () => {
         isOpen={isExportModalOpen}
         closeModal={() => setIsExportModalOpen(false)}
         onExport={handleExport}
+        role={role}
       />
 
       <ConfirmUseProduct
