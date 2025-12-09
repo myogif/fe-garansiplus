@@ -51,7 +51,6 @@ const ProductDetail = () => {
 
   const calculateWarrantyPeriod = (createdAt, warrantyMonths) => {
     if (!createdAt || !warrantyMonths) {
-      console.log('Missing data - createdAt:', createdAt, 'warrantyMonths:', warrantyMonths);
       return '-';
     }
     // Handle API date format: "2025-12-04 10:05:56"
@@ -67,10 +66,6 @@ const ProductDetail = () => {
     const startStr = formatDate(startDate);
     const endStr = formatDate(endDate);
 
-    console.log('data : '),
-    console.log(warrantyMonths);
-    console.log(createdAt);
-    console.log(startStr);
     return `${startStr} S/D ${endStr} ( ${warrantyMonths} Bulan )`;
   };
 

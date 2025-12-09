@@ -87,11 +87,9 @@ export async function listSalesUsers(role, { page = 1, limit = 10, search = '' }
     : `/api/supervisors/sales?${searchParams}`;
 
   const res = await client.get(url);
-  console.log('Sales API Response:', res.data);
 
   if (role === 'SUPERVISOR') {
     const items = Array.isArray(res.data?.data) ? res.data.data : [];
-    console.log('SUPERVISOR Sales Items:', items);
     const pg = {
       currentPage: 1,
       itemsPerPage: items.length,

@@ -36,7 +36,6 @@ export const isTokenExpired = (token) => {
     }
 
     if (!decoded.exp) {
-      console.log('ℹ️ Token has no expiration field - treating as valid');
       return false;
     }
 
@@ -44,7 +43,6 @@ export const isTokenExpired = (token) => {
     const isExpired = decoded.exp < currentTime;
 
     if (isExpired) {
-      console.log('⏰ Token expired at:', new Date(decoded.exp * 1000));
     }
 
     return isExpired;
@@ -60,7 +58,6 @@ export const getStoredUser = () => {
     if (!userStr) return null;
 
     const user = JSON.parse(userStr);
-    console.log('📦 Retrieved user from storage:', user?.role);
     return user;
   } catch (error) {
     console.error('Error parsing stored user:', error);
