@@ -50,14 +50,27 @@ const ProductDetail = () => {
   };
 
   const calculateWarrantyPeriod = (createdAt, warrantyMonths) => {
-    if (!createdAt || !warrantyMonths) return '-';
-    const startDate = new Date(createdAt);
+    if (!createdAt || !warrantyMonths) {
+      console.log('Missing data - createdAt:', createdAt, 'warrantyMonths:', warrantyMonths);
+      return '-';
+    }
+    // Handle API date format: "2025-12-04 10:05:56"
+    // Replace space with 'T' to make it ISO 8601 compatible
+    const dateString = createdAt.replace(' ', 'T');
+    const startDate = new Date(dateString);
+    
+    // Validate that the date is valid
+    if (isNaN(startDate.getTime())) return '-';
     const endDate = new Date(startDate);
-    endDate.setMonth(endDate.getMonth() + warrantyMonths);
+    endDate.setMonth(endDate.getMonth() + parseInt(warrantyMonths, 10));
 
     const startStr = formatDate(startDate);
     const endStr = formatDate(endDate);
 
+    console.log('data : '),
+    console.log(warrantyMonths);
+    console.log(createdAt);
+    console.log(startStr);
     return `${startStr} S/D ${endStr} ( ${warrantyMonths} Bulan )`;
   };
 

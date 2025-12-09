@@ -87,6 +87,8 @@ export async function fetchProductByCode(role, code) {
     customerName: p.customerName,
     customerPhone: p.customerPhone,
     customerEmail: p.customerEmail,
+    invoiceNumber: p.invoiceNumber,
+    warrantyMonths: p.warrantyMonths,
     nomorKepesertaan: p.nomorKepesertaan,
     isActive: p.isActive,
     store_id: p.storeId,
