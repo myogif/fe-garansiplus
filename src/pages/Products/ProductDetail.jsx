@@ -49,16 +49,16 @@ const ProductDetail = () => {
     });
   };
 
-  const calculateWarrantyPeriod = (createdAt) => {
-    if (!createdAt) return '-';
+  const calculateWarrantyPeriod = (createdAt, warrantyMonths) => {
+    if (!createdAt || !warrantyMonths) return '-';
     const startDate = new Date(createdAt);
     const endDate = new Date(startDate);
-    endDate.setMonth(endDate.getMonth() + 6);
+    endDate.setMonth(endDate.getMonth() + warrantyMonths);
 
     const startStr = formatDate(startDate);
     const endStr = formatDate(endDate);
 
-    return `${startStr} S/D ${endStr} ( 6 Bulan )`;
+    return `${startStr} S/D ${endStr} ( ${warrantyMonths} Bulan )`;
   };
 
   if (loading) {
@@ -195,7 +195,7 @@ const ProductDetail = () => {
               Periode Kepesertaan Garansi
             </label>
             <p className="text-gray-900 font-medium">
-              {calculateWarrantyPeriod(product.createdAt)}
+              {calculateWarrantyPeriod(product.createdAt, product.warrantyMonths)}
             </p>
           </div>
         </div>
