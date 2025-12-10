@@ -152,6 +152,24 @@ const ProductDetail = () => {
 
           <div>
             <label className="block text-sm text-gray-500 mb-2">
+              No. Invoice
+            </label>
+            <p className="text-gray-900 font-medium">
+              {product.invoiceNumber || '-'}
+            </p>
+          </div>
+
+          <div>
+            <label className="block text-sm text-gray-500 mb-2">
+              Tanggal Pembelian
+            </label>
+            <p className="text-gray-900 font-medium">
+              {formatDate(product.createdAt)}
+            </p>
+          </div>
+
+          <div>
+            <label className="block text-sm text-gray-500 mb-2">
               Kode Produk
             </label>
             <p className="text-gray-900 font-medium">{product.code || '-'}</p>
@@ -168,10 +186,28 @@ const ProductDetail = () => {
 
           <div>
             <label className="block text-sm text-gray-500 mb-2">
-              Harga Garansi (%)
+              Harga Garansi
             </label>
             <p className="text-gray-900 font-medium">
-              {formatPrice(product.priceWarranty)} ( {product.persen}% )
+              {formatPrice(product.priceWarranty)}
+            </p>
+          </div>
+
+          <div>
+            <label className="block text-sm text-gray-500 mb-2">
+              Persentase Garansi
+            </label>
+            <p className="text-gray-900 font-medium">
+              {product.persen}%
+            </p>
+          </div>
+
+          <div>
+            <label className="block text-sm text-gray-500 mb-2">
+              Kode Toko
+            </label>
+            <p className="text-gray-900 font-medium">
+              {product.store?.kode_toko || '-'}
             </p>
           </div>
 
@@ -185,6 +221,25 @@ const ProductDetail = () => {
           </div>
 
           <div>
+            <label className="block text-sm text-gray-500 mb-2">
+              Alamat Toko
+            </label>
+            <p className="text-gray-900 font-medium">
+              {product.store?.address || '-'}
+            </p>
+          </div>
+
+          <div>
+            <label className="block text-sm text-gray-500 mb-2">
+              Telepon Toko
+            </label>
+            <p className="text-gray-900 font-medium">
+              {product.store?.phone || '-'}
+            </p>
+          </div>
+
+
+          <div>
             <label className="block text-sm text-gray-500 mb-2">Sales</label>
             <p className="text-gray-900 font-medium">
               {product.creator?.name || '-'}
@@ -194,11 +249,20 @@ const ProductDetail = () => {
           <div>
             <label className="block text-sm text-gray-500 mb-2">Total</label>
             <p className="text-gray-900 font-semibold text-lg">
-              {formatPrice(product.price + product.priceWarranty)}
+              {formatPrice(Number(product.price || 0) + Number(product.priceWarranty || 0))}
             </p>
           </div>
 
-          <div className="md:col-span-3">
+          <div>
+            <label className="block text-sm text-gray-500 mb-2">
+              Telepon Sales
+            </label>
+            <p className="text-gray-900 font-medium">
+              {product.creator?.phone || '-'}
+            </p>
+          </div>
+
+          <div>
             <label className="block text-sm text-gray-500 mb-2">
               Periode Kepesertaan Garansi
             </label>
@@ -206,6 +270,17 @@ const ProductDetail = () => {
               {calculateWarrantyPeriod(product.createdAt, product.warrantyMonths)}
             </p>
           </div>
+
+          {product.notes && (
+            <div className="md:col-span-3">
+              <label className="block text-sm text-gray-500 mb-2">
+                Catatan
+              </label>
+              <p className="text-gray-900 font-medium">
+                {product.notes}
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </MainLayout>

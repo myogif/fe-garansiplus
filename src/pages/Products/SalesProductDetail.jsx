@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import MainLayout from '../../components/MainLayout';
+import StatusPill from '../../components/StatusPill';
 import { fetchSalesProductDetail } from '../../api/sales';
 
 const SalesProductDetail = () => {
@@ -29,38 +30,50 @@ const SalesProductDetail = () => {
     }
   };
 
-
-  const formatCurrency = (value) => {
+  const formatPrice = (price) => {
     return new Intl.NumberFormat('id-ID', {
       style: 'currency',
       currency: 'IDR',
       minimumFractionDigits: 0,
-    }).format(value);
+    }).format(price);
   };
 
   const formatDate = (dateString) => {
     if (!dateString) return '-';
-    return new Intl.DateTimeFormat('id-ID', {
+    const date = new Date(dateString.replace(' ', 'T'));
+    return date.toLocaleDateString('id-ID', {
+      day: '2-digit',
+      month: '2-digit',
       year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    }).format(new Date(dateString));
+    });
+  };
+
+  const calculateWarrantyPeriod = (createdAt, warrantyMonths) => {
+    if (!createdAt || !warrantyMonths) {
+      return '-';
+    }
+    const dateString = createdAt.replace(' ', 'T');
+    const startDate = new Date(dateString);
+    
+    if (isNaN(startDate.getTime())) return '-';
+    const endDate = new Date(startDate);
+    endDate.setMonth(endDate.getMonth() + parseInt(warrantyMonths, 10));
+
+    const startStr = formatDate(createdAt);
+    const endStr = formatDate(endDate.toISOString());
+
+    return `${startStr} S/D ${endStr} ( ${warrantyMonths} Bulan )`;
   };
 
   if (loading) {
     return (
       <MainLayout>
-        <div className="bg-white rounded-2xl shadow-sm p-8">
-          <div className="animate-pulse space-y-4">
-            <div className="h-8 bg-gray-200 rounded w-1/3"></div>
-            <div className="h-4 bg-gray-200 rounded w-1/4"></div>
-            <div className="space-y-3 mt-8">
-              <div className="h-4 bg-gray-200 rounded"></div>
-              <div className="h-4 bg-gray-200 rounded"></div>
-              <div className="h-4 bg-gray-200 rounded"></div>
-            </div>
+        <div className="bg-white rounded-2xl shadow-sm p-6 animate-pulse">
+          <div className="h-8 bg-gray-200 rounded w-1/3 mb-6" />
+          <div className="space-y-4">
+            <div className="h-4 bg-gray-200 rounded w-1/4" />
+            <div className="h-4 bg-gray-200 rounded w-1/2" />
+            <div className="h-4 bg-gray-200 rounded w-1/3" />
           </div>
         </div>
       </MainLayout>
@@ -74,7 +87,7 @@ const SalesProductDetail = () => {
           <div className="text-center">
             <p className="text-red-600 mb-4">{error}</p>
             <button
-              onClick={() => navigate('/products')}
+              onClick={() => navigate(-1)}
               className="text-[#C9F35B] hover:text-[#B8E047] font-medium"
             >
               Back to Products
@@ -88,7 +101,7 @@ const SalesProductDetail = () => {
   if (!product) {
     return (
       <MainLayout>
-        <div className="bg-white rounded-2xl shadow-sm p-8">
+        <div className="bg-white rounded-2xl shadow-sm p-6">
           <p className="text-center text-gray-500">Product not found</p>
         </div>
       </MainLayout>
@@ -97,152 +110,190 @@ const SalesProductDetail = () => {
 
   return (
     <MainLayout>
-      <div className="space-y-6">
-        <button
-          onClick={() => navigate('/products')}
-          className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
-        >
-          <ArrowLeft size={20} />
-          <span>Kembali ke Produk</span>
-        </button>
+      <div className="bg-white rounded-2xl shadow-sm p-8">
+        <div className="mb-8">
+          <button
+            onClick={() => navigate(-1)}
+            className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors mb-6"
+          >
+            <ArrowLeft className="w-5 h-5" />
+            <span className="font-medium">Back</span>
+          </button>
 
-        <div className="bg-white rounded-2xl shadow-sm p-8">
-          <div className="mb-6">
-            <div className="flex items-center gap-3 mb-3 flex-wrap">
-              <h1 className="text-2xl md:text-3xl font-bold text-gray-900">{product.name}</h1>
-              {product.tipe && (
-                <span className="px-4 py-1.5 bg-[#C9F35B] text-gray-900 rounded-lg text-xs font-bold uppercase tracking-wide">
-                  {product.tipe}
-                </span>
-              )}
-            </div>
-            <div className="flex items-center gap-3">
-              <span
-                className={`px-3 py-1 rounded-full text-sm font-medium ${
-                  product.status === 'Aktif'
-                    ? 'bg-green-100 text-green-700'
-                    : 'bg-red-100 text-red-700'
-                }`}
-              >
-                {product.status}
+          <div className="flex items-center gap-3 mb-4 flex-wrap">
+            <h1 className="text-2xl md:text-3xl font-bold text-gray-900">
+              {product.name}
+            </h1>
+            {product.tipe && (
+              <span className="px-4 py-1.5 bg-[#C9F35B] text-gray-900 rounded-lg text-xs font-bold uppercase tracking-wide">
+                {product.tipe}
               </span>
-            </div>
+            )}
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="space-y-4">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">Informasi Produk</h2>
+          <div className="flex items-center gap-3 mb-6">
+            <span className="text-gray-600">Nomor Kepesertaan</span>
+            <span className="font-semibold text-gray-900">
+              {product.nomorKepesertaan || '-'}
+            </span>
+            <StatusPill status={product.status || (product.isActive ? 'Aktif' : 'Expired')} />
+          </div>
+        </div>
 
-              <div>
-                <label className="text-sm font-medium text-gray-500">Kode Produk</label>
-                <p className="text-gray-900 font-medium">{product.code}</p>
-              </div>
-
-              <div>
-                <label className="text-sm font-medium text-gray-500">Nomor Kepesertaan</label>
-                <p className="text-gray-900 font-medium">{product.nomorKepesertaan || '-'}</p>
-              </div>
-
-              <div>
-                <label className="text-sm font-medium text-gray-500">Harga Produk</label>
-                <p className="text-gray-900 font-medium">{formatCurrency(product.price)}</p>
-              </div>
-
-              <div>
-                <label className="text-sm font-medium text-gray-500">Biaya Garansi</label>
-                <p className="text-gray-900 font-medium">{formatCurrency(product.priceWarranty)}</p>
-              </div>
-
-              <div>
-                <label className="text-sm font-medium text-gray-500">Persentase Garansi</label>
-                <p className="text-gray-900 font-medium">{product.persen}%</p>
-              </div>
-
-              <div>
-                <label className="text-sm font-medium text-gray-500">Notes</label>
-                <p className="text-gray-900">{product.notes || '-'}</p>
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">Informasi Pelanggan</h2>
-
-              <div>
-                <label className="text-sm font-medium text-gray-500">Nama Pelanggan</label>
-                <p className="text-gray-900 font-medium">{product.customerName || '-'}</p>
-              </div>
-
-              <div>
-                <label className="text-sm font-medium text-gray-500">Nomor Telepon</label>
-                <p className="text-gray-900 font-medium">{product.customerPhone || '-'}</p>
-              </div>
-
-              <div>
-                <label className="text-sm font-medium text-gray-500">Email</label>
-                <p className="text-gray-900 font-medium">{product.customerEmail || '-'}</p>
-              </div>
-
-              {product.store && (
-                <>
-                  <h2 className="text-lg font-semibold text-gray-900 mb-4 mt-8">Informasi Toko</h2>
-
-                  <div>
-                    <label className="text-sm font-medium text-gray-500">Nama Toko</label>
-                    <p className="text-gray-900 font-medium">{product.store.name}</p>
-                  </div>
-
-                  <div>
-                    <label className="text-sm font-medium text-gray-500">Kode Toko</label>
-                    <p className="text-gray-900 font-medium">{product.store.kode_toko}</p>
-                  </div>
-
-                  <div>
-                    <label className="text-sm font-medium text-gray-500">Alamat</label>
-                    <p className="text-gray-900">{product.store.address}</p>
-                  </div>
-
-                  <div>
-                    <label className="text-sm font-medium text-gray-500">Kontak</label>
-                    <p className="text-gray-900">{product.store.phone}</p>
-                    <p className="text-gray-900 text-sm">{product.store.email}</p>
-                  </div>
-                </>
-              )}
-            </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div>
+            <label className="block text-sm text-gray-500 mb-2">Nama</label>
+            <p className="text-gray-900 font-medium">
+              {product.customerName || '-'}
+            </p>
           </div>
 
-          {product.creator && (
-            <div className="mt-8 pt-8 border-t border-gray-200">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">Informasi Pembuat</h2>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div>
-                  <label className="text-sm font-medium text-gray-500">Nama Pembuat</label>
-                  <p className="text-gray-900 font-medium">{product.creator.name}</p>
-                </div>
-                <div>
-                  <label className="text-sm font-medium text-gray-500">Peran</label>
-                  <p className="text-gray-900 font-medium">{product.creator.role}</p>
-                </div>
-                <div>
-                  <label className="text-sm font-medium text-gray-500">Telepon</label>
-                  <p className="text-gray-900 font-medium">{product.creator.phone}</p>
-                </div>
-              </div>
+          <div>
+            <label className="block text-sm text-gray-500 mb-2">
+              Nomor Telepon
+            </label>
+            <p className="text-gray-900 font-medium">
+              {product.customerPhone || '-'}
+            </p>
+          </div>
+
+          <div>
+            <label className="block text-sm text-gray-500 mb-2">Email</label>
+            <p className="text-gray-900 font-medium">
+              {product.customerEmail || '-'}
+            </p>
+          </div>
+
+          <div>
+            <label className="block text-sm text-gray-500 mb-2">
+              No. Invoice
+            </label>
+            <p className="text-gray-900 font-medium">
+              {product.invoiceNumber || '-'}
+            </p>
+          </div>
+
+          <div>
+            <label className="block text-sm text-gray-500 mb-2">
+              Tanggal Pembelian
+            </label>
+            <p className="text-gray-900 font-medium">
+              {formatDate(product.createdAt)}
+            </p>
+          </div>
+
+          <div>
+            <label className="block text-sm text-gray-500 mb-2">
+              Kode Produk
+            </label>
+            <p className="text-gray-900 font-medium">{product.code || '-'}</p>
+          </div>
+
+          <div>
+            <label className="block text-sm text-gray-500 mb-2">
+              Harga Produk
+            </label>
+            <p className="text-gray-900 font-medium">
+              {formatPrice(product.price)}
+            </p>
+          </div>
+
+          <div>
+            <label className="block text-sm text-gray-500 mb-2">
+              Harga Garansi
+            </label>
+            <p className="text-gray-900 font-medium">
+              {formatPrice(product.priceWarranty)}
+            </p>
+          </div>
+
+          <div>
+            <label className="block text-sm text-gray-500 mb-2">
+              Persentase Garansi
+            </label>
+            <p className="text-gray-900 font-medium">
+              {product.persen}%
+            </p>
+          </div>
+
+          <div>
+            <label className="block text-sm text-gray-500 mb-2">
+              Kode Toko
+            </label>
+            <p className="text-gray-900 font-medium">
+              {product.store?.kode_toko || '-'}
+            </p>
+          </div>
+
+          <div>
+            <label className="block text-sm text-gray-500 mb-2">
+              Nama Toko
+            </label>
+            <p className="text-gray-900 font-medium">
+              {product.store?.name || '-'}
+            </p>
+          </div>
+
+          <div>
+            <label className="block text-sm text-gray-500 mb-2">
+              Alamat Toko
+            </label>
+            <p className="text-gray-900 font-medium">
+              {product.store?.address || '-'}
+            </p>
+          </div>
+
+          <div>
+            <label className="block text-sm text-gray-500 mb-2">
+              Telepon Toko
+            </label>
+            <p className="text-gray-900 font-medium">
+              {product.store?.phone || '-'}
+            </p>
+          </div>
+
+          <div>
+            <label className="block text-sm text-gray-500 mb-2">Sales</label>
+            <p className="text-gray-900 font-medium">
+              {product.creator?.name || '-'}
+            </p>
+          </div>
+
+          <div>
+            <label className="block text-sm text-gray-500 mb-2">Total</label>
+            <p className="text-gray-900 font-semibold text-lg">
+              {formatPrice(Number(product.price || 0) + Number(product.priceWarranty || 0))}
+            </p>
+          </div>
+
+          <div>
+            <label className="block text-sm text-gray-500 mb-2">
+              Telepon Sales
+            </label>
+            <p className="text-gray-900 font-medium">
+              {product.creator?.phone || '-'}
+            </p>
+          </div>
+
+          <div>
+            <label className="block text-sm text-gray-500 mb-2">
+              Periode Kepesertaan Garansi
+            </label>
+            <p className="text-gray-900 font-medium">
+              {calculateWarrantyPeriod(product.createdAt, product.warrantyMonths)}
+            </p>
+          </div>
+
+          {product.notes && (
+            <div className="md:col-span-3">
+              <label className="block text-sm text-gray-500 mb-2">
+                Catatan
+              </label>
+              <p className="text-gray-900 font-medium">
+                {product.notes}
+              </p>
             </div>
           )}
-
-          <div className="mt-8 pt-8 border-t border-gray-200">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="text-sm font-medium text-gray-500">Dibuat Pada</label>
-                <p className="text-gray-900">{formatDate(product.createdAt)}</p>
-              </div>
-              <div>
-                <label className="text-sm font-medium text-gray-500">Terakhir Diperbarui</label>
-                <p className="text-gray-900">{formatDate(product.updatedAt)}</p>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </MainLayout>

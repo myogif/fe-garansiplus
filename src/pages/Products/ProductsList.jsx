@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Search, Download } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
-import { fetchProducts, createProduct, updateProduct, deleteProduct, fetchProductByCode, exportManagerProductsToExcel } from '../../api/products';
+import { fetchProducts, createProduct, updateProduct, deleteProduct, fetchProductByCode, exportManagerProductsToExcel, deactivateServiceCenterProduct } from '../../api/products';
 import { updateSalesProduct, deleteSalesProduct, exportSalesProductsToExcel, fetchSalesProductDetail, useProduct, downloadProductCertificate } from '../../api/sales';
 import { exportSupervisorProductsToExcel } from '../../api/supervisors';
 import ProductsTable from '../../components/ProductsTable';
@@ -226,7 +226,9 @@ const ProductsList = () => {
 
   const handleConfirmUse = async () => {
     try {
-      const response = await useProduct(selectedProduct.id);
+      const response = role === 'SERVICE_CENTER'
+        ? await deactivateServiceCenterProduct(selectedProduct.id)
+        : await useProduct(selectedProduct.id);
       const data = response;
 
       if (data?.success === true || data?.status === true) {

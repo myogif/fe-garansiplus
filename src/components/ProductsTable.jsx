@@ -120,7 +120,7 @@ const ProductsTable = ({ products, loading, role, onEdit, onDelete, onGunakan, o
                   >
                     <Info className="w-4 h-4" />
                   </button>
-                  {role === 'SALES' && (
+                  {(role === 'SALES' || role === 'SERVICE_CENTER') && (
                     <>
                       <button
                         onClick={() => onGunakan && onGunakan(product)}

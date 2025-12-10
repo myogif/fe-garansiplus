@@ -138,3 +138,10 @@ export async function exportManagerProductsToExcel({ code = '', created_at_from 
   document.body.removeChild(link);
   window.URL.revokeObjectURL(url);
 }
+
+export async function deactivateServiceCenterProduct(id) {
+  const res = await client.put(`/api/service-center/products/${id}`, {
+    isActive: false,
+  });
+  return res.data;
+}

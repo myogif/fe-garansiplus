@@ -74,6 +74,8 @@ export async function fetchSalesProductDetail(code) {
     customerName: p.customerName,
     customerPhone: p.customerPhone,
     customerEmail: p.customerEmail,
+    invoiceNumber: p.invoiceNumber,
+    warrantyMonths: p.warrantyMonths,
     storeId: p.storeId,
     creatorId: p.creatorId,
     isActive: p.isActive,
