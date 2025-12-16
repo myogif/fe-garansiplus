@@ -10,6 +10,7 @@ import {
 } from '../../api/supervisors';
 import SupervisorsTable from '../../components/SupervisorsTable';
 import SupervisorFormModal from '../../components/Modals/SupervisorFormModal';
+import EditSupervisorModal from '../../components/Modals/EditSupervisorModal';
 import ConfirmDelete from '../../components/Modals/ConfirmDelete';
 import Pagination from '../../components/Pagination';
 import useDebounce from '../../hooks/useDebounce';
@@ -24,6 +25,7 @@ const SupervisorsList = () => {
   const [page, setPage] = useState(1);
   const [pagination, setPagination] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [selectedPerson, setSelectedPerson] = useState(null);
   const [toast, setToast] = useState({ show: false, message: '', type: 'success' });
@@ -53,6 +55,11 @@ const SupervisorsList = () => {
 
   const handleCreate = () => {
     setIsModalOpen(true);
+  };
+
+  const handleEdit = (person) => {
+    setSelectedPerson(person);
+    setIsEditModalOpen(true);
   };
 
   const handleDelete = (person) => {
@@ -204,6 +211,7 @@ const SupervisorsList = () => {
           people={people}
           loading={loading}
           role={role}
+          onEdit={handleEdit}
           onDelete={handleDelete}
         />
 
@@ -214,6 +222,13 @@ const SupervisorsList = () => {
         isOpen={isModalOpen}
         closeModal={() => setIsModalOpen(false)}
         onSave={handleSave}
+      />
+
+      <EditSupervisorModal
+        open={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+        supervisorId={selectedPerson?.id}
+        onSuccess={loadPeople}
       />
 
       <ConfirmDelete

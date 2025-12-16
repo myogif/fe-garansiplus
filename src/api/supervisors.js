@@ -28,6 +28,8 @@ export async function listRolePeople(role, { page = 1, limit = 10, search = '' }
 }
 
 export const createSupervisor = (payload) => client.post('/api/managers/add-supervisors', payload);
+export const getSupervisorById = (id) => client.get(`/api/managers/supervisors/${id}`);
+export const updateSupervisor = (id, payload) => client.put(`/api/managers/supervisors/${id}`, payload);
 export const deleteSupervisor = (id) => client.delete(`/api/managers/supervisors/${id}`);
 
 export const createSalesUser = (payload) => client.post('/api/supervisors/sales', payload);

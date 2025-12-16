@@ -1,6 +1,6 @@
-import { Trash2 } from 'lucide-react';
+import { Trash2, Edit } from 'lucide-react';
 
-const SupervisorsTable = ({ people, loading, role, onDelete }) => {
+const SupervisorsTable = ({ people, loading, role, onDelete, onEdit }) => {
   if (loading) {
     return (
       <div className="animate-pulse space-y-2">
@@ -65,12 +65,15 @@ const SupervisorsTable = ({ people, loading, role, onDelete }) => {
               </td>
               <td className="py-4 px-4 text-center">
                 {role !== 'SERVICE_CENTER' && (
-                  <button
-                    onClick={() => onDelete && onDelete(person)}
-                    className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-red-50 hover:bg-red-100 transition-colors"
-                  >
-                    <Trash2 size={16} className="text-red-600" />
-                  </button>
+                  <div className="flex items-center justify-center gap-2">
+                    <button
+                      onClick={() => onEdit && onEdit(person)}
+                      className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-50 hover:bg-blue-100 transition-colors"
+                      title="Edit supervisor"
+                    >
+                      <Edit size={16} className="text-blue-600" />
+                    </button>
+                  </div>
                 )}
               </td>
             </tr>
