@@ -11,6 +11,7 @@ import CustomersList from '../pages/Customers/CustomersList';
 import Login from '../pages/Login';
 import ForgotPassword from '../pages/ForgotPassword';
 import UpdatePassword from '../pages/UpdatePassword';
+import PrivacyPolicy from '../pages/PrivacyPolicy';
 import { useAuth } from '../context/AuthContext';
 
 export default function AppRoutes() {
@@ -41,6 +42,10 @@ export default function AppRoutes() {
       <Route
         path="/forgot-password"
         element={isAuthed ? <Navigate to={getRedirectPath()} replace /> : <ForgotPassword />}
+      />
+      <Route
+        path="/privacy-policy"
+        element={<PrivacyPolicy />}
       />
       <Route
         path="/dashboard"
