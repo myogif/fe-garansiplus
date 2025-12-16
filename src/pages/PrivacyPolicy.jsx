@@ -44,16 +44,21 @@ Alasan: ${formData.reason}
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div className="min-h-screen bg-black">
       {/* Header */}
-      <header className="bg-white shadow-md sticky top-0 z-50">
-        <div className="max-w-6xl mx-auto px-4 py-4">
-          <h1 className="text-3xl font-bold text-indigo-600">Garansi Plus</h1>
-          <nav className="mt-2 flex gap-6">
-            <a href="#privacy" className="text-gray-700 hover:text-indigo-600 transition">
+      <header className="bg-black border-b border-gray-800 sticky top-0 z-50">
+        <div className="max-w-6xl mx-auto px-4 py-6">
+          <h1 className="text-3xl font-bold text-white flex items-center gap-2">
+            <svg className="w-8 h-8" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2L3 7V11C3 16.55 6.84 21.74 12 23C17.16 21.74 21 16.55 21 11V7L12 2Z" stroke="#C9F35B" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+            </svg>
+            GARANSI<span className="text-[#C9F35B]">+</span>
+          </h1>
+          <nav className="mt-3 flex gap-6">
+            <a href="#privacy" className="text-gray-400 hover:text-[#C9F35B] transition">
               Kebijakan Privasi
             </a>
-            <a href="#delete" className="text-gray-700 hover:text-indigo-600 transition">
+            <a href="#delete" className="text-gray-400 hover:text-[#C9F35B] transition">
               Hapus Akun
             </a>
           </nav>
@@ -63,8 +68,8 @@ Alasan: ${formData.reason}
       {/* Main Content */}
       <main className="max-w-4xl mx-auto px-4 py-12">
         {/* Privacy Policy Section */}
-        <section id="privacy" className="bg-white rounded-2xl shadow-lg p-8 mb-12">
-          <h2 className="text-3xl font-bold text-gray-800 mb-6">Kebijakan Privasi</h2>
+        <section id="privacy" className="bg-white rounded-2xl shadow-2xl p-8 mb-12">
+          <h2 className="text-3xl font-bold text-gray-900 mb-6">Kebijakan Privasi</h2>
           <p className="text-gray-600 mb-6">
             Kebijakan Privasi ini menjelaskan bagaimana Garansi Plus mengumpulkan, menggunakan, 
             menyimpan, dan melindungi data pribadi pengguna.
@@ -72,7 +77,7 @@ Alasan: ${formData.reason}
 
           <div className="space-y-6">
             <div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-3">1. Informasi yang Kami Kumpulkan</h3>
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">1. Informasi yang Kami Kumpulkan</h3>
               <ul className="list-disc list-inside text-gray-600 space-y-2 ml-4">
                 <li><strong>Data Akun:</strong> Nama, email, dan informasi saat mendaftar.</li>
                 <li><strong>Data Penggunaan:</strong> Aktivitas dalam aplikasi.</li>
@@ -81,7 +86,7 @@ Alasan: ${formData.reason}
             </div>
 
             <div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-3">2. Cara Kami Menggunakan Data</h3>
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">2. Cara Kami Menggunakan Data</h3>
               <ul className="list-disc list-inside text-gray-600 space-y-2 ml-4">
                 <li>Menyediakan dan meningkatkan layanan aplikasi.</li>
                 <li>Personalisasi pengalaman pengguna.</li>
@@ -91,7 +96,7 @@ Alasan: ${formData.reason}
             </div>
 
             <div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-3">3. Penyimpanan & Keamanan Data</h3>
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">3. Penyimpanan & Keamanan Data</h3>
               <p className="text-gray-600">
                 Kami menyimpan data di server yang aman dengan enkripsi, namun tidak ada metode 
                 internet yang 100% aman.
@@ -99,7 +104,7 @@ Alasan: ${formData.reason}
             </div>
 
             <div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-3">4. Berbagi Informasi</h3>
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">4. Berbagi Informasi</h3>
               <ul className="list-disc list-inside text-gray-600 space-y-2 ml-4">
                 <li>Kami tidak menjual data pribadi Anda.</li>
                 <li>Data dapat dibagikan ke mitra tepercaya untuk layanan.</li>
@@ -108,7 +113,7 @@ Alasan: ${formData.reason}
             </div>
 
             <div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-3">5. Hak Pengguna</h3>
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">5. Hak Pengguna</h3>
               <ul className="list-disc list-inside text-gray-600 space-y-2 ml-4">
                 <li>Akses data pribadi Anda.</li>
                 <li>Memperbarui data yang salah.</li>
@@ -117,10 +122,10 @@ Alasan: ${formData.reason}
             </div>
 
             <div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-3">6. Hapus Akun</h3>
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">6. Hapus Akun</h3>
               <p className="text-gray-600">
                 Anda dapat menghapus akun melalui menu{' '}
-                <a href="#delete" className="text-indigo-600 hover:underline font-medium">
+                <a href="#delete" className="text-[#C9F35B] hover:underline font-medium">
                   Hapus Akun
                 </a>
                 . Data akan dihapus permanen dan tidak bisa dipulihkan.
@@ -128,7 +133,7 @@ Alasan: ${formData.reason}
             </div>
 
             <div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-3">7. Perubahan Kebijakan</h3>
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">7. Perubahan Kebijakan</h3>
               <p className="text-gray-600">
                 Kami dapat memperbarui kebijakan ini sewaktu-waktu. Perubahan diumumkan di aplikasi 
                 atau halaman ini.
@@ -136,14 +141,14 @@ Alasan: ${formData.reason}
             </div>
 
             <div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-3">8. Kontak Kami</h3>
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">8. Kontak Kami</h3>
               <p className="text-gray-600">
                 Jika ada pertanyaan, hubungi kami via WhatsApp di{' '}
                 <a 
                   href={`https://wa.me/${phoneNumber}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-indigo-600 hover:underline font-medium"
+                  className="text-[#C9F35B] hover:underline font-medium"
                 >
                   {phoneNumber}
                 </a>
@@ -154,8 +159,8 @@ Alasan: ${formData.reason}
         </section>
 
         {/* Delete Account Section */}
-        <section id="delete" className="bg-white rounded-2xl shadow-lg p-8">
-          <h2 className="text-3xl font-bold text-gray-800 mb-6">Hapus Akun</h2>
+        <section id="delete" className="bg-white rounded-2xl shadow-2xl p-8">
+          <h2 className="text-3xl font-bold text-gray-900 mb-6">Hapus Akun</h2>
           <p className="text-gray-600 mb-6">
             Isi formulir berikut untuk meminta penghapusan akun Anda. Setelah akun dihapus, 
             data tidak dapat dipulihkan.
@@ -192,7 +197,7 @@ Alasan: ${formData.reason}
                 required
                 value={formData.name}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#C9F35B] focus:border-transparent transition"
                 placeholder="Masukkan nama lengkap Anda"
               />
             </div>
@@ -208,7 +213,7 @@ Alasan: ${formData.reason}
                 required
                 value={formData.email}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#C9F35B] focus:border-transparent transition"
                 placeholder="email@example.com"
               />
             </div>
@@ -224,7 +229,7 @@ Alasan: ${formData.reason}
                 required
                 value={formData.phone}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#C9F35B] focus:border-transparent transition"
                 placeholder="08xxxxxxxxxx"
               />
             </div>
@@ -240,14 +245,14 @@ Alasan: ${formData.reason}
                 value={formData.reason}
                 onChange={handleChange}
                 rows="4"
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#C9F35B] focus:border-transparent transition"
                 placeholder="Jelaskan alasan Anda ingin menghapus akun..."
               />
             </div>
 
             <button
               type="submit"
-              className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-3 px-6 rounded-lg font-medium hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all transform hover:scale-[1.02] active:scale-[0.98] shadow-lg"
+              className="w-full bg-[#C9F35B] hover:bg-[#B8E047] text-gray-900 py-3 px-6 rounded-lg font-medium focus:outline-none focus:ring-2 focus:ring-[#C9F35B] focus:ring-offset-2 transition-all transform hover:scale-[1.01] active:scale-[0.99] shadow-lg"
             >
               Kirim Permintaan via WhatsApp
             </button>
@@ -260,13 +265,15 @@ Alasan: ${formData.reason}
       </main>
 
       {/* Footer */}
-      <footer className="bg-gray-800 text-white py-8 mt-16">
+      <footer className="bg-black border-t border-gray-800 py-8 mt-16">
         <div className="max-w-6xl mx-auto px-4 text-center">
-          <h3 className="text-xl font-semibold mb-2">Garansi Plus</h3>
+          <h3 className="text-xl font-semibold mb-2 text-white flex items-center justify-center gap-2">
+            GARANSI<span className="text-[#C9F35B]">+</span>
+          </h3>
           <p className="text-gray-400 mb-4">
             Sistem Manajemen Garansi Terpercaya
           </p>
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-gray-600">
             © {new Date().getFullYear()} Garansi Plus. All rights reserved.
           </p>
         </div>
