@@ -8,7 +8,7 @@ export default function PrivacyPolicy() {
     reason: ''
   });
 
-  const phoneNumber = '081108110811';
+  const phoneNumber = '628114328888';
 
   const handleSubmit = (e) => {
     e.preventDefault();
