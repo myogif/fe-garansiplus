@@ -15,7 +15,7 @@ import useDebounce from '../../hooks/useDebounce';
 import MainLayout from '../../components/MainLayout';
 
 const ProductsList = () => {
-  const { role, token } = useAuth();
+  const { role, token, user } = useAuth();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -289,7 +289,7 @@ const ProductsList = () => {
                   Tambah Produk
                 </button>
               )}
-              {(role === 'MANAGER' || role === 'SUPERVISOR') && (
+              {(role === 'MANAGER' || role === 'SUPERVISOR' || (role === 'SERVICE_CENTER' && user?.phone === '0855667788')) && (
                 <button
                   onClick={() => setIsExportModalOpen(true)}
                   className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2.5 rounded-xl transition-colors font-medium"
