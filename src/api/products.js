@@ -11,7 +11,7 @@ export async function fetchProducts(role, { page = 1, limit = 10, mine = true, s
 
   const url =
     role === 'MANAGER'        ? `/api/managers/products?${searchParams}` :
-    role === 'SERVICE_CENTER' ? `/api/managers/products?${searchParams}` :
+    role === 'SERVICE_CENTER' ? `/api/service-center/products?${searchParams}` :
     role === 'SUPERVISOR'     ? `/api/supervisors/products?${searchParams}` :
                                 `/api/sales/products?${searchParams}`;
 
@@ -58,7 +58,7 @@ export function deleteProduct(id, role) {
 export async function fetchProductByCode(role, code) {
   const url =
     role === 'MANAGER'        ? `/api/managers/products?code=${code}` :
-    role === 'SERVICE_CENTER' ? `/api/managers/products?code=${code}` :
+    role === 'SERVICE_CENTER' ? `/api/service-center/products?code=${code}` :
     role === 'SUPERVISOR'     ? `/api/supervisors/products?code=${code}` :
                                 `/api/sales/products?code=${code}`;
 
@@ -133,6 +133,41 @@ export async function exportManagerProductsToExcel({ code = '', created_at_from 
   const link = document.createElement('a');
   link.href = url;
   link.download = `products_manager_${new Date().toISOString().split('T')[0]}.xlsx`;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  window.URL.revokeObjectURL(url);
+}
+
+export async function exportServiceCenterProductsToExcel({ code = '', created_at_from = '', created_at_to = '' } = {}) {
+  const searchParams = new URLSearchParams({
+    sortBy: 'createdAt',
+    sortOrder: 'desc',
+    export: 'excel',
+  });
+
+  if (code) {
+    searchParams.append('code', code);
+  }
+  if (created_at_from) {
+    searchParams.append('created_at_from', created_at_from);
+  }
+  if (created_at_to) {
+    searchParams.append('created_at_to', created_at_to);
+  }
+
+  const res = await client.get(`/api/service-center/products?${searchParams}`, {
+    responseType: 'blob',
+  });
+
+  const blob = new Blob([res.data], {
+    type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  });
+
+  const url = window.URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = `products_service_center_${new Date().toISOString().split('T')[0]}.xlsx`;
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);

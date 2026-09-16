@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Search, Download } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
-import { fetchProducts, createProduct, updateProduct, deleteProduct, fetchProductByCode, exportManagerProductsToExcel, deactivateServiceCenterProduct } from '../../api/products';
+import { fetchProducts, createProduct, updateProduct, deleteProduct, fetchProductByCode, exportManagerProductsToExcel, exportServiceCenterProductsToExcel, deactivateServiceCenterProduct } from '../../api/products';
 import { updateSalesProduct, deleteSalesProduct, exportSalesProductsToExcel, fetchSalesProductDetail, useProduct, downloadProductCertificate } from '../../api/sales';
 import { exportSupervisorProductsToExcel } from '../../api/supervisors';
 import ProductsTable from '../../components/ProductsTable';
@@ -191,12 +191,18 @@ const ProductsList = () => {
 
   const handleExport = async (dateFilter) => {
     try {
-      if (role === 'MANAGER' || role === 'SERVICE_CENTER') {
+      if (role === 'MANAGER') {
         await exportManagerProductsToExcel({
           code: '',
           created_at_from: dateFilter.start_date,
           created_at_to: dateFilter.end_date,
           store_id: dateFilter.store_id,
+        });
+      } else if (role === 'SERVICE_CENTER') {
+        await exportServiceCenterProductsToExcel({
+          code: '',
+          created_at_from: dateFilter.start_date,
+          created_at_to: dateFilter.end_date,
         });
       } else if (role === 'SUPERVISOR') {
         await exportSupervisorProductsToExcel({
