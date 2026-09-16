@@ -22,7 +22,7 @@ const ExportExcelModal = ({ isOpen, closeModal, onExport, role }) => {
       }
     };
 
-    if (isOpen && (role === 'MANAGER' || role === 'SERVICE_CENTER')) {
+    if (isOpen && role === 'MANAGER') {
       loadStores();
     }
   }, [isOpen, role]);
@@ -67,7 +67,7 @@ const ExportExcelModal = ({ isOpen, closeModal, onExport, role }) => {
           </div>
 
           <form onSubmit={handleSubmit} className="p-6 space-y-4">
-            {(role === 'MANAGER' || role === 'SERVICE_CENTER') && (
+            {role === 'MANAGER' && (
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Filter Toko
