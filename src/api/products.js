@@ -11,7 +11,7 @@ export async function fetchProducts(role, { page = 1, limit = 10, mine = true, s
 
   const url =
     role === 'MANAGER'        ? `/api/managers/products?${searchParams}` :
-    role === 'SERVICE_CENTER' ? `/api/service-center/products?${searchParams}` :
+    role === 'SERVICE_CENTER' ? `/api/managers/products?${searchParams}` :
     role === 'SUPERVISOR'     ? `/api/supervisors/products?${searchParams}` :
                                 `/api/sales/products?${searchParams}`;
 
@@ -58,7 +58,7 @@ export function deleteProduct(id, role) {
 export async function fetchProductByCode(role, code) {
   const url =
     role === 'MANAGER'        ? `/api/managers/products?code=${code}` :
-    role === 'SERVICE_CENTER' ? `/api/service-center/products?code=${code}` :
+    role === 'SERVICE_CENTER' ? `/api/managers/products?code=${code}` :
     role === 'SUPERVISOR'     ? `/api/supervisors/products?code=${code}` :
                                 `/api/sales/products?code=${code}`;
 
@@ -139,7 +139,7 @@ export async function exportManagerProductsToExcel({ code = '', created_at_from 
   window.URL.revokeObjectURL(url);
 }
 
-export async function exportServiceCenterProductsToExcel({ code = '', created_at_from = '', created_at_to = '' } = {}) {
+export async function exportServiceCenterProductsToExcel({ code = '', created_at_from = '', created_at_to = '', store_id = '' } = {}) {
   const searchParams = new URLSearchParams({
     sortBy: 'createdAt',
     sortOrder: 'desc',
@@ -155,8 +155,11 @@ export async function exportServiceCenterProductsToExcel({ code = '', created_at
   if (created_at_to) {
     searchParams.append('created_at_to', created_at_to);
   }
+  if (store_id && store_id !== 'ALL') {
+    searchParams.append('store_id', store_id);
+  }
 
-  const res = await client.get(`/api/service-center/products?${searchParams}`, {
+  const res = await client.get(`/api/managers/products?${searchParams}`, {
     responseType: 'blob',
   });
 
